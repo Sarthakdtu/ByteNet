@@ -5,6 +5,8 @@
     <div class="jumbotron">
       {% if registered %}
         <h1>Thank you for registering!</h1>
+	<br>
+	<a class="btn btn-success btn-block" href="{% url 'accounts:user_login' %}">Login</a>
       {% else %}
         <h1>Register Here</h1>
         <h3>Just fill out the form.</h3>
