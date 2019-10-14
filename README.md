@@ -1,7 +1,7 @@
 # ByteNet
 ByteNet is a social networking site built with django and bootstrap. A little bit of jQuery is also used for ajax requets. 
 
-Project is live at : https://https://bytenet.pythonanywhere.com/
+Project is live at : https://bytenet.pythonanywhere.com/
 
 Things you can do on ByteNet:-
 
