@@ -14,6 +14,8 @@
     {% else %}
         <br>
         <h2>Register or Login if you'd like to</h2>
+	<a class="btn btn-primary btn-block" href="{% url 'accounts:register' %}">Register</a>
+        <a class="btn btn-success btn-block" href="{% url 'accounts:user_login' %}">Login</a>
     {% endif %}
   </div>
   <div class="jumbotron">
