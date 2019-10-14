@@ -1,0 +1,20 @@
+<div class="p-1">
+    <input type="submit" data-catid="{{ post.pk }}"
+        id="like{{post.pk}}"
+        class="btn {% if post.disliked or not post.liked %} btn-outline-success {% endif %} 
+               {% if post.liked %} btn-success {% endif %} like-btn " 
+        name="{{ post.pk }}" value="Like">
+    <span id="num_likes{{ post.pk }}" class="btn btn-outline-success">{{ post.num_likes }}</span>
+</div>
+
+<span class="p-4"></span>
+
+<div class="p-1">
+    <input type="submit" data-catid="{{ post.pk }}"
+           id="dislike{{post.pk}}" 
+           class="btn {% if not post.disliked or post.liked %}btn-outline-danger{% endif %}
+                  {% if post.disliked %} btn-danger {% endif %} dislike-btn "
+           name="{{ post.pk }}" value="Dislike">
+
+    <span id="num_dislikes{{ post.pk }}" class="btn btn-outline-danger">{{ post.num_dislikes }}</span>
+</div>

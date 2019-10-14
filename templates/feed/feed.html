@@ -1,0 +1,87 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+
+<h2>This is what everyone's "byting" . . . .</h2>
+<br>
+
+<div class="container">
+    <div class="container">
+        <input type="text" name="text" class="form-control input-group
+             input-group-lg byte-text  text-area" placeholder="What's on your mind? . . . . ">
+        <p> *You can also tag your friends at the New Byte option* </p>
+        <input type="submit" class="btn btn-primary btn-block byte-submit" value="Byte" id="byte-submit">
+        <br>
+    </div>
+
+    <div class="new_post">
+        <div class="container hide" style="display: none;">
+            <div class="card rounded border border-dark bg-light">
+                <h4 class="card-header h4 text-light bg-dark ">
+                    <a href=""{% url 'feed:profile_info' %}"" class="text-light" style="text-decoration:none">
+                        #You
+                    </a>
+                </h4>
+                <h6 id="new_post_time"> </h6>
+                <div class="card-body bg-light text-dark">
+                    <h3 class="card-text" id="new_post_text"> </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for post in posts %}
+        <div class="container ">
+            <div class="card rounded border border-dark bg-light">
+                <h4 class="card-header h4 text-light bg-dark ">
+                    <a href="{% url 'feed:profile_info' profile_username=post.author__username %}"
+                         class="text-light"
+                        style="text-decoration:none">
+                        {% if request.user.username == post.author__username %}
+                        #You
+                        {% else %}
+                        #{{ post.author__username }}
+                        {% endif %}
+                    </a>
+                </h4>
+
+                <h6 class="">{{ post.time_of_posting }} </h6>
+                <div class="text-right">
+                                    {% if post.is_edited %}
+                                        <b>edited</b>
+                                    {% endif %}
+                </div>
+                <div class="card-body bg-light text-dark">
+                    <h3 class="card-text">{{ post.text }}</h3>
+                </div>
+
+                <div class="d-flex flex-row text-dark bg-info">
+                    {% for tag in post.tags %}
+
+                    <div class="p-2 h5">
+                        <a href="{% url 'feed:profile_info' profile_username=tag.username %}" class="text-dark"
+                            style="text-decoration:none">
+                            @{{ tag.username }}
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="container">
+                    <div class="d-flex flex-row ">
+
+                        {% include "post/like_dislike_block.html" %}
+                        <span class="p-4"></span>
+                        <div class="p-1 form-group">
+                            <a href="{% url 'post:view_post' post_id=post.pk %}" class="btn btn-warning">Comments</a>
+                        </div>
+                    </div>
+                    <span id="message{{ post.pk }}"></span>
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+</div>
+
+{% include "post/like_dislike_block_script.html" %}
+{% include "post/new_post_block_script.html" %}
+{% endblock %}

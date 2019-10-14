@@ -1,0 +1,50 @@
+{% extends 'accounts/base.html' %}
+{% block body_block %}
+{% if show %}
+    {% if pending %}
+        <h2>Pending Friend Requests</h2>
+        <br>
+        {% for request in pending_requests %}
+            <div class="container">
+                <h3> <a href="{% url 'feed:profile_info' profile_username=request.username %}" class="text-dark"
+                        style="text-decoration:none">
+                        #{{ request.username }}
+                    </a>
+                </h3>
+                <form method="POST" action="{% url 'feed:accept_friend_request' %}">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ request.username }}" name="accept_request">
+                    <input type="submit" class="btn btn-primary" value="Accept">
+                </form>
+                <br>
+                <form method="POST" action="{% url 'feed:decline_friend_request' %}">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ request.username }}" name="decline_request">
+                    <input type="submit" class="btn btn-danger" value="Decline">
+                </form>
+            </div>
+
+        {% endfor %}
+    {% endif %}
+    {% if sent %}
+            <h2>Sent Friend Requests</h2>
+            <br>
+            {% for request in sent_requests %}
+                <h3>
+                    <a href="{% url 'feed:profile_info' profile_username=request.friend__username %}" class="text-dark"
+                        style="text-decoration:none">
+                        {{ request.friend__username }}
+                    </a>
+                </h3>
+            {% endfor %}
+    {% endif %}
+{% else %}
+    {% if pending %}
+        <h2>Pending Friend Requests</h2>
+    {% else %}
+        <h2>Sent Friend Requests</h2>
+    {% endif %}
+    <br>
+    <h3>No friend requests to show. . . .</h3>
+{% endif %}
+{% endblock %}

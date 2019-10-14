@@ -1,0 +1,36 @@
+<script>
+    $('.byte-submit').click(function () {
+        var byte_text = $('.byte-text').val()
+        if (byte_text == "")
+            return
+        //console.log(byte_text)
+        $.ajax({
+            type: "POST",
+            url: "{% url 'post:create_post' %}",
+            data: {
+                from_feed: "True",
+                text: byte_text,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (data) {
+                
+                   
+                var feed_val = "";
+                $('.byte-text').val(feed_val);
+
+                var filled_space = $('.hide')
+                var new_space = filled_space.clone()
+                new_space.prependTo('.new_post');
+                new_space.append('<br>');
+                new_space.removeClass("hide");
+                new_space.addClass("current"+data.pk);
+                new_space = $('.current'+data.pk);
+                new_space.toggle("slow");
+                //console.log("done");
+                //console.log(filled_space)
+                new_space.find('#new_post_text').text(data.text);
+                new_space.find('#new_post_time').text("Just now");
+            }
+        })
+    });
+</script>

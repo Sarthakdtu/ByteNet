@@ -1,0 +1,9 @@
+{% extends 'accounts/base.html' %}
+{% block body_block %}
+
+<div class="container">
+    <h3>Your profile has been edited.</h3>
+    <a href="{% url 'feed:profile_info' %}" class="btn btn-success"> Back to Profile </a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'accounts/base.html' %}
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Login:</h1>
+      <br>
+      {% if error %}
+      <ul>
+        <li>{{error_message}}</li>
+      </ul>
+      {% endif %}
+      <form method="post" action="{% url 'accounts:user_login' %}">
+          {% csrf_token %}
+          {# A more "HTML" way of creating the login form#}
+          <label for="username">Username:</label>
+          <input type="text" name="username" placeholder="Username">
+          <br>
+          <br>
+          <label for="password">Password:</label>
+          <input type="password" name="password" placeholder="Password">
+          <br>
+          <br>
+          <input type="submit" class="btn btn-success" value="Login">
+       </form>
+    </div>
+  </div>
+{% endblock %}

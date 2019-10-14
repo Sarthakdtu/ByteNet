@@ -1,0 +1,19 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+
+    <div class="container">
+        <div class="form-group form-group-lg">
+            <h2>Edit byte</h2>
+            <br>
+            <form action="{% url 'post:edit_post' pk=form.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="text" 
+                       class="form-control input-group input-group-lg" value="{{ form.text }}">
+                <br>
+                <input type="submit" class="btn btn-primary" value="Edit">
+            </form>
+            <br>
+        </div>
+    </div>
+
+{% endblock %}

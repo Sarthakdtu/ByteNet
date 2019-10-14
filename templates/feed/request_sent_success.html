@@ -1,0 +1,9 @@
+{% extends 'accounts/base.html' %}
+{% block body_block %}
+<h3>Friend request has been sent to {{destination}}.</h3>
+<h3>Now, it's up to them to accept it.</h3>
+<br>
+<a href="{% url 'feed:find_friends' %}">
+          <button class="btn btn-primary btn-success" >Back</button>
+</a>
+{% endblock %}

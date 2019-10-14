@@ -1,0 +1,10 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+<h2>Nicely done :)</h2>
+<br>
+<h3>Your "byte" is live . . .</h3> 
+<br>
+<a href="{% url 'feed:news_feed' %}">
+          <button class="btn btn-primary btn-success" >NEWS FEED</button>
+</a>
+{% endblock %}

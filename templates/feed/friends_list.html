@@ -1,0 +1,27 @@
+{% extends 'accounts/base.html' %}
+{% block body_block %}
+<div class="container">
+    <h2>Your Friends</h2>
+    <br>
+    {% if friends_exist %}
+        {% for friend in friends %}
+        {% if friend.username %}
+        <h3>
+        <a href="{% url 'feed:profile_info' profile_username=friend.username %}" class="text-dark" style="text-decoration:none">
+                #{{ friend.username }}</a>
+        </h3>
+        {% endif %}
+        <br>
+        {% endfor %}
+    {% else %}
+    <h4>You have no friends right now :(</h4>
+    <br>
+    <h5>Don't worry! Let's find you some friends</h5>
+    <br>
+    <a class="btn btn-primary" href="{% url 'feed:find_friends' %}">Find Friends</a>
+    {% endif %}
+    
+    
+    
+</div>
+{% endblock %}

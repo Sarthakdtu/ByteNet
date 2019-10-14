@@ -1,0 +1,81 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+<div class="container">
+    {% if current_user %}
+        <h2>Your post</h2>
+    {% else %}
+        <br>
+    {% endif %}
+    <br>
+    <div class="container">
+            <div class="card rounded border border-dark bg-light">
+                    
+                            <h4 class="card-header h4 text-light bg-dark ">
+                                <a href="{% url 'feed:profile_info' profile_username=post.author__username %}" 
+                                class="text-light" style="text-decoration:none">
+                                    #{{ post.author__username }}
+                                    </a>
+                            </h4>
+            
+                    
+                    <h6 class="">{{ post.time_of_posting }} </h6>
+                    <div class="text-right">
+                                    {% if post.is_edited %}
+                                        <b>edited</b>
+                                    {% endif %}
+                    </div>
+                       <div class="card-body bg-light">
+                           <h3 class="card-text">{{ post.text }}</h3>
+                       </div>
+                       
+                        <div class="d-flex flex-row text-dark bg-info">
+                                {% for tag_username in post.tags__username %}    
+                                <div class="p-2 h5">
+                                        <a href="{% url 'feed:profile_info' profile_username=tag_username %}" class="text-dark" style="text-decoration:none">
+                                            @{{ tag_username }}
+                                        </a>
+                                </div>
+                                {% endfor %}  
+                            </div>  
+                       <div class=" bg-light">
+                            <div class="d-flex flex-row ">  
+                                {% include "post/like_dislike_block.html" %}
+                            </div>
+                    </div>
+            </div>
+            <br>
+            <div class="container btn btn-warning btn-sm">
+                    <p >Commenting functionality isn't added yet</p>
+            </div>
+            <br>
+            <br>
+            {% if current_user %}
+            <div class="container">
+                <div class="d-flex flex-row ">
+                    <div class="p-1 form-group">
+                        <a href="{% url 'post:edit_post' pk=post.pk  %}"
+                           class="btn btn-primary">Edit</a>
+                    </div>
+                    <span class="p-4"></span>
+                    <div class="p-1">
+                        <a href="{% url 'post:delete_post' pk=post.pk  %}"
+                           class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+    </div>
+    <br>
+
+</div> 
+<br>   
+<h3>Let's "byte" something today!!</h3>
+<br>
+<a href="{% url 'post:create_post' %}" class="btn btn-success">Create Byte</a>
+<br>
+
+
+{% include "post/like_dislike_block_script.html" %}
+
+{% endblock %}

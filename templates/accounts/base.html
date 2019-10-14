@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The Network</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    
+    <style>
+      html *
+        {
+          font-family: 'Raleway', sans-serif !important;
+        }
+    </style>
+
+
+   </head>
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="{% url 'index' %}">ByteNet</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+  
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+              
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'feed:news_feed' %}">Home</a>
+            </li>
+              <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Notifications
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'feed:pending_friend_requests_list' %}">Friend Requests</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'post:view_mentions' %}">Tagged Bytes</a>
+                </div>
+              </li>
+
+              <li class="nav-item dropdown active" >
+                  <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Friends
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'feed:friends_list' %}">My Friends</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'feed:find_friends' %}">Add Friends</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'feed:sent_friend_requests_list' %}">Sent Requests</a>
+              </li>
+
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Byte
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                      <a class="dropdown-item" href="{% url 'post:create_post' %}">New Byte</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="{% url 'post:posts_list' %}">My Bytes</a>
+                    </div>
+                </li>
+
+                  <li class="nav-item dropdown active">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Settings
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'feed:profile_info' %}">My Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                      </div>
+                    </div>
+                  </li>
+
+            {% else %}
+                  <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
+                  </li>
+                  <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'accounts:user_login' %}">Login</a>
+                  </li>
+  
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+    <!--
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container">
+        <ul class="nav navbar-nav">
+          {# Django Home Link / Admin Link / Register Link#}
+          <li><a class="navbar-brand" href="{% url 'index' %}">@NETWORK@</a></li>
+             
+          {# Some logic on what to display for last item#}
+          {% if user.is_authenticated %}
+            <li class="nav-item active"><a href="{% url 'logout' %}">Logout</a></li>
+            <li class="nav-item active"><a href="{% url 'feed:profile_info' %}">My Profile</a></li>
+            <li class="nav-item active"><a href="{% url 'feed:friends_list' %}">Friends</a></li>
+            <li class="nav-item active"><a href="{% url 'feed:find_friends' %}">Connect</a></li>
+            <li class="nav-item active"><a href="{% url 'feed:pending_friend_requests_list' %}">Friend Requests</a></li>
+            <li class="nav-item active"><a href="{% url 'feed:sent_friend_requests_list' %}">Sent Requests</a></li>
+            <li class="nav-item active"><a href="{% url 'post:create_post' %}">New Post</a></li>
+            <li class="nav-item active"><a href="{% url 'post:posts_list' %}">My Posts</a></li>
+            <li class="nav-item active"><a href="{% url 'feed:news_feed' %}">News Feed</a></li>
+           
+          {% else %}
+            <li><a class="navbar-link" href="{% url 'accounts:register' %}">Register</a></li>  
+            <li><a class="navbar-link" href="{% url 'accounts:user_login' %}">Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+  -->
+  <br>
+    <div class="container">
+    {% block body_block %}
+    {% endblock %}
+    </div>
+    <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

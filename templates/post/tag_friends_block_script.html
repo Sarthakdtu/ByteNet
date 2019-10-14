@@ -1,0 +1,50 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+        $('#search_box').keyup(function(event){
+            var friends_list = "{{ friends_list }}";
+            var value = $('#search_box').val();
+            var filter = value.toLowerCase( )
+            var a = $(".a_tag");
+        
+            if(filter==""){
+                for (i = 0; i < a.length; i++) {
+                        a[i].style.display = "none";
+                }
+            }
+            else{   
+                for (i = 0; i < a.length; i++) {
+                    txtValue = a[i].textContent || a[i].innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        a[i].style.display = "";
+                    }
+                    else{
+                        a[i].style.display = "none";
+                    }
+                }
+            }
+        });
+        
+    $('.check-class').change(function(){
+            var input_tag = $(this)
+            var value = input_tag.val();
+            var checked = input_tag.prop('checked')
+            if(checked == true){
+                var display_tag = $(".hidden_tag")
+                var hidden_tag = display_tag.clone();
+                var display_div = $(".tag_list");
+                display_div.append(hidden_tag);
+                display_tag.removeClass("hidden_tag")
+                display_tag.text("@"+value);
+                display_tag.toggle();
+                display_tag.addClass(value);
+                $('<span class="p-2"></span>').insertAfter(display_tag);
+            }
+            else{
+                var display_tag = $("."+value)
+                display_tag.next().remove();
+                display_tag.remove();
+            }
+        });
+
+</script>

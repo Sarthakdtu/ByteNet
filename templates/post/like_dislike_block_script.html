@@ -1,0 +1,76 @@
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous">
+</script>
+
+<script>
+    $('.like-btn').click(function(){
+    var catid;
+    catid = $(this).attr("data-catid");
+    
+    $.ajax(
+    {
+        type:"POST",
+        perform: "like",
+        url: '{% url "post:like_post" %}',
+        data:{
+                 post_id: catid, 
+                 csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function( data ) 
+        {
+           // $( '#like'+ catid ).re();
+           //console.log(data.message)
+           $( '#dislike' + catid ).removeClass("btn-danger");
+            //$( '#dislike' + catid ).removeClass("btn-primary");
+            $( '#like' + catid ).removeClass("btn-success");
+            $( '#like' + catid ).removeClass("btn-outline-success");
+
+            $( '#dislike'+catid ).addClass(data.dislike_btn_class);
+            $( '#like'+catid ).addClass(data.like_btn_class);
+            $('#message'+ catid).text(data.message)
+            $('#message' + catid).show().delay(2000).fadeOut();
+            $('#num_likes'+ catid).text(data.num_likes)
+            $('#num_dislikes'+ catid).text(data.num_dislikes)
+        }
+     })
+});
+
+
+ $('.dislike-btn').click(function(){
+    var catid;
+    catid = $(this).attr("data-catid");
+
+    $.ajax(
+    {
+        type:"POST",
+        perform: "dislike",
+        url: '{% url "post:dislike_post" %}',
+        data:{
+                 post_id: catid, 
+                 csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function( data ) 
+        {   
+            //console.log(data.message)
+            $( '#dislike' + catid ).removeClass("btn-danger");
+            $( '#dislike' + catid ).removeClass("btn-outline-danger");
+            $( '#like' + catid ).removeClass("btn-success");
+            //$( '#like' + catid ).removeClass("btn-primary");
+            
+            $( '#dislike' + catid ).addClass(data.dislike_btn_class);
+            $( '#like' + catid ).addClass(data.like_btn_class);
+            //$('#message' + catid).text(data.message);
+            $('#message'+ catid).text(data.message)
+            $('#message' + catid).show().delay(2000).fadeOut();
+            $('#num_likes'+ catid).text(data.num_likes)
+            $('#num_dislikes'+ catid).text(data.num_dislikes)
+        
+        }
+     })
+});
+
+</script>
+

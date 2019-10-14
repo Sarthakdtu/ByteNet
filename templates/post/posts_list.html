@@ -1,0 +1,70 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+{% if mention %}
+    <h2>You were mentioned in these posts</h2>
+    <br>
+        <div class="container">
+            {% if posts_exist %}
+                {% for post in posts %}
+                    <div class="container">
+                        <div class="card">
+                            <h4 class="card-header h4 bg-dark text-light">
+                                <a href="{% url 'feed:profile_info' profile_username=post.post__author__username %}" class="text-light"
+                                    style="text-decoration:none">
+                                    #{{ post.post__author__username }}
+                                </a>
+                            </h4>
+
+                            <h6 class="panel-success">{{ post.post__time_of_posting }} </h6>
+                            <div class="card-body bg-light">
+                                <h3 class="card-text">{{ post.post__text }}</h3>
+                            </div>
+
+                        </div>
+                        <br>
+                        <a href="{% url 'post:view_post' post_id=post.post__pk %}">
+                            <button class="btn btn-success">View Post</button>
+                        </a>
+                    </div>
+                    <br>
+                {% endfor %}
+            {% else %}
+                <h3>Nothing to show here. . . .</h3>
+            {% endif %}
+        </div>
+{% else %}
+    <h2>Bytes</h2>
+    <br>
+    <div class="container">
+        {% if posts_exist  %}
+            {% for post in posts %}
+                <div class="container">
+                    <div class="card">
+                        <a href="{% url 'feed:profile_info' profile_username=author %}" class="text-dark"
+                            style="text-decoration:none">
+                            <h4 class="card-header h4 bg-dark text-light">#{{ author }}</h4>
+                        </a>
+                        <h6 class="panel-success">{{ post.time_of_posting }} </h6>
+                        <div class="card-body bg-light">
+                            <h3 class="card-text">{{ post.text }}</h3>
+                        </div>
+                        <a href="{% url 'post:view_post' post_id=post.pk %}" class="btn btn-success bg-info">View Post</a>
+                    </div>
+                </div>
+            <br>
+            {% endfor %}
+        {% else %}
+            {% if current_user %}
+                <h4>You haven't posted anything :(</h4>
+                <br>
+                <h5>Let's "byte" something, shall we?</h5>
+                <br>
+                <a class="btn btn-primary" href="{% url 'post:create_post' %}">Create Post</a>
+            {% else %}
+                <h4>No byte to show right now. . . .</h4>
+                <br>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+<div class="container">
+    <h3>Are you sure you want to delete your account?</h3>
+    <br>
+    <h4>You won't be able to retrieve it back......</h4>
+    <br>
+  <form method="POST" action="{% url 'accounts:delete_account' %}">
+        {% csrf_token %}
+      <input type="submit" value="Confirm" class="btn btn-danger">
+  </form>
+  <br><br>
+  <a href="{% url 'feed:profile_info' %}" class="btn btn-success">Back</a>
+</div>
+{% endblock %}

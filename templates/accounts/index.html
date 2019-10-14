@@ -1,0 +1,48 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+<div class="container">
+  <div class="jumbotron">
+    <h1>Welcome to the ByteNet!</h1>
+    <p>An amazing social networking web-app</p>
+    {% if user.is_authenticated %}
+        <h2>Hello {{ user.username }}</h2>
+        <a href="{% url 'feed:news_feed' %}">
+          <button class="btn btn-primary btn-success" >NEWS FEED</button>
+        </a>
+        {% block feed %}
+        {% endblock %}
+    {% else %}
+        <br>
+        <h2>Register or Login if you'd like to</h2>
+    {% endif %}
+  </div>
+  <div class="jumbotron">
+    <h2>
+        About 
+    </h2>
+      <p> I am <b><a  target="_blank" href="https://sarthakdtu.github.io" >Sarthak Srivastava</a></b>, creator of this social-networking web-app called <b>ByteNet</b>.
+          I used <b>Django</b> and <b>Bootstrap</b> for backend and frontend development respectively.
+          This is just a demonstration of my backend development skills in Django. 
+          Frankly, this project taught me a lot about backend-logic, django's amazing tools, model design
+           and many other pretty cool stuff. 
+           <br>
+          Things you can do :-
+          <ul>
+          <b><li>Create account</li></b>
+          <b><li>Make friends by sending and accepting friend requests</li></b>
+          <b><li>Share what are you up to today with your friends</li></b>
+          <b><li>Like and Dislike the posts on your feed</li></b>
+          <b><li>Tag friends and be part of the conversation</li></b>
+          <b><li>See what everyone is up to in your feed</li></b>
+          and also, posts, here, are called <b>"bytes"</b> : )
+          </ul>
+          So, go ahead and enjoy this fun app.
+          You can checkout the code on my <b><a  target="_blank" href="https://www.github.com/sarthakdtu">Github</a></b> account.
+          Play around with it and modify it, if you want to, or use this web-app for it's intended purpose. 
+          If you find this exciting, do let me know on <b><a  target="_blank" href="https://www.linkedin.com/in/sarthaksrivastava712">LinkedIn</a></b>. I will be happy to hear about it.
+          <br>
+          <b> : )</b> </p>
+  </div>
+</div>
+
+{% endblock %}

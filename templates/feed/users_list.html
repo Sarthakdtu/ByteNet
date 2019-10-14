@@ -1,0 +1,18 @@
+{% extends 'accounts/base.html' %}
+{% block body_block %}
+<div class="container">
+    <h2>People you may know</h2>
+    {% for person in people %}
+        <h3>{{ person.username }}</h3>
+        <a href="{% url 'feed:profile_info' profile_username=person.username %}">
+            <button class="btn btn-warning">View Profile</button>
+        </a>
+        <form method="POST" action="{% url 'feed:send_friend_request' %}">
+            {% csrf_token %}
+            <input type="hidden" value= "{{person.username}}" name="username" >
+            <input type="submit" class="btn btn-success" value="Connect">
+        </form>
+        <br>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+    
+    <div class="container">
+        <div class="form-group form-group-lg">
+            <h2>Post your thoughts, events, stories anything....</h2>
+            <br>
+            <form action="{% url 'post:create_post' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="text" 
+                class="form-control input-group input-group-lg" placeholder="Your message goes here.....">
+                <div class="container">
+                        <div class="d-flex flex-row">
+                            <div class="p-1 tag_list">
+                                <button class="btn btn-dark hidden_tag" style="display:none;"> </button>
+                            </div>
+                           
+                        </div>
+                </div>
+               
+                <br>
+                <br>
+                <div class="container">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Tag friends
+                        </button>
+                            
+
+                        <div>
+                            <ul class="dropdown-menu" id="ul">
+                                <input type="search" name="search_field" class="form form-control" 
+                                        id="search_box" value="" placeholder="Search">
+                                {% if friends_exist %}
+                                    {% for friend in friends %}
+                                        {% if friend.friend_name %}
+                                            <p>
+                                                <a href="#" class="btn a_tag" 
+                                                    style="display: none;">{{ friend.friend_name }}
+                                                    <input name="checkbox_tag" id="check_tag{{ friend.friend_name }}" type="checkbox" 
+                                                    class="form form-group check-class"
+                                                    value="{{ friend.friend_name }}" label="{{ friend.friend_name }}">
+                                                </a>
+                                            </p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <input type="submit" class="btn btn-success btn-block" style="float: right;" value="Post">
+            </form>
+            <br>
+            <br>
+            
+        </div>
+    </div>
+
+{% include "post/tag_friends_block_script.html" %}
+
+
+{% endblock %}

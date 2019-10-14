@@ -1,0 +1,45 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+
+<div class="container">
+    {% if current_user %}
+    <h2>That's You</h2>
+    {% else %}
+    <h2>Profile of {{ username }}</h2>
+    {% endif %}
+    <br>
+    <h3>Name: {{ name }}</h3>
+    <h3>Username: {{ username }}</h3>
+    <h3>Email: {{ email }}</h3>
+    <h3>Age: {{ age }}</h3>
+    <h3>Location: {{ location }}</h3>
+    <a href="{% url 'post:posts_list' author=username %}" class="btn btn-success">View Posts</a>
+    <br>
+    <br>
+    {% if current_user %}
+        <div class="">
+            <div class="d-flex flex-row ">
+                    <div class="p-1 form-group">
+                        <a href="{% url 'accounts:edit_profile' %}"
+                           class="btn btn-primary">Edit Profile</a>
+                    </div>
+                    <span class="p-4"></span>
+                    <div class="p-1">
+                        <a href="{% url 'accounts:delete_account'  %}"
+                           class="btn btn-danger">Delete Account</a>
+                    </div>
+            </div>
+        </div>
+    {% else %}
+        {% if not friend %}
+            <form method="POST" action="{% url 'feed:send_friend_request' %}">
+            {% csrf_token %}
+            <input type="hidden" value= "{{username}}" name="username" >
+            <input type="submit" class="btn btn-success" value="Connect">
+        </form>
+        {% endif %}
+    {% endif %}
+
+
+</div>
+{% endblock %}

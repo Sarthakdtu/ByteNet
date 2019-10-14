@@ -1,0 +1,9 @@
+{% extends 'accounts/base.html' %}
+{% block body_block %}
+<h3>You and {{destination}} are now friends!!</h3>
+<br>
+<a class="btn btn-primary" href="{% url 'feed:pending_friend_requests_list' %}">Back</a>
+<br>
+<br>
+<a href="{% url 'feed:find_friends' %}" class="btn btn-success">Add Friends</a>
+{% endblock %}
