@@ -1,5 +1,5 @@
 # ByteNet
-ByteNet is a social networking site built with django and bootstrap. A little bit of jQuery is also used for ajax requets. 
+ByteNet is a social networking site built with django and bootstrap. A little bit of jQuery is also used for ajax requests. 
 
 Project is live at : https://bytenet.pythonanywhere.com/
 
