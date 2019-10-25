@@ -33,7 +33,6 @@ Bootstrap: 4.3.1
 
 ```
 
-![alt text](https://drive.google.com/open?id=1j6PdkcXaY2jVnUC6HAdJQ_RjYnYfAx_Y)
 
 
 ## Contributing
