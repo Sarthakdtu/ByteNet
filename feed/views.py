@@ -76,20 +76,20 @@ def find_friends(request):
     people_to_be_connected_list = list()
     for person in list(people_to_be_connected):
         people_to_be_connected_list.append(person["username"])
-    #print("These people are ready to be connected from source side", people_to_be_connected_list)
+    print("These people are ready to be connected from source side", people_to_be_connected_list)
     people_to_be_connected = FriendRequest.objects.filter(destination=user, 
                                                           request_status=FriendRequestStatus.PENDING
                                                           ).annotate(username=F("source__user__pk")
                                                              ).values("username")
     for person in list(people_to_be_connected):
         people_to_be_connected_list.append(person["username"])
-    #print("These people are ready to be connected from source side", people_to_be_connected_list)
+    print("These people are ready to be connected from source side", people_to_be_connected_list)
     people = UserProfileInfo.objects.exclude(friend=user
                                             ).exclude(user__pk__in=people_to_be_connected_list
                                             ).exclude(user=user
                                             ).annotate(username=F('user__username')
                                             ).values("username")
-    #print(people)
+    print(people)
     people = list(people)
     people = {"people" : people}
     return render(request, 'feed/users_list.html', people)
