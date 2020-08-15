@@ -10,13 +10,14 @@
       {% else %}
         <h1>Register Here</h1>
         <h3>Just fill out the form.</h3>
-        <form enctype="multipart/form-data" method="POST">
+        <form enctype="multipart/form-data" method="POST" name="register">
           {% csrf_token %}
           {{ user_form.as_p }}
           {{ profile_form.as_p }}
-          <input type="submit" name="" value="Register">
+          <input type="submit" name="" onclick="return IsEmptyOrDot();" value="Register">
         </form>
         
+      {% include "accounts/username_script.html" %}
       {% endif %}
     </div>
   </div>

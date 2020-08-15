@@ -1,0 +1,20 @@
+<script>
+    function IsEmptyOrDot(){
+        username = document.forms[0].username.value
+        firstname = document.forms[0].first_name.value
+        lastname = document.forms[0].last_name.value
+        password = document.forms[0].password.value
+        age = document.forms[0].age.value
+        location = document.forms[0].location.value
+        email = document.forms[0].email.value
+        if(username.indexOf('.') == -1){
+            alert("username can't contain '.'")
+            return false;
+        }
+        if(location==="" || username==="" || password==="" || firstname==="" || lastname==="" || age===""){
+            alert("Some fields are empty")
+            return false;
+        }
+        return true;
+    }
+</script>
