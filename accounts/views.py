@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from feed.views import view_profile
 from accounts.forms import UserForm, UserProfileInfoForm
 from accounts.models import User, UserProfileInfo
 
@@ -43,6 +42,7 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileInfoForm()
+        
     return render(request, 'accounts/register.html', {'user_form' : user_form, 
                                                       'profile_form' : profile_form, 
                                                       'registered' : registered})
@@ -130,4 +130,3 @@ def edit_account(request):
     form["last_name"] = user["last_name"]
     return render(request, "accounts/edit_account.html", 
                             {"form":form, "error":error, "message":message})
-

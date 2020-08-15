@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -12,7 +12,7 @@ from .models import FriendRequest
 from post.models import Post, TagNotification
 # Create your views here.
 
-###########################################   FEED LOGIC  ############################################
+################################## FEED LOGIC  ############################################
 
 @login_required
 def feed(request):
@@ -60,7 +60,7 @@ def view_profile(request, profile_username=None):
     return render(request, 'feed/profile_info.html', user_profile)
 
 
-###########################################   FRIEND LOGIC  ############################################
+######################################## FRIEND LOGIC  ############################################
 
 @login_required
 def find_friends(request):
@@ -76,7 +76,7 @@ def find_friends(request):
     people_to_be_connected_list = list()
     for person in list(people_to_be_connected):
         people_to_be_connected_list.append(person["username"])
-    print("These people are ready to be connected from source side", people_to_be_connected_list)
+    #print("These people are ready to be connected from source side", people_to_be_connected_list)
     people_to_be_connected = FriendRequest.objects.filter(destination=user, 
                                                           request_status=FriendRequestStatus.PENDING
                                                           ).annotate(username=F("source__user__pk")
@@ -89,7 +89,7 @@ def find_friends(request):
                                             ).exclude(user=user
                                             ).annotate(username=F('user__username')
                                             ).values("username")
-    print(people)
+    #print(people)
     people = list(people)
     people = {"people" : people}
     return render(request, 'feed/users_list.html', people)
@@ -102,7 +102,7 @@ def friends_list(request):
                                     ).annotate(username=F('friend__username')).values("username")
     friends_list = list(friends)
     friends = {"friends":friends_list}
-    print(friends)
+    #print(friends)
     friends_exist = True
     if not friends:
         friends_exist = False
@@ -199,9 +199,25 @@ def decline_friend_request(request):
         print("Friend request declined.")
         return pending_friend_requests(request)
 
+
+
+##################################### SEARCH LOGIC###################################
+@login_required
+def search(request):
+    keyword = request.GET.get('keyword')
+    users = User.objects.filter(Q(username__contains=keyword) |
+                                Q(first_name__icontains=keyword) |
+                                Q(last_name__icontains=keyword)).values("username")
+    user_exist = True
+    if not users:
+        user_exist = False
+    users = list(users)
+    users = {"users":users}
+    
+    users["user_exist"] = user_exist
+    users["keyword"] = keyword
+    return render(request, "feed/search_list.html", users )
+
 ##################################### HANDLING ERRORS #################################################
 #TODO
 ############################################################################################
-
-
-

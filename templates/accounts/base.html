@@ -77,6 +77,12 @@
                       </div>
                     </div>
                   </li>
+                  <li class="nav-item">
+                    <form class="form-inline" name="search" action="{% url 'feed:search' %}" method="get">
+                      <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Find people">
+                      <button class="btn btn-outline-success my-2 my-sm-0"  onclick="return IsEmpty();" type="submit">Find</button>
+                    </form>
+                  </li>
 
             {% else %}
                   <li class="nav-item active">
@@ -87,6 +93,7 @@
                   </li>
   
             {% endif %}
+
           </ul>
         </div>
       </nav>
@@ -123,7 +130,7 @@
     {% block body_block %}
     {% endblock %}
     </div>
-  
+    {% include "accounts/search_script.html" %}  
 <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="

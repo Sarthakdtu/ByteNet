@@ -1,0 +1,18 @@
+{% extends 'accounts/base.html' %}
+{% block body_block %}
+<div class="container">
+    <h2>Search results for {{keyword}}</h2>
+    {% if user_exist %}
+        {% for person in users %}
+            <h3>{{ person.username }}</h3>
+            <a href="{% url 'feed:profile_info' profile_username=person.username %}">
+                <button class="btn btn-warning">View Profile</button>
+            </a>
+            <br>
+        {% endfor %}
+    {% else %}
+            <h2>Woooops!! No such user found. 
+                <br>Are you sure about your spellings?</h2>
+    {% endif %}
+</div>
+{% endblock %}

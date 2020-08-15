@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^feed/$', views.feed, name='news_feed'),
 
     url(r'^find_friends/$', views.find_friends, name='find_friends'),
+    url(r'^search/', views.search, name='search'),
     url(r'^connect/$', views.send_friend_request, name='send_friend_request'),
     url(r'^friends/$', views.friends_list, name='friends_list'),
 
