@@ -19,7 +19,9 @@ Things you can do on ByteNet:-
 
 5. Tag friends and be part of the conversation
 
-6. See what everyone is up to in your feed
+6. Find users on the website
+
+7. See what everyone is up to in your feed
 and also, posts, here, are called "bytes" : )
 
 
