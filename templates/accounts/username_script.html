@@ -7,14 +7,17 @@
         age = document.forms[0].age.value
         location = document.forms[0].location.value
         email = document.forms[0].email.value
-        if(username.indexOf('.') == -1){
-            alert("username can't contain '.'")
-            return false;
-        }
+       
         if(location==="" || username==="" || password==="" || firstname==="" || lastname==="" || age===""){
             alert("Some fields are empty")
             return false;
         }
+
+        if(username.indexOf('.') != -1 || username.indexOf('*') != -1 || username.indexOf('%') != -1 ||username.indexOf('&') != -1){
+            alert("username can't contain that special character")
+            return false;
+        }
+
         return true;
     }
 </script>
