@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.contrib.admin.views.decorators import staff_member_required
+import os
 from django.db.models import F, Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
@@ -10,6 +12,7 @@ from .models import Post, TagNotification
 from .forms import PostForm
 from feed.views import feed
 from django.http import HttpResponse
+from post.imgur_client import upload_image
 try:
     from django.utils import simplejson as json
 except ImportError:
@@ -23,28 +26,30 @@ def create_post(request):
     if request.method == "POST":
         text = request.POST.get("text")
         from_feed = request.POST.get("from_feed")
-        print(text)
         if text == "":
             return feed(request)
         tagged_friends = request.POST.getlist("checkbox_tag")
-        print(tagged_friends)
-        post = Post.objects.create(text=text, author=request.user, time_of_posting = timezone.now())
-        print(post)
-        post.save()
+        try:
+            post = Post.objects.create(text=text, author=request.user, time_of_posting = timezone.now())
+        except Exception as e:
+            raise e
+        file = None
+        print("hehe")
+        try:
+            file = request.FILES['image']
+            file = upload_image(file)
+            post.imgur_url = file
+            print("Got the file")
+        except Exception as e:
+            print(e)
+        # post.save()
         for friend in tagged_friends:
-            print("Tagging ",friend)
             tagged_friend = User.objects.get(username=friend)
             post.tags.add(tagged_friend)
             tag_notif = TagNotification.objects.create(post=post, 
                                         tagged_user=tagged_friend, time_of_tagging=timezone.now())
-            print(tag_notif)
-            #post.save()
         post.save()
-        
-        print(post.tags.all())
-
         if from_feed:
-            print("From Feed")
             return JsonResponse({"text":text,
                                  "pk": post.pk,
                                 "like_btn_class": "btn-outline-success",
@@ -57,17 +62,12 @@ def create_post(request):
         friends = UserProfileInfo.objects.filter(user=user
                                                 ).annotate(friend_name=F("friend__username"
                                                 )).values("friend_name")
-
-        #friend_list = UserProfileInfo.objects.get(user=user).friend.all().values_list("username")
         friends_list = list()
         for friend in friends:
             friends_list.append(friend["friend_name"])
-        print(friends_list)
-        print(friends)
         friends_exist = True
         if not friends:
             friends_exist = False
-        print(friends_exist)
         return render(request, 'post/new_post.html', {'friends':list(friends),
                             "friends_list": friends_list,
                              'friends_exist':friends_exist})
@@ -97,8 +97,8 @@ def view_post(request, post_id):
         post["num_dislikes"] = post_object.total_dislikes()
         post["liked"] = post_object.likes.filter(pk=request.user.pk).exists()
         post["disliked"] = post_object.dislikes.filter(pk=request.user.pk).exists() 
-
-        print(post_object.likes.all())
+        post["image"] = post_object.imgur_url
+        post["approved"] = post_object.img_approved
         current_user = False
         if post["author__username"] == request.user.username:
             current_user = True
@@ -261,3 +261,51 @@ def dislike_post(request):
                          "dislike_btn_class" :dislike_btn_class, 
                          "num_dislikes": num_dislikes, 
                          "num_likes": num_likes}) 
+
+
+
+
+@staff_member_required
+def get_unapprove_images(request):
+    unapprove = list()
+    try:
+        images = Post.objects.exclude(imgur_url=None).filter(img_approved=False).values("imgur_url", "pk")
+        for i in images:
+            image_link = i["imgur_url"] 
+            if image_link != "":
+                unapprove.append({"image":image_link, "pk":i["pk"]})
+    except Exception as e:
+        print(e)
+    # print(unapprove)
+    return render(request, 'admin/approve.html', {"posts":unapprove})
+
+
+@staff_member_required
+def get_approve_images(request):
+    approve = list()
+    try:
+        images = Post.objects.exclude(imgur_url=None).filter(img_approved=True).values("imgur_url", "pk")
+        for i in images:
+            image_link = i["imgur_url"] 
+            if image_link != "":
+                approve.append({"image":image_link, "pk":i["pk"]})
+    except Exception as e:
+        print(e)
+    return render(request, 'admin/approve.html', {"posts":approve})
+
+@staff_member_required
+def approve_images(request):
+    post_id = request.POST.get("post")
+    # print(post_id)
+    post = Post.objects.get(pk=post_id)
+    post.img_approved = True
+    post.save()
+    return get_unapprove_images
+
+@staff_member_required
+def delete_images(request):
+    post_id = request.POST.get("post")
+    post = Post.objects.get(pk=post_id)
+    post.imgur_url = None 
+    post.save()
+    return get_unapprove_images

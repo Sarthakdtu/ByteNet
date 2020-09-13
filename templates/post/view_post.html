@@ -7,6 +7,7 @@
         <br>
     {% endif %}
     <br>
+    
     <div class="container">
             <div class="card rounded border border-dark bg-light">
                     
@@ -27,6 +28,15 @@
                        <div class="card-body bg-light">
                            <h3 class="card-text">{{ post.text }}</h3>
                        </div>
+                       {% if post.image %}
+                            <div >
+                                {% if post.approved %}
+                                <img src={{post.image}} class="card-img-top" alt="...">
+                                {% else %}
+                                <img src=https://i.imgur.com/7Yleqns.jpg class="card-img-top" alt="...">
+                                {% endif %}
+                            </div>
+                        {% endif %}
                        
                         <div class="d-flex flex-row text-dark bg-info">
                                 {% for tag_username in post.tags__username %}    

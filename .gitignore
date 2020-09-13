@@ -1,9 +1,9 @@
 *.pyc
 *~
-__pycache__
+__pycache__/
 myvenv
 db.sqlite3
 .DS_Store
-myvenv
-migrations
+myvenv/
+migrations/
 .vscode

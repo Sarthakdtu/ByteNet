@@ -17,4 +17,10 @@ urlpatterns = [
     
     path('view_post/<int:post_id>/', views.view_post, name='view_post'),
     path('posts_list/<slug:author>/', views.posts_list, name='posts_list'),
+
+    path('unapproved_images/', views.get_unapprove_images, name='unapproved'),
+    path('approved_images/', views.get_approve_images, name='approved'),
+    path('review_images/', views.approve_images, name='review'),
+    path('delete_images/', views.delete_images, name='delete'),
+
 ]

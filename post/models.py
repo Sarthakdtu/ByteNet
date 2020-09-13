@@ -12,6 +12,8 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, blank=True, related_name="likes")
     dislikes = models.ManyToManyField(User, blank=True, related_name="dislikes")
     is_edited = models.BooleanField(default=False)
+    imgur_url = models.URLField(default=None, null=True)
+    img_approved = models.BooleanField(default=False) 
 
     def total_likes(self):
         return self.likes.count()
@@ -23,8 +25,3 @@ class TagNotification(models.Model):
     tagged_user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_of_tagging = models.DateTimeField(blank=True)
     
-    
-
-
-
-

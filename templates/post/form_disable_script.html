@@ -1,0 +1,18 @@
+
+<script
+src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+crossorigin="anonymous">
+</script>
+
+<script>
+$('form').submit(function(){
+    $(".once-only").click(function(){
+        button = $(this).children('input[type=submit]')
+        button.prop('disabled', true);
+        button.value = "Submitting..."
+
+    });
+});
+// $(this).find("input[type='submit']").attr('disabled', 'disabled').val('submiting');     return true; });
+</script>

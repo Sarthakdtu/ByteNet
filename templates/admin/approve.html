@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve Images</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+</head>
+<body>
+    <br>
+    <h2>Images to be approved....</h2> 
+    <a class="nav-link" href="{% url 'feed:news_feed' %}">Home</a>
+    <br>
+    <div class="container">
+    {% for post in posts %}
+        <div class="container">
+        <img src={{ post.image }} class="card-img-top" style="height: 30%; width:30%; align-content: center; margin-left: 20%;" alt="...">
+        <form action="{% url 'post:review' %}" method="POST">
+            {% csrf_token %}
+            By: {{post.username}}
+            <input name="post" class="form-control input-group input-group-lg" value={{ post.pk }}>
+            <input type="submit" class="btn btn-primary btn byte-submit" value="Approve">
+        </form>
+        <form action="{% url 'post:delete' %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger btn byte-submit" value="Delete">
+        </form>
+    </div>
+    <br>
+    {% endfor %}
+    <a class="nav-link" href="{% url 'feed:news_feed' %}">Home</a>
+    </div>
+</body>
+</html>

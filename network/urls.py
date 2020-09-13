@@ -19,6 +19,7 @@ from django.conf.urls import url, include
 from feed import urls
 from accounts import views
 from post import urls
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$',views.index,name='index'),

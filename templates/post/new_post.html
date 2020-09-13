@@ -5,10 +5,14 @@
         <div class="form-group form-group-lg">
             <h2>Post your thoughts, events, stories anything....</h2>
             <br>
-            <form action="{% url 'post:create_post' %}" method="POST">
+            <form action="{% url 'post:create_post' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="text" name="text" 
                 class="form-control input-group input-group-lg" placeholder="Your message goes here.....">
+                <br>
+                Upload image
+                <br>    
+                    <input type="file" name="image" id="image"> 
                 <div class="container">
                         <div class="d-flex flex-row">
                             <div class="p-1 tag_list">
@@ -17,15 +21,12 @@
                            
                         </div>
                 </div>
-               
                 <br>
                 <br>
                 <div class="container">
                     <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Tag friends
                         </button>
-                            
-
                         <div>
                             <ul class="dropdown-menu" id="ul">
                                 <input type="search" name="search_field" class="form form-control" 
@@ -49,7 +50,7 @@
                 </div>
                 <br>
                 <br>
-                <input type="submit" class="btn btn-success btn-block" style="float: right;" value="Post">
+                <input type="submit" class="once-only btn btn-success btn-block" style="float: right;" value="Post">
             </form>
             <br>
             <br>
@@ -58,6 +59,7 @@
     </div>
 
 {% include "post/tag_friends_block_script.html" %}
+{% include "post/form_disable_script.html" %}
 
 
 {% endblock %}

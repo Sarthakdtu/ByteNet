@@ -31,6 +31,9 @@ def feed(request):
         post_details["disliked"] = post.dislikes.filter(pk=user.pk).exists() 
         post_details["num_likes"] = post.total_likes()
         post_details["num_dislikes"] = post.total_dislikes()
+        # post_details["is_image"] = True
+        post_details["image"] = post.imgur_url
+        post_details["approved"] = post.img_approved
         #print("is", post_details["liked"])
         #print("Dis", post_details["disliked"])
         post_details["pk"] = post.pk
@@ -44,13 +47,25 @@ def view_profile(request, profile_username=None):
     if profile_username is None:
         profile_username = User.objects.get(username=request.user)
         user_profile = {'current_user':True}
-    #print(f"{request.user} is about to view {profile_username}'s profile'")
+    print(f"{request.user} is about to view {profile_username}'s profile'")
     profile = UserProfileInfo.objects.get(user__username=profile_username)
     user_profile['username'] = profile_username
-    user_profile['age'] = profile.age
-    user_profile['location'] = profile.location
-    user_profile['email'] = profile.user.email
-    user_profile['user'] = profile.user
+    try:
+        user_profile['age'] = profile.age
+    except:
+        pass
+    try:
+        user_profile['location'] = profile.location
+    except:
+        pass
+    try:
+        user_profile['email'] = profile.user.email
+    except:
+        pass
+    try:
+        user_profile['user'] = profile.user
+    except:
+        pass
     user_profile['name'] = profile.user.first_name + " " + profile.user.last_name
     user_profile['friend'] = True#profile.friend.filter(username=profile_username).exists()
     #friend_requestFriendRequest.objects.filter(Q(source=user_profile['username']) | Q(destination=user_profile['username']))
