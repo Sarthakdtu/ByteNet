@@ -1,11 +1,11 @@
 from imgurpython import ImgurClient
 from django.core.files.storage import default_storage
 from django.core.files.storage import FileSystemStorage
-
+from constants.secrets import IMGUR_CLIENT_ID, IMGUR_CLIENT_SECRET
 
 def load_client():
-    client_id = "6d0c0928067e42d"
-    client_secret = "4a12d3ed4f6c827db562d2ec28ff03c416cb2b7b"
+    client_id = IMGUR_CLIENT_ID
+    client_secret = IMGUR_CLIENT_SECRET
     img_client = ImgurClient(client_id, client_secret)
     return img_client
 
