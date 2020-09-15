@@ -32,7 +32,7 @@
                             <div >
                                 {% if post.approved %}
                                     {% if post.is_video %}
-                                        <video autoplay>
+                                        <video autoplay controls loop>
                                             <source src={{post.image}} type="video/mp4">
                                         </video>
                                     {% else %}

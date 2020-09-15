@@ -53,8 +53,8 @@
                             <div >
                                 {% if post.approved %}
                                     {% if post.is_video %}
-                                        <video style="height: 50%; width:50%; align-content: center; margin-left: 20%;" autoplay>
-                                            <source src={{post.image}} type="video/mp4">
+                                        <video style="height: 50%; width:50%; align-content: center; margin-left: 20%;" controls loop autoplay>
+                                            <source src={{post.image}} type="video/mp4" >
                                         </video>
                                     {% else %}
                                         <img src={{post.image}} class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
