@@ -37,8 +37,9 @@ def create_post(request):
         print("hehe")
         try:
             file = request.FILES['image']
-            file = upload_image(file)
+            file, extension = upload_image(file)
             post.imgur_url = file
+            post.is_video = extension
             print("Got the file")
         except Exception as e:
             print(e)
@@ -99,6 +100,7 @@ def view_post(request, post_id):
         post["disliked"] = post_object.dislikes.filter(pk=request.user.pk).exists() 
         post["image"] = post_object.imgur_url
         post["approved"] = post_object.img_approved
+        post["is_video"] = post_object.is_video
         current_user = False
         if post["author__username"] == request.user.username:
             current_user = True

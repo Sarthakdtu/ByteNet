@@ -33,6 +33,7 @@ def feed(request):
         post_details["num_dislikes"] = post.total_dislikes()
         # post_details["is_image"] = True
         post_details["image"] = post.imgur_url
+        post_details["is_video"] = post.is_video
         post_details["approved"] = post.img_approved
         #print("is", post_details["liked"])
         #print("Dis", post_details["disliked"])

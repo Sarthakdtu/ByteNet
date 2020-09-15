@@ -31,9 +31,15 @@
                        {% if post.image %}
                             <div >
                                 {% if post.approved %}
-                                <img src={{post.image}} class="card-img-top" alt="...">
+                                    {% if post.is_video %}
+                                        <video autoplay>
+                                            <source src={{post.image}} type="video/mp4">
+                                        </video>
+                                    {% else %}
+                                        <img src={{post.image}} class="card-img-top" alt="...">
+                                    {% endif %}
                                 {% else %}
-                                <img src=https://i.imgur.com/7Yleqns.jpg class="card-img-top" alt="...">
+                                    <img src=https://i.imgur.com/7Yleqns.jpg class="card-img-top" alt="...">
                                 {% endif %}
                             </div>
                         {% endif %}

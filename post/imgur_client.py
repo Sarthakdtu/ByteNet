@@ -2,7 +2,7 @@ from imgurpython import ImgurClient
 from django.core.files.storage import default_storage
 from django.core.files.storage import FileSystemStorage
 from constants.secrets import IMGUR_CLIENT_ID, IMGUR_CLIENT_SECRET
-
+import os
 def load_client():
     client_id = IMGUR_CLIENT_ID
     client_secret = IMGUR_CLIENT_SECRET
@@ -20,11 +20,18 @@ def upload_image(file):
     # print(file_url)
     try:
         res = img_client.upload_from_path(file_url, config=None, anon=False)
+        default_storage.delete(file_name)
     except Exception as e:
-        raise e
-    default_storage.delete(file_name)
+        default_storage.delete(file_name)
+        raise e 
     # print(res)
     print(res["link"])
+    file_url = res["link"]
+    _, file_extension = os.path.splitext(file_url)
+    if file_extension == ".mp4":
+        file_extension = True
+    else:
+        file_extension = False
     print("File uploaded and deleted")
-    return res["link"]
+    return file_url, file_extension
 

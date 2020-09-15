@@ -14,6 +14,7 @@ class Post(models.Model):
     is_edited = models.BooleanField(default=False)
     imgur_url = models.URLField(default=None, null=True)
     img_approved = models.BooleanField(default=False) 
+    is_video = models.BooleanField(default=False)
 
     def total_likes(self):
         return self.likes.count()
