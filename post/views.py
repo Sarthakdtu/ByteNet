@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib.admin.views.decorators import staff_member_required
 import os
+import requests as python_requests
 from django.db.models import F, Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
@@ -38,12 +39,26 @@ def create_post(request):
         file = None
         # print("hehe")
         try:
+            base_url = "https://api.twitter.com/1/statuses/oembed.json?url="
+            tweet_url = request.POST.get("tweet_url")
+            # print(tweet_url)
+            embed_url = base_url + tweet_url
+            # print(embed_url)
+            embedded_tweet = python_requests.get(embed_url).json()
+            # print(embedded_tweet)
+            embedded_tweet = embedded_tweet['html']
+            embedded_tweet = embedded_tweet.split('\n')[0]
+            post.tweet_url = embedded_tweet
+            # print(post.tweet_url)
+        except Exception as e:
+            print(e)
+        try:
             youtube_video_url = request.POST['youtube_url']
             youtube_video_id = video_id(youtube_video_url).split('&')[0]
             if youtube_video_id:
                 default_youtube_embed_url = "https://www.youtube.com/embed/"
                 post.youtube_video_url = default_youtube_embed_url + youtube_video_id
-                print(post.youtube_video_url)
+                # print(post.youtube_video_url)
         except Exception as e:
             print(e)
         try:
@@ -114,6 +129,7 @@ def view_post(request, post_id):
         post["content_approved"] = post_object.content_approved
         post["is_video"] = post_object.is_video
         post["youtube_url"] = post_object.youtube_video_url
+        post["tweet_url"] = post_object.tweet_url
         current_user = False
         if post["author__username"] == request.user.username:
             current_user = True
@@ -300,7 +316,7 @@ def get_unapprove_contents(request):
 def get_approve_contents(request):
     approve = list()
     try:
-        content = Post.objects.exclude(youtube_video_url=None
+        content = Post.objects.exclude(youtube_video_url=None,
                                         ).filter(content_approved=True
                                          ).values("youtube_video_url", "pk")
         for i in content:
