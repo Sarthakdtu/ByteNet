@@ -17,6 +17,8 @@ class Post(models.Model):
     content_approved = models.BooleanField(default=False) 
     is_video = models.BooleanField(default=False)
     youtube_video_url = models.URLField(default=None, null=True)
+    tweet_url = models.URLField(default=None, null=True)
+    
 
     def total_likes(self):
         return self.likes.count()

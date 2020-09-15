@@ -31,7 +31,7 @@ def feed(request):
         post_details["disliked"] = post.dislikes.filter(pk=user.pk).exists() 
         post_details["num_likes"] = post.total_likes()
         post_details["num_dislikes"] = post.total_dislikes()
-        # post_details["is_image"] = True
+        post_details["tweet_url"] = post.tweet_url
         post_details["image"] = post.imgur_url
         post_details["is_video"] = post.is_video
         post_details["approved"] = post.img_approved

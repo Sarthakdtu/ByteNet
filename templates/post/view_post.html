@@ -17,8 +17,7 @@
                                     #{{ post.author__username }}
                                     </a>
                             </h4>
-            
-                    
+
                     <h6 class="">{{ post.time_of_posting }} </h6>
                     <div class="text-right">
                                     {% if post.is_edited %}
@@ -28,6 +27,13 @@
                        <div class="card-body bg-light">
                            <h3 class="card-text">{{ post.text }}</h3>
                        </div>
+                       {% if post.tweet_url %}
+                       <div class="container">
+                           <div style="margin-left: 20%;" >
+                                    {{ post.tweet_url | safe }}
+                           </div>
+                       </div>
+                   {% endif %}
                        {% if post.youtube_url  %}
                             <div class="container">
                                     {% if post.content_approved %}
