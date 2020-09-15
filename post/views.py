@@ -13,10 +13,12 @@ from .forms import PostForm
 from feed.views import feed
 from django.http import HttpResponse
 from post.imgur_client import upload_image
+from helpers.youtube_id_parser import video_id
 try:
     from django.utils import simplejson as json
 except ImportError:
     import json
+
 
 
 @login_required
@@ -35,6 +37,14 @@ def create_post(request):
             raise e
         file = None
         print("hehe")
+        try:
+            youtube_video_url = request.POST['youtube_url']
+            youtube_video_id = video_id(youtube_video_url)
+            if youtube_video_id:
+                default_youtube_embed_url = "https://www.youtube.com/embed/"
+                post.youtube_video_url = default_youtube_embed_url + youtube_video_id
+        except Exception as e:
+            print(e)
         try:
             file = request.FILES['image']
             file, extension = upload_image(file)
@@ -101,6 +111,7 @@ def view_post(request, post_id):
         post["image"] = post_object.imgur_url
         post["approved"] = post_object.img_approved
         post["is_video"] = post_object.is_video
+        post["youtube_url"] = post_object.youtube_video_url
         current_user = False
         if post["author__username"] == request.user.username:
             current_user = True

@@ -49,15 +49,22 @@
                 </div>
                 <div class="card-body bg-light text-dark">
                     <h3 class="card-text">{{ post.text }}</h3>
+                    {% if post.youtube_url %}
+                    <div >
+                        <iframe width="596" style="margin-left: 16%;" height="360" src={{ post.youtube_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+
+                        </iframe>
+                    </div>
+                    {% endif %}
                     {% if post.image %}
                             <div >
                                 {% if post.approved %}
                                     {% if post.is_video %}
                                         <video style="height: 50%; width:50%; align-content: center; margin-left: 20%;" controls loop autoplay>
-                                            <source src={{post.image}} type="video/mp4" >
+                                            <source src={{ post.image }} type="video/mp4" >
                                         </video>
                                     {% else %}
-                                        <img src={{post.image}} class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
+                                        <img src={{ post.image }} class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
                                     {% endif %}
                                 {% else %}
                                 <img src=https://i.imgur.com/7Yleqns.jpg class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">

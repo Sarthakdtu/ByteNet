@@ -28,6 +28,12 @@
                        <div class="card-body bg-light">
                            <h3 class="card-text">{{ post.text }}</h3>
                        </div>
+                       <div class="container">
+                        {% if post.youtube_url %}
+                            <iframe width="996" height="560" a src={{ post.youtube_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        {% endif %}
+                       </div>
+
                        {% if post.image %}
                             <div >
                                 {% if post.approved %}

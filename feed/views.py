@@ -35,10 +35,11 @@ def feed(request):
         post_details["image"] = post.imgur_url
         post_details["is_video"] = post.is_video
         post_details["approved"] = post.img_approved
-        #print("is", post_details["liked"])
+        post_details["youtube_url"] = post.youtube_video_url
         #print("Dis", post_details["disliked"])
         post_details["pk"] = post.pk
         posts_list.append(post_details)
+        
 
     return render(request, 'feed/feed.html', {"posts":list(posts_list)})
 
