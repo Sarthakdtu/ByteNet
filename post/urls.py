@@ -23,4 +23,10 @@ urlpatterns = [
     path('review_images/', views.approve_images, name='review'),
     path('delete_images/', views.delete_images, name='delete'),
 
+
+    path('unapproved_contents/', views.get_unapprove_contents, name='unapproved_contents'),
+    path('approved_contents/', views.get_approve_contents , name='approved_contents'),
+    path('review_contents/', views.approve_contents, name='review_contents'),
+    path('delete_contents/', views.delete_contents, name='delete_contents'),
+
 ]

@@ -28,6 +28,16 @@
                        <div class="card-body bg-light">
                            <h3 class="card-text">{{ post.text }}</h3>
                        </div>
+                       {% if post.youtube_url  %}
+                            <div class="container">
+                                    {% if post.content_approved %}
+                                        <iframe width="996" height="560" src={{ post.youtube_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    {% else %}
+                                    <img src=https://i.imgur.com/24zjXms.jpeg class="card-img-top" alt="...">
+                                    {% endif %}
+                            </div>
+                       {% endif %}
+
                        {% if post.image %}
                             <div >
                                 {% if post.approved %}

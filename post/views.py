@@ -13,10 +13,12 @@ from .forms import PostForm
 from feed.views import feed
 from django.http import HttpResponse
 from post.imgur_client import upload_image
+from helpers.youtube_id_parser import video_id
 try:
     from django.utils import simplejson as json
 except ImportError:
     import json
+
 
 
 @login_required
@@ -34,7 +36,16 @@ def create_post(request):
         except Exception as e:
             raise e
         file = None
-        print("hehe")
+        # print("hehe")
+        try:
+            youtube_video_url = request.POST['youtube_url']
+            youtube_video_id = video_id(youtube_video_url).split('&')[0]
+            if youtube_video_id:
+                default_youtube_embed_url = "https://www.youtube.com/embed/"
+                post.youtube_video_url = default_youtube_embed_url + youtube_video_id
+                print(post.youtube_video_url)
+        except Exception as e:
+            print(e)
         try:
             file = request.FILES['image']
             file, extension = upload_image(file)
@@ -100,7 +111,9 @@ def view_post(request, post_id):
         post["disliked"] = post_object.dislikes.filter(pk=request.user.pk).exists() 
         post["image"] = post_object.imgur_url
         post["approved"] = post_object.img_approved
+        post["content_approved"] = post_object.content_approved
         post["is_video"] = post_object.is_video
+        post["youtube_url"] = post_object.youtube_video_url
         current_user = False
         if post["author__username"] == request.user.username:
             current_user = True
@@ -266,6 +279,58 @@ def dislike_post(request):
 
 
 
+########################################CONTENT##############################################################
+@staff_member_required
+def get_unapprove_contents(request):
+    unapprove = list()
+    try:
+        content = Post.objects.exclude(youtube_video_url=None
+                                ).filter(content_approved=False
+                                    ).values("youtube_video_url", "pk")
+        for i in content:
+            content_link = i["youtube_video_url"] 
+            if content_link != "":
+                unapprove.append({"content":content_link, "pk":i["pk"]})
+    except Exception as e:
+        print(e)
+    return render(request, 'admin/approve_content.html', {"posts":unapprove})
+
+
+@staff_member_required
+def get_approve_contents(request):
+    approve = list()
+    try:
+        content = Post.objects.exclude(youtube_video_url=None
+                                        ).filter(content_approved=True
+                                         ).values("youtube_video_url", "pk")
+        for i in content:
+            content_link = i["youtube_video_url"] 
+            if content_link != "":
+                approve.append({"content":content_link, "pk":i["pk"]})
+    except Exception as e:
+        print(e)
+    return render(request, 'admin/approve_content.html', {"posts":approve})
+
+@staff_member_required
+def approve_contents(request):
+    post_id = request.POST.get("post")
+    # print(post_id)
+    post = Post.objects.get(pk=post_id)
+    post.content_approved = True
+    post.save()
+    return redirect("post:unapproved_contents")
+
+@staff_member_required
+def delete_contents(request):
+    post_id = request.POST.get("post")
+    print(post_id)
+    post = Post.objects.get(pk=post_id)
+    post.youtube_video_url = None 
+    post.save()
+    return redirect("post:unapproved_contents")
+
+
+########################################IMAGES##############################################################
 
 @staff_member_required
 def get_unapprove_images(request):
@@ -280,7 +345,6 @@ def get_unapprove_images(request):
         print(e)
     # print(unapprove)
     return render(request, 'admin/approve.html', {"posts":unapprove})
-
 
 @staff_member_required
 def get_approve_images(request):
@@ -302,7 +366,7 @@ def approve_images(request):
     post = Post.objects.get(pk=post_id)
     post.img_approved = True
     post.save()
-    return get_unapprove_images
+    return redirect("post:unapproved")
 
 @staff_member_required
 def delete_images(request):
@@ -310,4 +374,4 @@ def delete_images(request):
     post = Post.objects.get(pk=post_id)
     post.imgur_url = None 
     post.save()
-    return get_unapprove_images
+    return redirect("post:unapproved")
