@@ -1,0 +1,13 @@
+<script>
+
+$(document).ready(function(){                  
+    
+    var curr_user_profile_pic = document.getElementById('nav_profile_pic').src;
+    localStorage.setItem('curr_user_profile_pic', curr_user_profile_pic);
+    var username = " {{ user.username }}"
+    console.log(username)
+    localStorage.setItem('username', username);
+
+    });
+
+</script>

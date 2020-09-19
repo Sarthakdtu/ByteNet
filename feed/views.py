@@ -49,7 +49,8 @@ def feed(request):
 
         post_details["pk"] = post.pk
         posts_list.append(post_details)
-    return render(request, 'feed/feed.html', {"posts":list(posts_list)})
+    return render(request, 'feed/feed.html', {"posts":list(posts_list),
+     "curr_user_profile_pic":profile_pic[request.user.username]})
 
 @login_required
 def view_profile(request, profile_username=None):
@@ -78,11 +79,7 @@ def view_profile(request, profile_username=None):
     except:
         pass
     user_profile['name'] = profile.user.first_name + " " + profile.user.last_name
-    user_profile['friend'] = True#profile.friend.filter(username=profile_username).exists()
-    #friend_requestFriendRequest.objects.filter(Q(source=user_profile['username']) | Q(destination=user_profile['username']))
-    #print(user_profile['friend'])
-    #print("If Does not exist error occurs it might be because of incomplete info")
-    #print(user_profile)
+    user_profile['friend'] = True
     return render(request, 'feed/profile_info.html', user_profile)
 
 
