@@ -20,30 +20,32 @@
 
    </head>
   <body>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
           <a class="navbar-brand" href="{% url 'index' %}">ByteNet</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
   
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav ">
             {% if user.is_authenticated %}
+            
+              <form class="form-inline" name="search" action="{% url 'feed:search' %}" method="get">
+                <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Find people">
+                <button class="btn btn-outline-success my-2 my-sm-0"  onclick="return IsEmpty();" type="submit">Find</button>
+              </form>
+              </ul>
               
+            <ul class="navbar-nav">
+             
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'feed:news_feed' %}">Home</a>
+                <a class="nav-link" href="#">Wassssup User</a>
             </li>
-              <li class="nav-item dropdown active">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Notifications
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{% url 'feed:pending_friend_requests_list' %}">Friend Requests</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{% url 'post:view_mentions' %}">Tagged Bytes</a>
-                </div>
-              </li>
-
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'feed:news_feed' %}">Home</a>
+          </li>
+             
               <li class="nav-item dropdown active" >
                   <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Friends
@@ -67,7 +69,17 @@
                       <a class="dropdown-item" href="{% url 'post:posts_list' %}">My Bytes</a>
                     </div>
                 </li>
-
+               
+                <li class="nav-item dropdown active">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Notifications
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'feed:pending_friend_requests_list' %}">Friend Requests</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'post:view_mentions' %}">Tagged Bytes</a>
+                  </div>
+                </li>
                   <li class="nav-item dropdown active">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Settings
@@ -77,14 +89,17 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                       </div>
+                      </li>
+                      
+                      <li class="nav-item" >
+                        <a href="{% url 'feed:profile_info' %}">
+                         <img src="https://avatars.dicebear.com/api/bottts/epic.svg" id="nav_profile_pic" class="avatar"> 
+                        </a>
+                      </li>
                     </div>
-                  </li>
-                  <li class="nav-item">
-                    <form class="form-inline" name="search" action="{% url 'feed:search' %}" method="get">
-                      <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Find people">
-                      <button class="btn btn-outline-success my-2 my-sm-0"  onclick="return IsEmpty();" type="submit">Find</button>
-                    </form>
-                  </li>
+                        
+                    
+                
 
             {% else %}
                   <li class="nav-item active">
@@ -128,6 +143,7 @@
     </nav>
   -->
   <br>
+
     <div class="container">
     {% block body_block %}
     {% endblock %}
@@ -143,5 +159,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
      
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+{% include "feed/load_profile_pic_url_script.html" %}
 </body>
 </html>

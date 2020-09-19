@@ -49,7 +49,7 @@
                                     {% endif %}
                 </div>
                 <div class="card-body bg-light text-dark">
-                    <h3 class="card-text">{{ post.text }}</h3>
+                    <h3 class="card-text">{{ post.text | safe }}</h3>
                     {% if post.tweet_url %}
                         <div class="container">
                             <div style="margin-left: 20%;" >
@@ -121,4 +121,6 @@
 
 {% include "post/like_dislike_block_script.html" %}
 {% include "post/new_post_block_script.html" %}
+{% include "feed/nav_profile_pic_feed_script.html" %}
+{% include "accounts/save_profile_pic_url.html" %}
 {% endblock %}
