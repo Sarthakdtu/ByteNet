@@ -5,6 +5,7 @@
         <div class="form-group form-group-lg">
             <h2>Post your thoughts, events, stories anything....</h2>
             <br>
+            
             <form action="{% url 'post:create_post' %}" method="POST" enctype="multipart/form-data" onsubmit="submit.disabled = true; return true;">
                 {% csrf_token %}
                 <input type="text" name="text" 
@@ -12,14 +13,21 @@
                 <br>
                 <br>
                 Share a YouTube Video
+                <i class="fa fa-youtube" aria-hidden="true"></i>
+                <br>
                 <input type="url" name="youtube_url" id="youtube_url", placeholder="Insert the video link here">
                 <br>
                 <br>
                 Share a Tweet (Just insert the tweet's url)
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <br>
                 <input type="url" name="tweet_url" id="tweet_url", placeholder="Insert the tweet url here">    
                 <br>
                 <br>
                 Upload image
+                <i class="fa fa-camera" aria-hidden="true"></i>
+                <i class="fa fa-video-camera" aria-hidden="true"></i>
+
                 <br>    
                     <input class="form-control-file" type="file" name="image" id="image"> 
                 <div class="container">
