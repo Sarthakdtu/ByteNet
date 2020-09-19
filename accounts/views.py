@@ -2,11 +2,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.utils import timezone
 from django.urls import reverse
 from accounts.forms import UserForm, UserProfileInfoForm
 from accounts.models import User, UserProfileInfo
 from helpers.profile_picture_generator import generate_profile_pic
 from helpers.imgur_client import upload_image
+from post.models import Post
 # Create your views here.
 
 def index(request):
@@ -97,22 +99,17 @@ def edit_account(request):
             new_age = request.POST.get("age")
             new_first_name = request.POST.get("first_name")
             new_last_name = request.POST.get("last_name")
-            
             user_profile.age = new_age
             user_profile.location = new_location
-            print(user_profile.profile_pic_url)
-            # file = request.FILES['image']
-            print(request.FILES.keys())
+            profile_pic_changed = False
             try:
-                print("What")
                 file = request.FILES['image']
-                print(file)
                 file, _ = upload_image(file)
                 user_profile.profile_pic_url = file
-                print(file)
+                profile_pic_changed = True
             except Exception as e:
                 print(e)
-            print(user_profile.profile_pic_url)
+            # print(user_profile.profile_pic_url)
             user_profile.save()
             user.email = new_email
             user.username = new_username
@@ -120,6 +117,11 @@ def edit_account(request):
             user.first_name = new_first_name
             user.last_name = new_last_name
             user.save()
+            if profile_pic_changed:
+                post = Post.objects.create(author=user, 
+                text="Hey checkout my new profile picture.", time_of_posting=timezone.now())
+                post.imgur_url = user_profile.profile_pic_url
+                post.save()
             return render(request, "accounts/edit_successful.html", {})
         else:
             error = True
