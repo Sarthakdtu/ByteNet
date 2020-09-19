@@ -5,7 +5,7 @@
         <div class="form-group form-group-lg">
             <h2>Edit Profile</h2>
             <br>
-            <form action="{% url 'accounts:edit_profile' %}" method="POST">
+            <form action="{% url 'accounts:edit_profile' %}" method="POST"  enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="container">
                     <div class="d-flex flex-row ">
@@ -37,8 +37,11 @@
                             <input type="text" value={{form.location}} name="location">
                         </div>
                     </div>
-                </div>    
-                <input type="submit" class="btn btn-primary" value="Edit">
+                </div>   
+                Upload image
+                <br>    
+                    <input type="file" name="image" id="image"> 
+                <input type="submit" class="btn btn-success" value="Save">
             </form>
         </div>
     </div>

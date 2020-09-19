@@ -7,16 +7,24 @@
     {% else %}
     <h2>Profile of {{ username }}</h2>
     {% endif %}
+    <div class="profile_info">
+            <h3>Name: {{ name }}</h3>
+            <h3>Username: {{ username }}</h3>
+            <h3>Email: {{ email }}</h3>
+            <h3>Age: {{ age }}</h3>
+            <h3>Location: {{ location }}</h3>
+    </div>
+    <div>
+        <img class="profile_pic_display" src={{ profile_pic_url }}  > 
+    </div>
     <br>
-    <h3>Name: {{ name }}</h3>
-    <h3>Username: {{ username }}</h3>
-    <h3>Email: {{ email }}</h3>
-    <h3>Age: {{ age }}</h3>
-    <h3>Location: {{ location }}</h3>
+    <br>
+   
     <a href="{% url 'post:posts_list' author=username %}" class="btn btn-success">View Posts</a>
     <br>
     <br>
     {% if current_user %}
+    You can change your profile pic by using edit profile option.
         <div class="">
             <div class="d-flex flex-row ">
                     <div class="p-1 form-group">

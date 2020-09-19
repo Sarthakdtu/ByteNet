@@ -18,14 +18,23 @@ from post.models import Post, TagNotification
 def feed(request):
     user = request.user
     print("Fetching posts for feed")
+    userprofile = UserProfileInfo.objects.all().values_list("profile_pic_url", "user__username")
+    profile_pic = dict()
+    # print(userprofile)
+    for i in userprofile:
+        profile_pic[i[1]] = i[0]
+    # print(profile_pic)
     posts = Post.objects.all().order_by('-time_of_posting').select_related("author")
     posts_list = list()
     for post in posts:
         post_details = dict()
+        username = post.author.username
         post_details["time_of_posting"] = post.time_of_posting
         post_details["text"] = post.text
         post_details["is_edited"] = post.is_edited
-        post_details["author__username"] = post.author.username
+        post_details["author__username"] = username
+        post_details["profile_pic_url"] = profile_pic[username] 
+        # print(profile_pic[username])
         post_details["tags"] = list(post.tags.all().values("username"))
         post_details["liked"] = post.likes.filter(pk=user.pk).exists()
         post_details["disliked"] = post.dislikes.filter(pk=user.pk).exists() 
@@ -53,6 +62,7 @@ def view_profile(request, profile_username=None):
     user_profile['username'] = profile_username
     try:
         user_profile['age'] = profile.age
+        user_profile['profile_pic_url'] = profile.profile_pic_url
     except:
         pass
     try:
@@ -92,7 +102,6 @@ def find_friends(request):
     people_to_be_connected_list = list()
     for person in list(people_to_be_connected):
         people_to_be_connected_list.append(person["username"])
-    #print("These people are ready to be connected from source side", people_to_be_connected_list)
     people_to_be_connected = FriendRequest.objects.filter(destination=user, 
                                                           request_status=FriendRequestStatus.PENDING
                                                           ).annotate(username=F("source__user__pk")

@@ -10,13 +10,13 @@
     
     <div class="container">
             <div class="card rounded border border-dark bg-light">
-                    
-                            <h4 class="card-header h4 text-light bg-dark ">
-                                <a href="{% url 'feed:profile_info' profile_username=post.author__username %}" 
-                                class="text-light" style="text-decoration:none">
-                                    #{{ post.author__username }}
-                                    </a>
-                            </h4>
+                
+                        <h4 class="card-header h4 text-light bg-dark ">
+                            <a href="{% url 'feed:profile_info' profile_username=post.author__username %}" 
+                            class="text-light" style="text-decoration:none">
+                                <img src={{ post.profile_pic_url }} class="avatar" > {{ post.author__username }}
+                        </a>
+                        </h4>
 
                     <h6 class="">{{ post.time_of_posting }} </h6>
                     <div class="text-right">

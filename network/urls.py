@@ -19,6 +19,8 @@ from django.conf.urls import url, include
 from feed import urls
 from accounts import views
 from post import urls
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,3 +31,4 @@ urlpatterns = [
     url(r'^home/', include('feed.urls')),
     url(r'^post/', include('post.urls')),
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

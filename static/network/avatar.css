@@ -1,0 +1,15 @@
+.avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+.profile_pic_display{
+  width: 40%;
+  height: 40%;
+  margin-left: 10%;
+}
+
+.profile_info{
+  float: left;
+}
