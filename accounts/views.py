@@ -5,7 +5,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from accounts.forms import UserForm, UserProfileInfoForm
 from accounts.models import User, UserProfileInfo
-
+from helpers.profile_picture_generator import generate_profile_pic
+from helpers.imgur_client import upload_image
 # Create your views here.
 
 def index(request):
@@ -31,11 +32,8 @@ def register(request):
             user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
-            if 'profile_pic' in request.FILES:
-                print("Found it")
-                profile.profile_pic = request.FILES['profile_pic']
+            profile.profile_pic_url = generate_profile_pic(user.username)
             profile.save()
-            print(profile.age)
             registered = True
         else:
             print(user_form.errors, profile_form.errors)
@@ -93,7 +91,7 @@ def edit_account(request):
         if request.user.username == new_username or not any_user :
             user_profile = UserProfileInfo.objects.get(user=request.user)
             user = User.objects.get(pk=request.user.pk)
-            print("checkpoint a")
+            # print("checkpoint a")
             new_location = request.POST.get("location")
             new_email = request.POST.get("email")
             new_age = request.POST.get("age")
@@ -102,8 +100,20 @@ def edit_account(request):
             
             user_profile.age = new_age
             user_profile.location = new_location
+            print(user_profile.profile_pic_url)
+            # file = request.FILES['image']
+            print(request.FILES.keys())
+            try:
+                print("What")
+                file = request.FILES['image']
+                print(file)
+                file, _ = upload_image(file)
+                user_profile.profile_pic_url = file
+                print(file)
+            except Exception as e:
+                print(e)
+            print(user_profile.profile_pic_url)
             user_profile.save()
-            
             user.email = new_email
             user.username = new_username
             #user.set_password(new_password)

@@ -10,6 +10,7 @@ class UserProfileInfo(models.Model):
     follower = models.ManyToManyField(User, blank=True, related_name='follower')
     num_friends = models.IntegerField(default=0)
     num_followers = models.IntegerField(default=0)
+    profile_pic_url = models.URLField(default="https://avatars.dicebear.com/api/bottts/ssaa.svg")
 
     def __str__(self):
         return self.user.username

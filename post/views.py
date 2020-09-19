@@ -13,13 +13,12 @@ from .models import Post, TagNotification
 from .forms import PostForm
 from feed.views import feed
 from django.http import HttpResponse
-from post.imgur_client import upload_image
+from helpers.imgur_client import upload_image
 from helpers.youtube_id_parser import video_id
 try:
     from django.utils import simplejson as json
 except ImportError:
     import json
-
 
 
 @login_required
@@ -33,23 +32,18 @@ def create_post(request):
             return feed(request)
         tagged_friends = request.POST.getlist("checkbox_tag")
         try:
-            post = Post.objects.create(text=text, author=request.user, time_of_posting = timezone.now())
+            post = Post.objects.create(text=text, author=request.user, time_of_posting=timezone.now())
         except Exception as e:
             raise e
         file = None
-        # print("hehe")
         try:
             base_url = "https://api.twitter.com/1/statuses/oembed.json?url="
             tweet_url = request.POST.get("tweet_url")
-            # print(tweet_url)
             embed_url = base_url + tweet_url
-            # print(embed_url)
             embedded_tweet = python_requests.get(embed_url).json()
-            # print(embedded_tweet)
             embedded_tweet = embedded_tweet['html']
             embedded_tweet = embedded_tweet.split('\n')[0]
             post.tweet_url = embedded_tweet
-            # print(post.tweet_url)
         except Exception as e:
             print(e)
         try:
@@ -108,9 +102,10 @@ def view_post(request, post_id):
         return render(request, "post/post_not_found.html", {})
 
     if post_object:
-        print(post_object)
-        post = Post.objects.filter(pk=post_id).values("author__username", "time_of_posting", "pk",
-                                 "text", "tags__username", "is_edited")
+        # print(post_object)
+        post = Post.objects.filter(pk=post_id).values("author__username","author__pk", "time_of_posting", "pk",
+                                 "text", "tags__username", "is_edited", "author")
+        
         tagged_users = list()
         for post_ins in post:
             tag_name = post_ins["tags__username"]
@@ -119,7 +114,8 @@ def view_post(request, post_id):
         post = post[0]
         
         post["tags__username"] = tagged_users
-        #print(post_object.likes.all())
+        userid = post["author__pk"]
+        post["profile_pic_url"] = UserProfileInfo.objects.get(user=userid).profile_pic_url
         post["num_likes"] = post_object.total_likes()
         post["num_dislikes"] = post_object.total_dislikes()
         post["liked"] = post_object.likes.filter(pk=request.user.pk).exists()
@@ -191,6 +187,8 @@ def posts_list(request, author=None):
     print("Fetching all posts of ", author)
     posts = Post.objects.filter(author__username=author).order_by('-time_of_posting'
                                 ).values("text", "pk")
+    profile_pic_url = UserProfileInfo.objects.get(user__username=author).profile_pic_url #.values("profile_pic_url")["profile_pic_url"]
+    print(profile_pic_url)
     #print(list(posts))
     posts_exist = True
     if not posts:
@@ -200,7 +198,9 @@ def posts_list(request, author=None):
     return render(request, "post/posts_list.html", {"posts":posts, "mention":False, 
                                                     "author":author, 
                                                     "posts_exist":posts_exist, 
-                                                    "current_user":current_user })
+                                                    "current_user":current_user, 
+                                                    "profile_pic_url":profile_pic_url,
+                                                     })
 
 @login_required
 def view_mentions(request):

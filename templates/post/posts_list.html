@@ -11,7 +11,7 @@
                             <h4 class="card-header h4 bg-dark text-light">
                                 <a href="{% url 'feed:profile_info' profile_username=post.post__author__username %}" class="text-light"
                                     style="text-decoration:none">
-                                    #{{ post.post__author__username }}
+                                    <img src={{ profile_pic_url }} class="avatar" > {{ post.post__author__username }}
                                 </a>
                             </h4>
 
@@ -42,7 +42,7 @@
                     <div class="card">
                         <a href="{% url 'feed:profile_info' profile_username=author %}" class="text-dark"
                             style="text-decoration:none">
-                            <h4 class="card-header h4 bg-dark text-light">#{{ author }}</h4>
+                            <h4 class="card-header h4 bg-dark text-light"><img src={{ profile_pic_url }} class="avatar" >  {{ author }}</h4>
                         </a>
                         <h6 class="panel-success">{{ post.time_of_posting }} </h6>
                         <div class="card-body bg-light">

@@ -8,3 +8,5 @@ myvenv/
 migrations/
 .vscode
 secrets.py
+imgur_client.py
+static/admin/
