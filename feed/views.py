@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from accounts.models import User, UserProfileInfo
 from constants.constants import FriendRequestStatus
-
+from django.core.paginator import Paginator
 from .models import FriendRequest
 from post.models import Post, TagNotification
 # Create your views here.
@@ -34,7 +34,6 @@ def feed(request):
         post_details["is_edited"] = post.is_edited
         post_details["author__username"] = username
         post_details["profile_pic_url"] = profile_pic[username] 
-        # print(profile_pic[username])
         post_details["tags"] = list(post.tags.all().values("username"))
         post_details["liked"] = post.likes.filter(pk=user.pk).exists()
         post_details["disliked"] = post.dislikes.filter(pk=user.pk).exists() 
@@ -46,10 +45,13 @@ def feed(request):
         post_details["approved"] = post.img_approved
         post_details["content_approved"] = post.content_approved
         post_details["youtube_url"] = post.youtube_video_url
-
         post_details["pk"] = post.pk
         posts_list.append(post_details)
-    return render(request, 'feed/feed.html', {"posts":list(posts_list),
+    paginator = Paginator(posts_list, 20)
+    print(paginator.count, paginator.num_pages)
+    page = request.GET.get('page')
+    posts_list = paginator.get_page(page)
+    return render(request, 'feed/feed.html', {"posts":posts_list,
      "curr_user_profile_pic":profile_pic[request.user.username]})
 
 @login_required
