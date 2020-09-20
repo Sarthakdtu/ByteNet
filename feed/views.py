@@ -45,6 +45,7 @@ def feed(request):
         post_details["approved"] = post.img_approved
         post_details["content_approved"] = post.content_approved
         post_details["youtube_url"] = post.youtube_video_url
+        post_details["spotify_url"] = post.spotify_url
         post_details["pk"] = post.pk
         posts_list.append(post_details)
     paginator = Paginator(posts_list, 20)

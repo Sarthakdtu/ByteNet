@@ -17,7 +17,7 @@
                                 {% endif %}
             </div>
             <div class="card-body bg-light text-dark">
-                <h3 class="card-text">{{ post.text | safe }}</h3>
+                <h3 class="card-text">{{ post.text }}</h3>
                 {% if post.tweet_url %}
                     <div class="container">
                         <div style="margin-left: 20%;" >
@@ -27,7 +27,10 @@
                         </div>
                     </div>
                 {% endif %}
-
+                
+                {% if post.spotify_url %}
+                <iframe src={{post.spotify_url}} width="300" height="80" frameborder="0" ></iframe>
+                {% endif %}
                 {% if post.youtube_url %}
                     {% if post.content_approved %}
                         <div >
