@@ -1,7 +1,7 @@
 {% extends "accounts/base.html" %}
 {% block body_block %}
   <div class="container">
-    <div class="jumbotron">
+    <div class="jumbotron bg-dark">
       {% if registered %}
         <h1>Thank you for registering!</h1>
 	<br>
@@ -13,7 +13,7 @@
           {% csrf_token %}
           {{ user_form.as_p }}
           {{ profile_form.as_p }}
-          <input type="submit" name="" onclick="return IsEmptyOrDot();" value="Register">
+          <input type="submit" class="btn btn-success" name="" onclick="return IsEmptyOrDot();" value="Register">
         </form>
         
       {% include "accounts/username_script.html" %}
