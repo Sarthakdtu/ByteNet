@@ -1,0 +1,137 @@
+  <div class="infinite-container">
+    {% for post in posts %}
+      <div class="container infinite-item">
+        <div class="card rounded border border-dark bg-light">
+            <h4 class="card-header h4 text-light bg-dark ">
+               
+                <a href="{% url 'feed:profile_info' profile_username=post.author__username %}"
+                     class="text-light"
+                    style="text-decoration:none">
+                    <img src={{ post.profile_pic_url }} class="avatar" > {{ post.author__username }}
+                </a>
+            </h4>
+            <h6 class="">{{ post.time_of_posting }} </h6>
+            <div class="text-right">
+                                {% if post.is_edited %}
+                                    <b>edited</b>
+                                {% endif %}
+            </div>
+            <div class="card-body bg-light text-dark">
+                <h3 class="card-text">{{ post.text | safe }}</h3>
+                {% if post.tweet_url %}
+                    <div class="container">
+                        <div style="margin-left: 20%;" >
+                            
+                                {{ post.tweet_url | safe }}
+                            
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if post.youtube_url %}
+                    {% if post.content_approved %}
+                        <div >
+                            <iframe width="596" style="margin-left: 19%;" height="360" src={{ post.youtube_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    {% else %}
+                    <img src="https://i.imgur.com/24zjXms.jpeg" class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">           
+                    {% endif %}
+                {% endif %}
+                
+                {% if post.image %}
+                        <div >
+                            {% if post.approved %}
+                                {% if post.is_video %}
+                                    <video style="height: 50%; width:50%; align-content: center; margin-left: 20%;" controls loop autoplay>
+                                        <source src={{ post.image }} type="video/mp4" >
+                                    </video>
+                                {% else %}
+                                    <img src={{ post.image }} class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
+                                {% endif %}
+                            {% else %}
+                            <img src="https://i.imgur.com/7Yleqns.jpg" class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
+                            {% endif %}
+
+                        </div>
+                {% endif %}
+                
+
+            </div>
+
+
+            <div class="d-flex flex-row text-dark bg-info">
+                {% for tag in post.tags %}
+
+                <div class="p-2 h5">
+                    <a href="{% url 'feed:profile_info' profile_username=tag.username %}" class="text-dark"
+                        style="text-decoration:none">
+                        @{{ tag.username }}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="container">
+                <div class="d-flex flex-row ">
+
+                    {% include "post/like_dislike_block.html" %}
+                    <span class="p-4"></span>
+                    <div class="p-1 form-group">
+                        <a href="{% url 'post:view_post' post_id=post.pk %}" class="btn btn-warning">Comments</a>
+                    </div>
+                </div>
+                <span id="message{{ post.pk }}"></span>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+    
+    <img src="https://i.imgur.com/LxQA5tM.gif" style="height: 50%; width:50%; align-content: center; margin-left: 24%;">
+        <h4 style="color: cornflowerblue; text-align: center;">You are all caught up!!</h4>
+    
+  </div>
+  <br>
+  {% if posts.has_next %}
+    <a class="infinite-more-link" href="?page={{ posts.next_page_number }}" style="text-decoration: none;" >
+        <button class="btn btn-block btn-success" >
+            View More
+        </button>
+    </a>
+
+    {% else %}
+    
+        <button class="btn btn-block btn-warning" >
+          No more bytes beyond this point.....
+        </button>
+        <img src="https://i.imgur.com/LxQA5tM.gif" style="height: 50%; width:50%; align-content: center; margin-left: 24%;">
+    
+  {% endif %}
+        <br>
+  {% if posts.has_previous %}
+    <a class="infinite-more-link" href="?page={{ posts.previous_page_number }}" style="text-decoration: none;" >
+        <button class="btn btn-block btn-danger" >
+            View Previous
+        </button>
+    </a>
+
+  {% endif %}
+        <br>
+  <div class="loading" style="display: none;">
+    Loading...
+  </div>
+
+
+
+
+  <script>
+    var infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      onBeforePageLoad: function () {
+          alert('loading')
+        $('.loading').show();
+      },
+      onAfterPageLoad: function ($items) {
+        $('.loading').hide();
+      }
+    });
+  </script>
