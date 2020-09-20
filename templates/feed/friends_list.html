@@ -7,7 +7,7 @@
         {% for friend in friends %}
         {% if friend.username %}
         <h3>
-        <a href="{% url 'feed:profile_info' profile_username=friend.username %}" class="text-dark" style="text-decoration:none">
+        <a href="{% url 'feed:profile_info' profile_username=friend.username %}" class="text-light" style="text-decoration:none">
                 #{{ friend.username }}</a>
         </h3>
         {% endif %}

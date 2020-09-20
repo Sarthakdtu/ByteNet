@@ -31,7 +31,7 @@
             <br>
             {% for request in sent_requests %}
                 <h3>
-                    <a href="{% url 'feed:profile_info' profile_username=request.friend__username %}" class="text-dark"
+                    <a href="{% url 'feed:profile_info' profile_username=request.friend__username %}" class="text-light"
                         style="text-decoration:none">
                         {{ request.friend__username }}
                     </a>
