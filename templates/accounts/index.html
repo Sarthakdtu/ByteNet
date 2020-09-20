@@ -1,8 +1,12 @@
 {% extends "accounts/base.html" %}
 {% block body_block %}
 <div class="container">
-  <div class="jumbotron">
+  <div class="jumbotron bg-dark" style="text-align: center; ">
+    <div>
+    <img src="https://i.imgur.com/tojPIIH.gif" style="height: 30%;width: 30%; float: left; border-radius: 60%;">
     <h1>Welcome to the ByteNet!</h1>
+    </div>
+    
     <p>An amazing social networking web-app</p>
     {% if user.is_authenticated %}
         <h2>Hello {{ user.username }}</h2>
@@ -13,12 +17,13 @@
         {% endblock %}
     {% else %}
         <br>
+        <br>
         <h2>Register or Login if you'd like to</h2>
 	<a class="btn btn-primary btn-block" href="{% url 'accounts:register' %}">Register</a>
         <a class="btn btn-success btn-block" href="{% url 'accounts:user_login' %}">Login</a>
     {% endif %}
   </div>
-  <div class="jumbotron">
+  <div class="jumbotron bg-dark">
     <h2>
         About 
     </h2>

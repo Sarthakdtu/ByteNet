@@ -38,7 +38,7 @@
     <div class="container">
         {% if posts_exist  %}
             {% for post in posts %}
-                <div class="container">
+                <div class="container" style="color: black;">
                     <div class="card">
                         <a href="{% url 'feed:profile_info' profile_username=author %}" class="text-dark"
                             style="text-decoration:none">
