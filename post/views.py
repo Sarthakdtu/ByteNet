@@ -15,7 +15,7 @@ from feed.views import feed
 from django.http import HttpResponse
 from helpers.imgur_client import upload_image
 from helpers.youtube_id_parser import video_id
-
+from helpers.spotify_trackid_extractor import get_track_id
 try:
     from django.utils import simplejson as json
 except ImportError:
@@ -45,6 +45,14 @@ def create_post(request):
             embedded_tweet = embedded_tweet['html']
             embedded_tweet = embedded_tweet.split('\n')[0]
             post.tweet_url = embedded_tweet
+        except Exception as e:
+            print(e)
+        try:
+            base_url = "https://open.spotify.com/embed/track/"
+            spotify_song_url = request.POST.get("spotify_song_url")
+            track_id = get_track_id(spotify_song_url)
+            spotify_song_url = base_url + track_id
+            post.spotify_url = spotify_song_url
         except Exception as e:
             print(e)
         try:
