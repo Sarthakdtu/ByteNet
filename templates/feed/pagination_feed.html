@@ -1,8 +1,8 @@
   <div class="infinite-container">
     {% for post in posts %}
-      <div class="container infinite-item">
-        <div class="card rounded border border-dark bg-light">
-            <h4 class="card-header h4 text-light bg-dark ">
+      <div class="container infinite-item bg-dark" >
+        <div class="card rounded border"  style="background-color: black;" >
+            <h4 class="card-header h4 text-light bg-dark">
                
                 <a href="{% url 'feed:profile_info' profile_username=post.author__username %}"
                      class="text-light"
@@ -10,13 +10,13 @@
                     <img src={{ post.profile_pic_url }} class="avatar" > {{ post.author__username }}
                 </a>
             </h4>
-            <h6 class="">{{ post.time_of_posting }} </h6>
-            <div class="text-right">
+            <h6 class="text-light" style="background-color:dodgerblue">{{ post.time_of_posting }} </h6>
+            <div class="text-right text-light">
                                 {% if post.is_edited %}
                                     <b>edited</b>
                                 {% endif %}
             </div>
-            <div class="card-body bg-light text-dark">
+            <div class="card-body  text-light" style="background-color: black;">
                 <h3 class="card-text">{{ post.text }}</h3>
                 {% if post.tweet_url %}
                     <div class="container">
@@ -73,7 +73,7 @@
                 </div>
                 {% endfor %}
             </div>
-            <div class="container">
+            <div class="container" style="background-color:lightyellow;">
                 <div class="d-flex flex-row ">
 
                     {% include "post/like_dislike_block.html" %}

@@ -1,7 +1,7 @@
 {% extends "accounts/base.html" %}
 {% block body_block %}
-<div class="container">
-  <div class="jumbotron bg-dark" style="text-align: center; ">
+<div class="container"">
+  <div class="jumbotron bg-dark" style="text-align: center; border:black solid 4px; ">
     <div>
     <img src="https://i.imgur.com/tojPIIH.gif" style="height: 30%;width: 30%; float: left; border-radius: 60%;">
     <h1>Welcome to the ByteNet!</h1>
@@ -23,7 +23,7 @@
         <a class="btn btn-success btn-block" href="{% url 'accounts:user_login' %}">Login</a>
     {% endif %}
   </div>
-  <div class="jumbotron bg-dark">
+  <div class="jumbotron bg-dark" style="border:black solid 4px; ">
     <h2>
         About 
     </h2>
