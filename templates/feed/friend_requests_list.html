@@ -6,7 +6,7 @@
         <br>
         {% for request in pending_requests %}
             <div class="container">
-                <h3> <a href="{% url 'feed:profile_info' profile_username=request.username %}" class="text-dark"
+                <h3> <a href="{% url 'feed:profile_info' profile_username=request.username %}" class="text-light"
                         style="text-decoration:none">
                         #{{ request.username }}
                     </a>
