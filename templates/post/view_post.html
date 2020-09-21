@@ -9,23 +9,26 @@
     <br>
     
     <div class="container">
-            <div class="card rounded border border-dark bg-light text-dark">
+            <div class="card rounded border border-dark ">
                 
                         <h4 class="card-header h4 text-light bg-dark ">
                             <a href="{% url 'feed:profile_info' profile_username=post.author__username %}" 
                             class="text-light" style="text-decoration:none">
                                 <img src={{ post.profile_pic_url }} class="avatar" > {{ post.author__username }}
                         </a>
+                        <div class="popup" style="float: right;"  onclick="myFunction()"> <img src="https://img.icons8.com/nolan/64/share.png">
+                            <span class="popuptext" id="myPopup">Copy the link from url bar.</span>
+                          </div>
                         </h4>
 
-                    <h6 class="">{{ post.time_of_posting }} </h6>
+                    <h6 class="text-dark">{{ post.time_of_posting }} </h6>
                     <div class="text-right">
                                     {% if post.is_edited %}
                                         <b>edited</b>
                                     {% endif %}
                     </div>
-                       <div class="card-body bg-light">
-                           <h3 class="card-text">{{ post.text }}</h3>
+                       <div class="card-body" style="background-color: black;">
+                           <p class="card-text">{{ post.text }}</p>
                        </div>
                        {% if post.tweet_url %}
                        <div class="container">

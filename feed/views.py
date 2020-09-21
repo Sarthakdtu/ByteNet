@@ -49,7 +49,7 @@ def feed(request):
         post_details["pk"] = post.pk
         posts_list.append(post_details)
     paginator = Paginator(posts_list, 20)
-    print(paginator.count, paginator.num_pages)
+    # print(paginator.count, paginator.num_pages)
     page = request.GET.get('page')
     posts_list = paginator.get_page(page)
     return render(request, 'feed/feed.html', {"posts":posts_list,

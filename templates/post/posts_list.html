@@ -38,15 +38,15 @@
     <div class="container">
         {% if posts_exist  %}
             {% for post in posts %}
-                <div class="container" style="color: black;">
+                <div class="container"  style="background-color: black;">
                     <div class="card">
                         <a href="{% url 'feed:profile_info' profile_username=author %}" class="text-dark"
                             style="text-decoration:none">
-                            <h4 class="card-header h4 bg-dark text-dark"><img src={{ profile_pic_url }} class="avatar" >  {{ author }}</h4>
+                            <h4 class="card-header h4 bg-dark text-light"><img src={{ profile_pic_url }} class="avatar" >  {{ author }}</h4>
                         </a>
-                        <h6 class="panel-success text-dark">{{ post.time_of_posting }} </h6>
-                        <div class="card-body bg-light text-dark">
-                            <h3 class="card-text">{{ post.text }}</h3>
+                        <h6 class="panel-success text-dark" >{{ post.time_of_posting }} </h6>
+                        <div class="card-body"  style="background-color: black;">
+                            <p class="card-text text-light">{{ post.text }}</p>
                         </div>
                         <a href="{% url 'post:view_post' post_id=post.pk %}" class="btn btn-success bg-info">View Post</a>
                     </div>

@@ -1,23 +1,32 @@
-  <div class="infinite-container">
+<div class="infinite-container">
+    
     {% for post in posts %}
+   
+
       <div class="container infinite-item" >
         <div class="card rounded border"  style="background-color: black;" >
             <h4 class="card-header h4 text-light bg-dark">
-               
                 <a href="{% url 'feed:profile_info' profile_username=post.author__username %}"
                      class="text-light"
                     style="text-decoration:none">
                     <img src={{ post.profile_pic_url }} class="avatar" > {{ post.author__username }}
-                </a>
-            </h4>
+                    </a>
+                    <a href="{% url 'post:view_post' post_id=post.pk %}" style="float: right;">
+                        <img src="https://img.icons8.com/nolan/64/share.png" >
+                    </a>
+                 
+                       
+                        
+                    <span class="share_text"></span>
+                </h4>
             <h6 class="text-light" style="background-color:dodgerblue">{{ post.time_of_posting }} </h6>
             <div class="text-right text-light">
                                 {% if post.is_edited %}
                                     <b>edited</b>
                                 {% endif %}
             </div>
-            <div class="card-body  text-light" style="background-color: black;">
-                <h3 class="card-text">{{ post.text }}</h3>
+            <div class="card-body container text-light" style="background-color: black;">
+                <p class="card-text container">{{ post.text }}</p>
                 {% if post.tweet_url %}
                     <div class="container">
                         <div style="margin-left: 20%;" >
@@ -75,6 +84,7 @@
             </div>
             <div class="container" style="background-color:lightyellow;">
                 <div class="d-flex flex-row ">
+                    <i class="fa fa-adjust" aria-hidden="true"></i>
 
                     {% include "post/like_dislike_block.html" %}
                     <span class="p-4"></span>
