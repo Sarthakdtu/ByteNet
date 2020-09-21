@@ -135,6 +135,7 @@ def view_post(request, post_id):
         post["is_video"] = post_object.is_video
         post["youtube_url"] = post_object.youtube_video_url
         post["tweet_url"] = post_object.tweet_url
+        post["spotify_url"] = post_object.spotify_url
         current_user = False
         if post["author__username"] == request.user.username:
             current_user = True
