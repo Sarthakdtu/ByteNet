@@ -102,7 +102,6 @@ def create_post(request):
                             "friends_list": friends_list,
                              'friends_exist':friends_exist})
 
-@login_required
 def view_post(request, post_id):
     post_object = None
     try:
@@ -196,7 +195,7 @@ def posts_list(request, author=None):
         current_user = True
     # print("Fetching all posts of ", author)
     posts = Post.objects.filter(author__username=author).order_by('-time_of_posting'
-                                ).values("text", "pk")
+                                ).values("text", "pk", "time_of_posting")
     profile_pic_url = UserProfileInfo.objects.get(user__username=author).profile_pic_url #.values("profile_pic_url")["profile_pic_url"]
     # print(profile_pic_url)
     #print(list(posts))
