@@ -194,11 +194,11 @@ def posts_list(request, author=None):
     if author is None:
         author = request.user.username
         current_user = True
-    print("Fetching all posts of ", author)
+    # print("Fetching all posts of ", author)
     posts = Post.objects.filter(author__username=author).order_by('-time_of_posting'
                                 ).values("text", "pk")
     profile_pic_url = UserProfileInfo.objects.get(user__username=author).profile_pic_url #.values("profile_pic_url")["profile_pic_url"]
-    print(profile_pic_url)
+    # print(profile_pic_url)
     #print(list(posts))
     posts_exist = True
     if not posts:

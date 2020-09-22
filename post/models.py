@@ -16,9 +16,9 @@ class Post(models.Model):
     img_approved = models.BooleanField(default=False) 
     content_approved = models.BooleanField(default=False) 
     is_video = models.BooleanField(default=False)
-    youtube_video_url = models.URLField(default=None, null=True)
-    tweet_url = models.URLField(default=None, null=True)
-    spotify_url = models.URLField(default=None, null=True)
+    youtube_video_url = models.URLField(default=None, null=True, blank=True)
+    tweet_url = models.URLField(default=None, null=True, blank=True)
+    spotify_url = models.URLField(default=None, null=True, blank=True)
     
 
     def total_likes(self):
