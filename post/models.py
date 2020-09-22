@@ -12,7 +12,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, blank=True, related_name="likes")
     dislikes = models.ManyToManyField(User, blank=True, related_name="dislikes")
     is_edited = models.BooleanField(default=False)
-    imgur_url = models.URLField(default=None, null=True)
+    imgur_url = models.URLField(default=None, null=True, blank=True)
     img_approved = models.BooleanField(default=False) 
     content_approved = models.BooleanField(default=False) 
     is_video = models.BooleanField(default=False)
