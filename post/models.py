@@ -5,7 +5,7 @@ from django.utils import timezone
 # Create your models here.
 
 class Post(models.Model):
-    text = models.TextField(max_length=500, blank=True)
+    text = models.TextField(max_length=5000, blank=True)
     author =  models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
     time_of_posting = models.DateTimeField(blank=True)
     tags = models.ManyToManyField(User, blank=True, related_name="tagged_user")
