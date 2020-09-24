@@ -17,7 +17,6 @@ urlpatterns = [
     
     path('view_post/<int:post_id>/', views.view_post, name='view_post'),
     path('posts_list/<slug:author>/', views.posts_list, name='posts_list'),
-    path('posts_list_hashtag/<slug:hashtag>/', views.filter_posts_hashtag, name='filter_posts_hashtag'),
 
     path('unapproved_images/', views.get_unapprove_images, name='unapproved'),
     path('approved_images/', views.get_approve_images, name='approved'),

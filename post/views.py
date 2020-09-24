@@ -9,14 +9,13 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from accounts.models import UserProfileInfo, User
-from .models import Post, TagNotification, HashTags, HashTagsPostTable
+from .models import Post, TagNotification
 from .forms import PostForm
 from feed.views import feed
 from django.http import HttpResponse
 from helpers.imgur_client import upload_image
 from helpers.youtube_id_parser import video_id
 from helpers.spotify_trackid_extractor import get_track_id
-from helpers.extract_hashtags import get_hashtags
 try:
     from django.utils import simplejson as json
 except ImportError:
@@ -70,7 +69,7 @@ def create_post(request):
             file, extension = upload_image(file)
             post.imgur_url = file
             post.is_video = extension
-            # print("Got the file")
+            print("Got the file")
         except Exception as e:
             print(e)
         # post.save()
@@ -80,13 +79,6 @@ def create_post(request):
             tag_notif = TagNotification.objects.create(post=post, 
                                         tagged_user=tagged_friend, time_of_tagging=timezone.now())
         post.save()
-        hashtags = get_hashtags(text)
-        # print(hashtags)
-        for hashtag in hashtags:
-            htag = HashTags.objects.get_or_create(keyword=hashtag)[0]
-            # print(htag)
-            _ = HashTagsPostTable.objects.create(post=post, hashtag=htag)
-    
         if from_feed:
             return JsonResponse({"text":text,
                                  "pk": post.pk,
@@ -143,7 +135,6 @@ def view_post(request, post_id):
         post["youtube_url"] = post_object.youtube_video_url
         post["tweet_url"] = post_object.tweet_url
         post["spotify_url"] = post_object.spotify_url
-        post["hashtags"] = HashTagsPostTable.objects.filter(post=post_object).values("hashtag__keyword")
         current_user = False
         if post["author__username"] == request.user.username:
             current_user = True
@@ -168,10 +159,6 @@ def edit_post(request, pk):
         post.text = text
         post.is_edited = True
         post.save()
-        hashtags = get_hashtags(text)
-        for hashtag in hashtags:
-            htag = HashTags.objects.get_or_create(keyword=hashtag)[0]
-            _ = HashTagsPostTable.objects.get_or_create(post=post, hashtag=htag)
         return view_post(request, post.pk)
     else:
         form = dict()
@@ -179,7 +166,7 @@ def edit_post(request, pk):
         form["time"] = post.time_of_posting
         form["tags"] = post.tags.all()
         form["pk"] = pk
-        # print(form["tags"])
+        print(form["tags"])
         return render(request, 'post/edit_post.html', {'form': form})
 
 @login_required
@@ -216,31 +203,13 @@ def posts_list(request, author=None):
     if not posts:
         posts_exist = False        
     #print("post is None?", posts is None)
-    # print(current_user, posts_exist)
+    print(current_user, posts_exist)
     return render(request, "post/posts_list.html", {"posts":posts, "mention":False, 
                                                     "author":author, 
                                                     "posts_exist":posts_exist, 
                                                     "current_user":current_user, 
                                                     "profile_pic_url":profile_pic_url,
                                                      })
-
-@login_required
-def filter_posts_hashtag(request, hashtag=None):
-    if hashtag is None:
-        pass
-    hashtags_posts = HashTagsPostTable.objects.filter(hashtag__keyword=hashtag)
-    # print(posts[0].post)
-    posts = list()
-    for post in hashtags_posts:
-        posts.append(post.post)
-    posts_exist = False
-    if posts:
-        posts_exist = True
-    current_user = True
-    profile_pic_url = None
-    return render(request, "post/hashtag_filter_posts_list.html", {"posts":posts})
-
-
 
 @login_required
 def view_mentions(request):

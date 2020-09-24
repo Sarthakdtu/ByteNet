@@ -29,12 +29,7 @@
                     </div>
                        <div class="card-body" style="background-color: black;">
                            <p class="card-text">{{ post.text }}</p>
-                           {% for hashtag in post.hashtags %}
-                           <a href="{% url 'post:filter_posts_hashtag' hashtag=hashtag.hashtag__keyword %}" 
-                          style="text-decoration: none;">#{{hashtag.hashtag__keyword}}</a>
-                          {% endfor %}
                        </div>
-                      
                        {% if post.tweet_url %}
                        <div class="container">
                            <div style="margin-left: 20%;" >
