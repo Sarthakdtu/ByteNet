@@ -1,0 +1,20 @@
+{% extends "accounts/base.html" %}
+{% block body_block %}
+
+{% for post in posts %}
+                <div class="container"  style="background-color: black;">
+                    <div class="card">
+                        <a href="{% url 'feed:profile_info' profile_username=post.author.username %}" class="text-dark"
+                            style="text-decoration:none">
+                            <h4 class="card-header h4 bg-dark text-light"><img src="https://avatars.dicebear.com/api/bottts/example.svg" class="avatar" >  {{ post.author.username }}</h4>
+                        </a>
+                        <h6 class="panel-success text-dark" >{{ post.time_of_posting }} </h6>
+                        <div class="card-body"  style="background-color: black;">
+                            <p class="card-text text-light">{{ post.text }}</p>
+                        </div>
+                        <a href="{% url 'post:view_post' post_id=post.pk %}" class="btn btn-success bg-info">View Post</a>
+                    </div>
+                </div>
+            <br>
+{% endfor %}
+{% endblock %}
