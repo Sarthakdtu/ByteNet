@@ -31,3 +31,10 @@ class TagNotification(models.Model):
     tagged_user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_of_tagging = models.DateTimeField(blank=True)
     
+
+class HashTags(models.Model):
+    keyword = models.CharField(max_length=30, unique=True)
+
+class HashTagsPostTable(models.Model):
+    hashtag = models.ForeignKey(HashTags, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
