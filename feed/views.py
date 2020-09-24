@@ -9,7 +9,7 @@ from accounts.models import User, UserProfileInfo
 from constants.constants import FriendRequestStatus
 from django.core.paginator import Paginator
 from .models import FriendRequest
-from post.models import Post, TagNotification, HashTagsPostTable
+from post.models import Post, TagNotification
 # Create your views here.
 
 ################################## FEED LOGIC  ############################################
@@ -20,8 +20,10 @@ def feed(request):
     print("Fetching posts for feed")
     userprofile = UserProfileInfo.objects.all().values_list("profile_pic_url", "user__username")
     profile_pic = dict()
+    # print(userprofile)
     for i in userprofile:
         profile_pic[i[1]] = i[0]
+    # print(profile_pic)
     posts = Post.objects.all().order_by('-time_of_posting').select_related("author")
     posts_list = list()
     for post in posts:
@@ -45,9 +47,6 @@ def feed(request):
         post_details["youtube_url"] = post.youtube_video_url
         post_details["spotify_url"] = post.spotify_url
         post_details["pk"] = post.pk
-        hashtags = HashTagsPostTable.objects.filter(post=post).values("hashtag__keyword")
-        # print(hashtags)
-        post_details["hashtags"] = hashtags
         posts_list.append(post_details)
     paginator = Paginator(posts_list, 20)
     # print(paginator.count, paginator.num_pages)
