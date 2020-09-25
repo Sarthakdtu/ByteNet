@@ -19,6 +19,10 @@ urlpatterns = [
     path('posts_list/<slug:author>/', views.posts_list, name='posts_list'),
     path('posts_list_hashtag/<slug:hashtag>/', views.filter_posts_hashtag, name='filter_posts_hashtag'),
 
+    url(r'^posts_list_image_gallery/$', views.filter_posts_image, name='image_gallery'),
+    url(r'^posts_list_spotify_gallery/$', views.filter_posts_spotify, name='spotify_gallery'),
+    url(r'^posts_list_youtube_gallery/$', views.filter_posts_youtube, name='youtube_gallery'),
+    
     path('unapproved_images/', views.get_unapprove_images, name='unapproved'),
     path('approved_images/', views.get_approve_images, name='approved'),
     path('review_images/', views.approve_images, name='review'),

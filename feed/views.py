@@ -53,7 +53,7 @@ def feed(request):
     # print(paginator.count, paginator.num_pages)
     page = request.GET.get('page')
     posts_list = paginator.get_page(page)
-    return render(request, 'feed/feed.html', {"posts":posts_list,
+    return render(request, 'feed/pagination_feed.html', {"posts":posts_list,
      "curr_user_profile_pic":profile_pic[request.user.username]})
 
 @login_required

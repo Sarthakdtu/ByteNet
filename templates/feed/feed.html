@@ -2,19 +2,31 @@
 {% block body_block %}
 
 
-<h2 >This is what everyone's "byting" . . . .</h2>
-<br>
-
+<!-- <h5 >This is what everyone's "byting" . . . .</h5> -->
 <div class="container" style="color: black;">
+    
     <div class="container">
         <input type="text" name="text" class="form-control input-group
-             input-group-lg byte-text  text-area" placeholder="What's on your mind? . . . . ">
-        <p style="color:whitesmoke;" > *You can also tag your friends at the New Byte option* </p>
+             input-group-lg byte-text  text-area" placeholder="What's on your mind? . . . .(You can also tag your friends at the New Byte option) ">
         <input type="submit" class="btn btn-primary btn-block byte-submit" value="Byte" id="byte-submit">
         <a href="{% url 'post:create_post' %}" class="btn btn-block btn-success">Upload Images, Gifs and Videos (Yup!! Just click me and share awesome pics.)</a>
-        <br>
     </div>
-
+    <div class="container text-light">
+        <div class="row" style="font-size: xx-large; text-align: center;">
+          <div class="col-sm">
+            <a class="nav-link" href="{% url 'feed:news_feed' %}" style="color:yellow;" ><i class="fas fa-home"></i></a>
+          </div>
+          <div class="col-sm" >
+            <a class="container nav-link" href="{% url 'post:image_gallery' %}" ><i class="fas fa-camera-retro"></i></i></a>
+          </div>
+          <div class="col-sm ">
+            <a class="nav-link" href="{% url 'post:youtube_gallery' %}" style="color: red;"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="col-sm">
+            <a class="nav-link" href="{% url 'post:spotify_gallery' %}" style="color:greenyellow;"><i class="fab fa-spotify"></i></a>
+          </div>
+        </div>
+      </div>
     <div class="new_post">
         <div class="container hide" style="display: none;">
             <div class="card rounded border border-dark bg-light">
@@ -30,17 +42,13 @@
             </div>
         </div>
     </div>
+    {% block content %}
 
-   
-
-    {% block main_pagination %}
-    {% include "feed/pagination_feed.html" %}
     {% endblock %}
 </div>
 
 {% include "post/like_dislike_block_script.html" %}
 {% include "post/new_post_block_script.html" %}
-{% include "feed/nav_profile_pic_feed_script.html" %}
-{% include "accounts/save_profile_pic_url.html" %}
+
 
 {% endblock %}

@@ -8,8 +8,8 @@
             
             <form action="{% url 'post:create_post' %}" method="POST" enctype="multipart/form-data" onsubmit="submit.disabled = true; return true;">
                 {% csrf_token %}
-                <input type="text" name="text" 
-                class="form-control input-group input-group-lg" placeholder="Your message goes here.....">
+                <textarea type="text" name="text" 
+                class="form-control input-group input-group-lg" placeholder="Your message goes here....."></textarea>
                 <br>
                 <br>
                 <img src="https://i.imgur.com/A7rLu3s.png" style="width: 8%; height: 8%;">

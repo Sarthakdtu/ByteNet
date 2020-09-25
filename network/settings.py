@@ -25,7 +25,7 @@ SECRET_KEY = 'xj5cqgyxzdtl-=cmids=!l3%+hqsv1ic72mylus0o^)y^uvw(p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["bytenet.pythonanywhere.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["bytenet.pythonanywhere.com", "127.0.0.1", "kit.fontawesome.com", "kit-free.awesome.com"]
 
 
 #DIR
@@ -75,7 +75,9 @@ TEMPLATES = [
         },
     },
 ]
-
+TEMPLATE_LOADERS = (
+    'django.template.loaders.app_directories.load_template_source',
+)
 WSGI_APPLICATION = 'network.wsgi.application'
 
 
