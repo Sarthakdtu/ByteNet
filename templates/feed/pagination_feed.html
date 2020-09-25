@@ -1,24 +1,21 @@
+{% extends "feed/feed.html" %}
+{% block content %}
 <div class="infinite-container">
-    
     {% for post in posts %}
-   
-
       <div class="container infinite-item" >
         <div class="card rounded border"  style="background-color: black;" >
-            <h4 class="card-header h4 text-light bg-dark">
+            <h5 class="card-header h5 text-light bg-dark" style="padding-top: 0.3%; padding-bottom: 0.3%;">
                 <a href="{% url 'feed:profile_info' profile_username=post.author__username %}"
                      class="text-light"
                     style="text-decoration:none">
+                    
                     <img src={{ post.profile_pic_url }} class="avatar" > {{ post.author__username }}
                     </a>
                     <a href="{% url 'post:view_post' post_id=post.pk %}" style="float: right;">
-                        <img src="https://img.icons8.com/nolan/64/share.png" >
+                        <img src="https://img.icons8.com/nolan/64/share.png" style="width: 80%;height: 80%;" >
                     </a>
-                 
-                       
-                        
                     <span class="share_text"></span>
-                </h4>
+                </h5>
             <h6 class="text-light" style="background-color:dodgerblue">{{ post.time_of_posting }} </h6>
             <div class="text-right text-light">
                                 {% if post.is_edited %}
@@ -33,13 +30,11 @@
                    style="text-decoration: none;">#{{hashtag.hashtag__keyword}}</a>
                 {% endfor %}
                 {% endif %}
-                <br>
+                <br> 
                 {% if post.tweet_url %}
                     <div class="container">
-                        <div style="margin-left: 20%;" >
-                            
+                        <div style="margin-left: 20%;" >                            
                                 {{ post.tweet_url | safe }}
-                            
                         </div>
                     </div>
                 {% endif %}
@@ -73,11 +68,7 @@
 
                         </div>
                 {% endif %}
-                
-
             </div>
-
-
             <div class="d-flex flex-row text-dark bg-info">
                 {% for tag in post.tags %}
 
@@ -139,18 +130,8 @@
     Loading...
   </div>
 
+ 
+  {% include "feed/nav_profile_pic_feed_script.html" %}
+  {% include "accounts/save_profile_pic_url.html" %}
 
-
-
-  <script>
-    var infinite = new Waypoint.Infinite({
-      element: $('.infinite-container')[0],
-      onBeforePageLoad: function () {
-          alert('loading')
-        $('.loading').show();
-      },
-      onAfterPageLoad: function ($items) {
-        $('.loading').hide();
-      }
-    });
-  </script>
+  {% endblock %}

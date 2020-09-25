@@ -10,4 +10,4 @@ migrations/
 secrets.py
 imgur_client.py
 static/admin/
-staticfiles/admin/
+staticfiles/

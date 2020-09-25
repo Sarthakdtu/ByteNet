@@ -1,0 +1,30 @@
+{% extends "feed/feed.html" %}
+{% block content %}
+<!-- {% load index_tag %} -->
+
+<!-- <h5 >This is what everyone's "byting" . . . .</h5> -->
+<div class="container" style="color: black;">
+            <div class="container text-light">
+                    {% for i in num_posts %}
+                        <div class="row" style="font-size: xx-large; text-align: center;">   
+                            {% with posts|index:i as post_list%} 
+                            
+                            {% for post in post_list %}
+                            <div class="col-sm">
+                                <div >
+                                    
+                                    <iframe src={{post.spotify_url}} width="300" height="80" frameborder="0" ></iframe>
+                                    <a href="{% url 'post:view_post' post_id=post.pk %}" style="text-decoration: none;" 
+                                    class="btn btn-success ">
+                                        <i class="fas fa-eye"></i>   </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% endwith %}
+                        </div>
+                        <br>
+                       
+                    {% endfor %}
+                </div>
+</div>
+{% endblock %}

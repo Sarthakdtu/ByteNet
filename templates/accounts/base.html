@@ -1,20 +1,19 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>ByteNet</title>
-    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">  
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'network/avatar.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
-    
-    
     <style>
       html *
         {
-          font-family: 'Raleway', sans-serif !important;
+          font-family: 'Raleway', sans-serif ;
         }
     </style>
 
@@ -22,8 +21,11 @@
    </head>
   <body style="color: whitesmoke; background-color:black;">
     
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous"></script>
+
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-          <a class="navbar-brand" href="{% url 'index' %}">ByteNet</a>
+          <a class="navbar-brand" href="{% url 'index' %}"><h3>ByteNet</h3></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -32,24 +34,22 @@
             <ul class="navbar-nav ">
             {% if user.is_authenticated %}
             
-              <form class="form-inline" name="search" action="{% url 'feed:search' %}" method="get">
-                <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Find people">
+              <form class="form-inline"  name="search" action="{% url 'feed:search' %}" method="get">
+                <input class="form-control mr-sm-1" type="text" name="keyword" placeholder="Find people">
                 <button class="btn btn-outline-success my-2 my-sm-0"  onclick="return IsEmpty();" type="submit">Find</button>
               </form>
-              </ul>
-              
-            <ul class="navbar-nav">
              
-            <li class="nav-item active">
+             
+            <!-- <li class="nav-item active">
                 <a class="nav-link" href="#">Wassssup {{ user.username }}</a>
-            </li>
+            </li> -->
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'feed:news_feed' %}">Home</a>
+              <a class="nav-link" href="{% url 'feed:news_feed' %}">Home <i class="fas fa-home"></i></a>
           </li>
              
               <li class="nav-item dropdown active" >
                   <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Friends
+                    Friends <i class="fas fa-user-friends"></i>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'feed:friends_list' %}">My Friends</a>
@@ -61,7 +61,7 @@
 
                 <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Byte
+                      Byte <i class="fas fa-pencil-alt"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
@@ -73,7 +73,7 @@
                
                 <li class="nav-item dropdown active">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Notifications
+                    Notifications <i class="far fa-bell"></i>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'feed:pending_friend_requests_list' %}">Friend Requests</a>
@@ -83,7 +83,7 @@
                 </li>
                   <li class="nav-item dropdown active">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Settings
+                        Settings <i class="fas fa-user-cog"></i>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'feed:profile_info' %}">My Profile</a>
@@ -154,16 +154,14 @@
 {% include "accounts/search_script.html" %}  
 
 {% include "feed/share_popup.html" %}  
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
 
+  <script src="https://kit.fontawesome.com/55c906cc19.js" crossorigin="anonymous"></script> 
 
-<script src="https://kit.fontawesome.com/55c906cc19.js" crossorigin="anonymous"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-{% include "feed/load_profile_pic_url_script.html" %}
+<!-- {% include "feed/load_profile_pic_url_script.html" %} -->
 
 
 </body>

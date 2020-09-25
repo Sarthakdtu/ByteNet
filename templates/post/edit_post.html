@@ -7,8 +7,7 @@
             <br>
             <form action="{% url 'post:edit_post' pk=form.pk %}" method="POST">
                 {% csrf_token %}
-                <input type="text" name="text" 
-                       class="form-control input-group input-group-lg" value="{{ form.text }}">
+                <textarea type="text" name="text" class="form-control input-group input-group-lg">{{ form.text }}</textarea>
                 <br>
                 <input type="submit" class="btn btn-primary" value="Edit">
             </form>

@@ -240,6 +240,24 @@ def filter_posts_hashtag(request, hashtag=None):
     profile_pic_url = None
     return render(request, "post/hashtag_filter_posts_list.html", {"posts":posts})
 
+@login_required
+def filter_posts_image(request):
+    posts = Post.objects.exclude(imgur_url=None).order_by('-time_of_posting'
+                                ).values("imgur_url", "pk","is_video")
+    # print(posts[0])
+    return render(request, "filter_view/image_gallery.html", {"posts":posts, "num_posts":range(0, len(posts), 3)})
+
+@login_required
+def filter_posts_spotify(request):
+    posts = Post.objects.exclude(spotify_url=None).order_by('-time_of_posting'
+                                ).values("spotify_url", "pk")
+    return render(request, "filter_view/spotify_gallery.html", {"posts":posts, "num_posts":range(0, len(posts), 3)})
+
+@login_required
+def filter_posts_youtube(request):
+    posts = Post.objects.exclude(youtube_video_url=None, content_approved=False).order_by('-time_of_posting'
+                                ).values("youtube_video_url", "pk")
+    return render(request, "filter_view/youtube_gallery.html", {"posts":posts, "num_posts":range(0, len(posts), 3)})
 
 
 @login_required
