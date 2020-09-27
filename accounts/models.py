@@ -15,3 +15,6 @@ class UserProfileInfo(models.Model):
     def __str__(self):
         return self.user.username
 
+class Friends(models.Model):
+    source = models.ForeignKey(UserProfileInfo, on_delete=models.CASCADE, blank=False, related_name="source")
+    destination = models.ForeignKey(UserProfileInfo, on_delete=models.CASCADE, blank=False, related_name="destination")
