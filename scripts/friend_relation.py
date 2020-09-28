@@ -16,12 +16,6 @@ for user in users:
                         op = Friend.objects.create(source=profile, destination=fr)
                         op.save()
                         print(op.pk)
-                        # if len(op)==0:
-                        #         continue
-                        # print(op)
-                        # op[0].delete()
-                        # op[1].delete()
-                        # print(op)
         except Exception as e:
                 print(e)
                 continue
