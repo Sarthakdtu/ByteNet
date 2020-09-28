@@ -9,7 +9,7 @@ for post in posts:
         # dislikes = post.dislikes.values_list("username")
         # count = 0
         for tag in tags:
-            count += 1
+            # count += 1
             tag = tag[0]
             u = upi.objects.get(user__username=tag)
             _ = TaggedPost.objects.create(user=u, post=post)
