@@ -11,7 +11,7 @@ for post in posts:
         try:
                 profile = upi.objects.get(user=post.author)
                 # res = upi.objects.filter(user=user).annotate(username=F('friend__username')).values("username")
-                post.user_profile = profile
+                post.author_profile = profile
                 post.save()
                 print(post.author_profile.profile_pic_url)
         except Exception as e:
