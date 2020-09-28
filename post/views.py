@@ -8,8 +8,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
-from accounts.models import UserProfileInfo, User
-from .models import Post, TagNotification, HashTags, HashTagsPostTable
+from accounts.models import UserProfileInfo, User, Friend
+from .models import Post, TagNotification, HashTags, HashTagsPostTable, TaggedPost, Like, Dislike
 from .forms import PostForm
 from feed.views import feed
 from django.http import HttpResponse
@@ -27,6 +27,7 @@ except ImportError:
 def create_post(request):
     #print("Cretaing Post")
     user = request.user
+    upi = UserProfileInfo.objects.get(user=user)
     if request.method == "POST":
         text = request.POST.get("text")
         from_feed = request.POST.get("from_feed")
@@ -34,7 +35,7 @@ def create_post(request):
             return feed(request)
         tagged_friends = request.POST.getlist("checkbox_tag")
         try:
-            post = Post.objects.create(text=text, author=request.user, time_of_posting=timezone.now())
+            post = Post.objects.create(text=text, author=request.user, author_profile=upi, time_of_posting=timezone.now())
         except Exception as e:
             raise e
         file = None
@@ -75,16 +76,15 @@ def create_post(request):
             print(e)
         # post.save()
         for friend in tagged_friends:
-            tagged_friend = User.objects.get(username=friend)
-            post.tags.add(tagged_friend)
+            tagged_friend = UserProfileInfo.objects.get(user__username=friend)
+            _ = TaggedPost.objects.create(post=post, user=tagged_friend)
             tag_notif = TagNotification.objects.create(post=post, 
-                                        tagged_user=tagged_friend, time_of_tagging=timezone.now())
+                                        tagged_user=tagged_friend.user, time_of_tagging=timezone.now())
         post.save()
         hashtags = get_hashtags(text)
         # print(hashtags)
         for hashtag in hashtags:
             htag = HashTags.objects.get_or_create(keyword=hashtag)[0]
-            # print(htag)
             _ = HashTagsPostTable.objects.create(post=post, hashtag=htag)
     
         if from_feed:
@@ -97,58 +97,39 @@ def create_post(request):
         return redirect("feed:news_feed")
     else:
         form = PostForm()
-        friends = UserProfileInfo.objects.filter(user=user
-                                                ).annotate(friend_name=F("friend__username"
-                                                )).values("friend_name")
-        friends_list = list()
-        for friend in friends:
-            friends_list.append(friend["friend_name"])
-        friends_exist = True
-        if not friends:
-            friends_exist = False
-        return render(request, 'post/new_post.html', {'friends':list(friends),
-                            "friends_list": friends_list,
-                             'friends_exist':friends_exist})
+        # print("8")
+        friends = Friend.objects.filter(source__user=user).annotate(friend_name=F("destination__user__username")
+        ).values("friend_name")
+        # friends = list(friends)
+        return render(request, 'post/new_post.html', {"friends": friends,
+                             'friends_exist':friends.exists()})
 
 def view_post(request, post_id):
     post_object = None
+    user =request.user
     try:
         post_object = Post.objects.get(pk=post_id)
     except Post.DoesNotExist:
         return render(request, "post/post_not_found.html", {})
-
     if post_object:
         # print(post_object)
-        post = Post.objects.filter(pk=post_id).values("author__username","author__pk", "time_of_posting", "pk",
-                                 "text", "tags__username", "is_edited", "author")
-        
+        post = Post.objects.filter(pk=post_id).annotate(
+            username=F('author_profile__user__username'), profile_pic_url=F('author_profile__profile_pic_url'), 
+            ).values("profile_pic_url", "username", "pk", "text", 
+            "time_of_posting", "is_edited", "tweet_url", "spotify_url", "num_likes", "num_dislikes",
+            "youtube_video_url", "img_approved", "content_approved", "imgur_url",)
         tagged_users = list()
-        for post_ins in post:
-            tag_name = post_ins["tags__username"]
-            if tag_name is not None:
-                tagged_users.append(tag_name)
-        post = post[0]
-        
-        post["tags__username"] = tagged_users
-        userid = post["author__pk"]
-        post["profile_pic_url"] = UserProfileInfo.objects.get(user=userid).profile_pic_url
-        post["num_likes"] = post_object.total_likes()
-        post["num_dislikes"] = post_object.total_dislikes()
-        post["liked"] = post_object.likes.filter(pk=request.user.pk).exists()
-        post["disliked"] = post_object.dislikes.filter(pk=request.user.pk).exists() 
-        post["image"] = post_object.imgur_url
-        post["approved"] = post_object.img_approved
-        post["content_approved"] = post_object.content_approved
-        post["is_video"] = post_object.is_video
-        post["youtube_url"] = post_object.youtube_video_url
-        post["tweet_url"] = post_object.tweet_url
-        post["spotify_url"] = post_object.spotify_url
+        post = dict(post[0])
+        tagged_users = list(TaggedPost.objects.filter(post=post_object
+        ).annotate(username=F('user__user__username')
+        ).values("username"))
+        post["tags_username"] = tagged_users
+        post["liked"] = Like.objects.filter(post=post_object, user__user__username=user.username).exists()
+        # print(post["liked"])
+        if not post["liked"]:
+            post["disliked"] = Dislike.objects.filter(post=post_object, user__user__username=user.username).exists()
         post["hashtags"] = HashTagsPostTable.objects.filter(post=post_object).values("hashtag__keyword")
         current_user = False
-        if post["author__username"] == request.user.username:
-            current_user = True
-        #print("works?")
-
         return render(request, "post/view_post.html", {"post":post, "current_user":current_user})
     else:
         return render(request, "post/post_not_found.html", {})
@@ -158,7 +139,7 @@ def edit_post(request, pk):
     print("Edit post")
     try:
         post = Post.objects.get(pk=pk, author=request.user)
-        print("Found post")
+        # print("Found post")
     except Post.DoesNotExist:
         return render(request, 'accounts/index.html', {})
     if request.method == "POST":
@@ -186,12 +167,14 @@ def edit_post(request, pk):
 def delete_post(request, pk):
     print("Delete post")
     try:
-        post = Post.objects.get(pk=pk, author=request.user)
+        # upi = UserProfileInfo.objects.get(user__username=request.user.username)
+        post = Post.objects.get(pk=pk, author_profile__user__username=request.user.username)
         print("Found post")
     except Post.DoesNotExist:
         return render(request, 'accounts/index.html', {})
     if request.method == "POST":
-        print("confirmation accepted deleteing ")
+        print("confirmation accepted deleteing.")
+        # htag = HashTagsPostTable.filter(post=post)
         post.delete()
     else:
         print("confirm delete")
@@ -209,14 +192,10 @@ def posts_list(request, author=None):
     # print("Fetching all posts of ", author)
     posts = Post.objects.filter(author__username=author).order_by('-time_of_posting'
                                 ).values("text", "pk", "time_of_posting")
-    profile_pic_url = UserProfileInfo.objects.get(user__username=author).profile_pic_url #.values("profile_pic_url")["profile_pic_url"]
-    # print(profile_pic_url)
-    #print(list(posts))
+    profile_pic_url = UserProfileInfo.objects.get(user__username=author).profile_pic_url
     posts_exist = True
     if not posts:
         posts_exist = False        
-    #print("post is None?", posts is None)
-    # print(current_user, posts_exist)
     return render(request, "post/posts_list.html", {"posts":posts, "mention":False, 
                                                     "author":author, 
                                                     "posts_exist":posts_exist, 
@@ -280,71 +259,68 @@ def like_post(request):
     dislike_btn_class = None
     user = request.user
     if request.method == "POST":
-        #print("Atleast, this works.")
         post_id = request.POST.get("post_id")
-        #print(post_id)
         post = Post.objects.get(pk=post_id)
-        
-        if post.likes.filter(pk=user.pk).exists(): 
-            # user has already liked this post
-            # remove like/user
-            post.likes.remove(user)
-            post.save()
-            #print(post.likes.all())
+        upi = UserProfileInfo.objects.get(user=user)
+        like = Like.objects.filter(post=post, user=upi)
+        # print(like.exists())
+        if like.exists(): 
+            like.delete()
             message = "Ummm, I don't know wheteher I like it or not"
-            #print("post unliked")
             like_btn_class = "btn-outline-success"
             dislike_btn_class = "btn-outline-danger"
+            if post.num_likes>0:
+                post.num_likes -= 1
         else:
-            # add a new like for a post
             like_btn_class = "btn-success"
             dislike_btn_class = "btn-outline-danger"
-            if post.dislikes.filter(pk=user.pk).exists():
-                post.dislikes.remove(user)
-                post.save()
-            post.likes.add(user)
-            post.save()
-            #print(post.likes.all())
+            dislike = Dislike.objects.filter(post=post, user=upi)
+            if dislike.exists():
+                dislike.delete()
+                if post.num_dislikes>0:
+                    post.num_dislikes -= 1
+            _ = Like.objects.create(post=post, user=upi)
+            post.num_likes += 1
             message = "Wow! this one was cool"
-        num_dislikes = post.total_dislikes()
-        num_likes = post.total_likes()
-
-    # use mimetype instead of content_type if django < 5
+        post.save()
     return JsonResponse({"message":message,
                          "like_btn_class": like_btn_class,
                          "dislike_btn_class" :dislike_btn_class, 
-                         "num_dislikes": num_dislikes, 
-                         "num_likes": num_likes}) # Sending an success response
+                         "num_dislikes": post.num_dislikes, 
+                         "num_likes": post.num_likes}) # Sending an success response
 
 @login_required
 @require_POST
 def dislike_post(request):
     user = request.user
+    message = None
     if request.method == "POST":
         post_id = request.POST.get("post_id")
-        #print(post_id)
+        upi = UserProfileInfo.objects.get(user=user)
         post = Post.objects.get(pk=post_id)
-        #print(post)
-        #print("User", user.pk)
-        if post.dislikes.filter(pk=user.pk).exists():
-            post.dislikes.remove(user)
-            post.save()
+        dislike = Dislike.objects.filter(post=post, user=upi)
+        if dislike.exists():
+            dislike.delete()
+            if post.num_dislikes>0:
+                post.num_dislikes -= 1
             message = "Yeah okay, I guess it's not that bad"
             like_btn_class = "btn-outline-success"
             dislike_btn_class = "btn-outline-danger"
-            #print("post undisliked")
         else:
             # add a new like for a post
             like_btn_class = "btn-outline-success"
             dislike_btn_class = "btn-danger"
-            post.dislikes.add(user)
-            if post.likes.filter(pk=user.pk).exists():
-                post.likes.remove(user)
-                post.save()
-            post.save()
+            _ = Dislike.objects.create(post=post, user=upi)
+            post.num_dislikes += 1
+            like = Like.objects.filter(post=post, user=upi)
             message = "Nah, I don't like this"
-        num_dislikes = post.total_dislikes()
-        num_likes = post.total_likes()
+            if like.exists():
+                like.delete()
+                if post.num_likes>0:
+                    post.num_likes -= 1
+        post.save()
+        num_dislikes = post.num_dislikes
+        num_likes = post.num_likes
     return JsonResponse({"message":message,
                          "like_btn_class": like_btn_class,
                          "dislike_btn_class" :dislike_btn_class, 
