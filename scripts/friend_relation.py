@@ -1,6 +1,6 @@
 
 from django.db.models import F
-from accounts.models import UserProfileInfo as upi, User, Friends
+from accounts.models import UserProfileInfo as upi, User, Friend
 
 users = User.objects.all()
 
@@ -13,7 +13,7 @@ for user in users:
                 for f in res:
                         fr = upi.objects.get(user__username=f['username'])
                         print(f"Making {fr.user.username} and {profile.user.username} friends.")
-                        op = Friends.objects.create(source=profile, destination=fr)
+                        op = Friend.objects.create(source=profile, destination=fr)
                         op.save()
                         print(op.pk)
                         # if len(op)==0:
