@@ -9,7 +9,7 @@ from accounts.models import User, UserProfileInfo, Friend
 from constants.constants import FriendRequestStatus
 from django.core.paginator import Paginator
 from .models import FriendRequest
-from post.models import Post, TagNotification, HashTagsPostTable
+from post.models import Post, TagNotification, HashTagsPostTable, Like, TaggedPost, Dislike
 # Create your views here.
 
 ################################## FEED LOGIC  ############################################
@@ -17,45 +17,28 @@ from post.models import Post, TagNotification, HashTagsPostTable
 @login_required
 def feed(request):
     user = request.user
-    print("Fetching posts for feed")
-    userprofile = UserProfileInfo.objects.all().values_list("profile_pic_url", "user__username")
-    profile_pic = dict()
-    for i in userprofile:
-        profile_pic[i[1]] = i[0]
-    posts = Post.objects.all().order_by('-time_of_posting').select_related("author")
+    posts = Post.objects.all().order_by('-time_of_posting'
+                        ).select_related("author_profile"
+                        ).annotate(username=F('author_profile__user__username'
+                                            ), profile_pic_url=F('author_profile__profile_pic_url'), 
+                        ).values("profile_pic_url", "username", "pk", "text", "time_of_posting",
+                                "is_edited", "tweet_url", "spotify_url", "num_likes", "num_dislikes", 
+                                "youtube_video_url", "img_approved", "content_approved", "imgur_url",)
     posts_list = list()
     for post in posts:
-        post_details = dict()
-        username = post.author.username
-        post_details["time_of_posting"] = post.time_of_posting
-        # print(post.)
-        post_details["text"] = post.text
-        post_details["is_edited"] = post.is_edited
-        post_details["author__username"] = username
-        post_details["profile_pic_url"] = profile_pic[username] 
-        post_details["tags"] = list(post.tags.all().values("username"))
-        post_details["liked"] = post.likes.filter(pk=user.pk).exists()
-        post_details["disliked"] = post.dislikes.filter(pk=user.pk).exists() 
-        post_details["num_likes"] = post.total_likes()
-        post_details["num_dislikes"] = post.total_dislikes()
-        post_details["tweet_url"] = post.tweet_url
-        post_details["image"] = post.imgur_url
-        post_details["is_video"] = post.is_video
-        post_details["approved"] = post.img_approved
-        post_details["content_approved"] = post.content_approved
-        post_details["youtube_url"] = post.youtube_video_url
-        post_details["spotify_url"] = post.spotify_url
-        post_details["pk"] = post.pk
-        hashtags = HashTagsPostTable.objects.filter(post=post).values("hashtag__keyword")
-        # print(hashtags)
-        post_details["hashtags"] = hashtags
-        posts_list.append(post_details)
-    paginator = Paginator(posts_list, 20)
-    # print(paginator.count, paginator.num_pages)
+        post["liked"] = Like.objects.filter(post__pk=post["pk"], user__user__username=user.username).exists()
+        if not post["liked"]:
+            post["disliked"] = Dislike.objects.filter(post__pk=post["pk"], user__user__username=user.username).exists()
+        hashtags = HashTagsPostTable.objects.filter(post__pk=post["pk"]).values("hashtag__keyword")
+        post["hashtags"] = hashtags
+        post["tags"] = TaggedPost.objects.filter(post__pk=post["pk"]
+                                    ).annotate(username=F('user__user__username')
+                                    ).values("username")
+    paginator = Paginator(posts, 20)
     page = request.GET.get('page')
     posts_list = paginator.get_page(page)
     return render(request, 'feed/pagination_feed.html', {"posts":posts_list,
-     "curr_user_profile_pic":profile_pic[request.user.username]})
+     "curr_user_profile_pic":""})
 
 @login_required
 def view_profile(request, profile_username=None):
@@ -92,31 +75,26 @@ def view_profile(request, profile_username=None):
 
 @login_required
 def find_friends(request):
-    #print("Fetching User List For")
     user = request.user
-    #print(user.username)
-    username = request.user.username
-    people_to_be_connected = FriendRequest.objects.filter(source=user,
-                                         request_status__in=[FriendRequestStatus.PENDING,
-                                                             FriendRequestStatus.DECLINED]
-                                                             ).annotate(username=F("destination__user__pk")
-                                                             ).values("username")
-    people_to_be_connected_list = list()
-    for person in list(people_to_be_connected):
-        people_to_be_connected_list.append(person["username"])
-    people_to_be_connected = FriendRequest.objects.filter(destination=user, 
+    username = user.username
+    people_to_be_connected1 = FriendRequest.objects.filter(source=user,
+                                         request_status__in=[FriendRequestStatus.DECLINED, FriendRequestStatus.PENDING]
+                                                             ).annotate(pk=F("destination__user__pk")
+                                                             ).values("pk")
+    # print(people_to_be_connected1)
+    people_to_be_connected2 = FriendRequest.objects.filter(destination=user, 
                                                           request_status=FriendRequestStatus.PENDING
-                                                          ).annotate(username=F("source__user__pk")
-                                                             ).values("username")
-    for person in list(people_to_be_connected):
-        people_to_be_connected_list.append(person["username"])
-    print("These people are ready to be connected from source side", people_to_be_connected_list)
-    people = UserProfileInfo.objects.exclude(friend=user
-                                            ).exclude(user__pk__in=people_to_be_connected_list
+                                                          ).annotate(pk=F("source__user__pk")
+                                                             ).values("pk")
+    # print(people_to_be_connected2)
+    friends = Friend.objects.filter(source__user=user).annotate(pk=F("destination__user__pk")).values_list('pk')
+
+    people = UserProfileInfo.objects.exclude(user__pk__in=people_to_be_connected1
+                                            ).exclude(user__pk__in=people_to_be_connected2
+                                            ).exclude(user__pk__in=friends
                                             ).exclude(user=user
                                             ).annotate(username=F('user__username')
-                                            ).values("username")
-    #print(people)
+                                            ).values("username", "profile_pic_url")
     people = list(people)
     people = {"people" : people}
     return render(request, 'feed/users_list.html', people)
@@ -124,19 +102,16 @@ def find_friends(request):
 @login_required
 def friends_list(request):
     user = request.user
-    print("Fetching friends for ", user.username)
     friends = Friend.objects.filter(source__user=user).annotate(
         username=F('destination__user__username')).values("username")
-    # friends = UserProfileInfo.objects.filter(user=user,
-                                    # )
     friends_list = list(friends)
     friends = {"friends":friends_list}
-    #print(friends)
     friends_exist = True
     if not friends:
         friends_exist = False
-    print(friends_exist)
+    # print(friends_exist)
     friends["friends_exist"] = friends_exist
+    # print(friends)
     return render(request, "feed/friends_list.html",friends )
     
 ################################## FRIEND REQUESTS LIST ###########################################
@@ -199,14 +174,14 @@ def accept_friend_request(request):
         print(f"{destination.username} is accepting friend request from {source.username}")
         try:
             friend_request = FriendRequest.objects.get(source=source, destination=destination)
-            profile = UserProfileInfo.objects.get(user=source)
-            profile.friend.add(destination)
-            profile.num_friends = profile.num_friends + 1
-            profile.save()
-            profile = UserProfileInfo.objects.get(user=destination)
-            profile.friend.add(source)
-            profile.num_friends = profile.num_friends + 1
-            profile.save()
+            source_profile = UserProfileInfo.objects.get(user=source)
+            destination_profile = UserProfileInfo.objects.get(user=destination)
+            f1 = Friend.objects.create(source=source_profile, destination=destination_profile)
+            f1 = Friend.objects.create(destination=source_profile, source=destination_profile)
+            source_profile.num_friends = source_profile.num_friends + 1
+            source_profile.save()
+            destination_profile.num_friends = destination_profile.num_friends + 1
+            destination_profile.save()
             friend_request.delete()
             print(f"{source} and {destination} are now friends.")
             return render(request, "feed/friend_success.html", {"destination": source.username})
