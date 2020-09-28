@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User
+from accounts.models import User, UserProfileInfo
 from django.utils import timezone
 
 # Create your models here.
@@ -7,6 +7,7 @@ from django.utils import timezone
 class Post(models.Model):
     text = models.TextField(max_length=5000, blank=True)
     author =  models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
+    author_profile =  models.ForeignKey(UserProfileInfo, default=None,null=True, blank=True, on_delete=models.DO_NOTHING , related_name="author_profile")
     time_of_posting = models.DateTimeField(blank=True)
     tags = models.ManyToManyField(User, blank=True, related_name="tagged_user")
     likes = models.ManyToManyField(User, blank=True, related_name="likes")

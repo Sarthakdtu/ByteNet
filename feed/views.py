@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
-from accounts.models import User, UserProfileInfo
+from accounts.models import User, UserProfileInfo, Friend
 from constants.constants import FriendRequestStatus
 from django.core.paginator import Paginator
 from .models import FriendRequest
@@ -28,6 +28,7 @@ def feed(request):
         post_details = dict()
         username = post.author.username
         post_details["time_of_posting"] = post.time_of_posting
+        # print(post.)
         post_details["text"] = post.text
         post_details["is_edited"] = post.is_edited
         post_details["author__username"] = username
@@ -124,8 +125,10 @@ def find_friends(request):
 def friends_list(request):
     user = request.user
     print("Fetching friends for ", user.username)
-    friends = UserProfileInfo.objects.filter(user=user,
-                                    ).annotate(username=F('friend__username')).values("username")
+    friends = Friend.objects.filter(source__user=user).annotate(
+        username=F('destination__user__username')).values("username")
+    # friends = UserProfileInfo.objects.filter(user=user,
+                                    # )
     friends_list = list(friends)
     friends = {"friends":friends_list}
     #print(friends)
