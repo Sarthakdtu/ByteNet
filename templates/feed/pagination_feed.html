@@ -5,11 +5,11 @@
       <div class="container infinite-item" >
         <div class="card rounded border"  style="background-color: black;" >
             <h5 class="card-header h5 text-light bg-dark" style="padding-top: 0.3%; padding-bottom: 0.3%;">
-                <a href="{% url 'feed:profile_info' profile_username=post.author__username %}"
+                <a href="{% url 'feed:profile_info' profile_username=post.username %}"
                      class="text-light"
                     style="text-decoration:none">
                     
-                    <img src={{ post.profile_pic_url }} class="avatar" > {{ post.author__username }}
+                    <img src={{ post.profile_pic_url }} class="avatar" > {{ post.username }}
                     </a>
                     <a href="{% url 'post:view_post' post_id=post.pk %}" style="float: right;">
                         <img src="https://img.icons8.com/nolan/64/share.png" style="width: 80%;height: 80%;" >
@@ -42,25 +42,25 @@
                 {% if post.spotify_url %}
                 <iframe src={{post.spotify_url}} style="align-content: center; margin-left: 30%;" width="300" height="80" frameborder="0" ></iframe>
                 {% endif %}
-                {% if post.youtube_url %}
+                {% if post.youtube_video_url %}
                     {% if post.content_approved %}
                         <div >
-                            <iframe width="596" style="margin-left: 19%;" height="360" src={{ post.youtube_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="596" style="margin-left: 19%;" height="360" src={{ post.youtube_video_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     {% else %}
                     <img src="https://i.imgur.com/24zjXms.jpeg" class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">           
                     {% endif %}
                 {% endif %}
                 
-                {% if post.image %}
+                {% if post.imgur_url %}
                         <div >
-                            {% if post.approved %}
+                            {% if post.img_approved %}
                                 {% if post.is_video %}
                                     <video style="height: 50%; width:50%; align-content: center; margin-left: 20%;" controls loop autoplay>
-                                        <source src={{ post.image }} type="video/mp4" >
+                                        <source src={{ post.imgur_url }} type="video/mp4" >
                                     </video>
                                 {% else %}
-                                    <img src={{ post.image }} class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
+                                    <img src={{ post.imgur_url }} class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
                                 {% endif %}
                             {% else %}
                             <img src="https://i.imgur.com/7Yleqns.jpg" class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
