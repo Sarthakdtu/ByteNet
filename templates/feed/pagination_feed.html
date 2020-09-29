@@ -1,8 +1,8 @@
 {% extends "feed/feed.html" %}
 {% block content %}
 <div class="infinite-container">
-    {% for post in posts %}
-      <div class="container infinite-item" >
+    {% for post in posts %} 
+      <div class="container infinite-item" style="width:80%;" >
         <div class="card rounded border"  style="background-color: black;" >
             <h5 class="card-header h5 text-light bg-dark" style="padding-top: 0.3%; padding-bottom: 0.3%;">
                 <a href="{% url 'feed:profile_info' profile_username=post.username %}"
@@ -23,7 +23,7 @@
                                 {% endif %}
             </div>
             <div class="card-body container text-light" style="background-color: black;">
-                <p class="card-text container">{{ post.text }}</p>
+                <p class="card-text container" style="text-align: justify; ">{{ post.text }}</p>
                 {% if post.hashtags %}
                 {% for hashtag in post.hashtags %}
                    <a href="{% url 'post:filter_posts_hashtag' hashtag=hashtag.hashtag__keyword %}" 
@@ -33,37 +33,37 @@
                 <br> 
                 {% if post.tweet_url %}
                     <div class="container">
-                        <div style="margin-left: 20%;" >                            
+                        <div>                            
                                 {{ post.tweet_url | safe }}
                         </div>
                     </div>
                 {% endif %}
                 
                 {% if post.spotify_url %}
-                <iframe src={{post.spotify_url}} style="align-content: center; margin-left: 30%;" width="300" height="80" frameborder="0" ></iframe>
+                <iframe src={{post.spotify_url}} style="align-content: center; " width="300" height="80" frameborder="0" ></iframe>
                 {% endif %}
                 {% if post.youtube_video_url %}
                     {% if post.content_approved %}
                         <div >
-                            <iframe width="596" style="margin-left: 19%;" height="360" src={{ post.youtube_video_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="596" height="360" src={{ post.youtube_video_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     {% else %}
-                    <img src="https://i.imgur.com/24zjXms.jpeg" class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">           
+                    <img src="https://i.imgur.com/24zjXms.jpeg" class="card-img-top" style="align-content: center; ;" alt="...">           
                     {% endif %}
                 {% endif %}
                 
                 {% if post.imgur_url %}
-                        <div >
+                        <div>
                             {% if post.img_approved %}
                                 {% if post.is_video %}
-                                    <video style="height: 50%; width:50%; align-content: center; margin-left: 20%;" controls loop autoplay>
+                                    <video style=" align-content: center; ;" controls loop autoplay>
                                         <source src={{ post.imgur_url }} type="video/mp4" >
                                     </video>
                                 {% else %}
-                                    <img src={{ post.imgur_url }} class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
+                                    <img src={{ post.imgur_url }} class="card-img-top" style="align-content: center;" alt="...">
                                 {% endif %}
                             {% else %}
-                            <img src="https://i.imgur.com/7Yleqns.jpg" class="card-img-top" style="height: 50%; width:50%; align-content: center; margin-left: 20%;" alt="...">
+                            <img src="https://i.imgur.com/7Yleqns.jpg" class="card-img-top" style="align-content: center;" alt="...">
                             {% endif %}
 
                         </div>
