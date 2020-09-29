@@ -1,18 +1,26 @@
-{% extends 'accounts/base.html' %}
-{% block body_block %}
+{% extends "feed/feed.html" %}
+{% block content %}
+{% load index_tag %}
 <div class="container">
-    <h2>Your Friends</h2>
     <br>
     {% if friends_exist %}
-        {% for friend in friends %}
+    {% for i in range %}
+    {% with friends|index:i as friends_list%} 
+    <div class="row">
+        {% for friend in friends_list %}
         {% if friend.username %}
-        <h3>
+        <h3 class="col-sm">
         <a href="{% url 'feed:profile_info' profile_username=friend.username %}" class="text-light" style="text-decoration:none">
-                #{{ friend.username }}</a>
+                <img src="{{friend.profile_pic_url}}" style="width: 80%; height: 80%;">
+                <span class="text-center">@{{ friend.username }}</span> </a>
         </h3>
         {% endif %}
         <br>
         {% endfor %}
+    </div>
+    
+    {% endwith %}
+    {% endfor %}
     {% else %}
     <h4>You have no friends right now :(</h4>
     <br>
