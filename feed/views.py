@@ -103,8 +103,11 @@ def find_friends(request):
 @login_required
 def friends_list(request):
     user = request.user
-    friends = Friend.objects.filter(source__user=user).annotate(profile_pic_url=F("destination__profile_pic_url"),
-        username=F('destination__user__username')).values("username", "profile_pic_url")
+    friends = Friend.objects.filter(source__user=user).annotate(
+        first_name=F('destination__user__first_name'),
+        last_name=F('destination__user__last_name'),
+        profile_pic_url=F("destination__profile_pic_url"),
+        username=F('destination__user__username')).values("username", "profile_pic_url", "first_name", "last_name")
     friends_list = list(friends)
     friends = {"friends":friends_list}
     friends_exist = True
