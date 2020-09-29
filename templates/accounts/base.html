@@ -94,14 +94,9 @@ crossorigin="anonymous"></script>
                       
                       <li class="nav-item" >
                         <a href="{% url 'feed:profile_info' %}">
-                         <img src="https://avatars.dicebear.com/api/bottts/epic.svg" id="nav_profile_pic" class="avatar"> 
+                         <img src="{{curr_user_profile_pic_url}}" id="nav_profile_pic" class="avatar curr_user_profile_pic_url"> 
                         </a>
                       </li>
-                    </div>
-                        
-                    
-                
-
             {% else %}
                   <li class="nav-item active">
                       <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
@@ -116,53 +111,45 @@ crossorigin="anonymous"></script>
         </div>
       </nav>
 
-    <!--
-    <nav class="navbar navbar-dark bg-dark">
-      <div class="container">
-        <ul class="nav navbar-nav">
-          {# Django Home Link / Admin Link / Register Link#}
-          <li><a class="navbar-brand" href="{% url 'index' %}">@NETWORK@</a></li>
-             
-          {# Some logic on what to display for last item#}
-          {% if user.is_authenticated %}
-            <li class="nav-item active"><a href="{% url 'logout' %}">Logout</a></li>
-            <li class="nav-item active"><a href="{% url 'feed:profile_info' %}">My Profile</a></li>
-            <li class="nav-item active"><a href="{% url 'feed:friends_list' %}">Friends</a></li>
-            <li class="nav-item active"><a href="{% url 'feed:find_friends' %}">Connect</a></li>
-            <li class="nav-item active"><a href="{% url 'feed:pending_friend_requests_list' %}">Friend Requests</a></li>
-            <li class="nav-item active"><a href="{% url 'feed:sent_friend_requests_list' %}">Sent Requests</a></li>
-            <li class="nav-item active"><a href="{% url 'post:create_post' %}">New Post</a></li>
-            <li class="nav-item active"><a href="{% url 'post:posts_list' %}">My Posts</a></li>
-            <li class="nav-item active"><a href="{% url 'feed:news_feed' %}">News Feed</a></li>
-           
-          {% else %}
-            <li><a class="navbar-link" href="{% url 'accounts:register' %}">Register</a></li>  
-            <li><a class="navbar-link" href="{% url 'accounts:user_login' %}">Login</a></li>
-          {% endif %}
-        </ul>
-      </div>
-    </nav>
-  -->
-  <br>
 
-    <div class="container">
-    {% block body_block %}
-    
-    {% endblock %}
+  <br>
+  <div class="row" style="width: 100%;">   
+    {% if user.is_authenticated %}
+      <div class="col-2 ">
+        {% block menu_block %}
+          {% include "extras/menu.html" %} 
+        {% endblock %}
+      </div>
+    {% endif %}
+    <div class="col-8" >
+      {% block body_block %}
+      
+      {% endblock %}
+    </div>  
+    {% if user.is_authenticated %}
+      <div class="col-2" >
+      {% block friend_block %}
+      {% include "extras/explore.html" %} 
+      {% endblock %}
+      </div>
+    {% endif %}
+
     </div>
 
 {% include "accounts/search_script.html" %}  
 
+{% include "accounts/save_friends_script.html" %}
+{% include "accounts/load_friends_script.html" %}
+
+{% include "accounts/save_profile_pic_url_script.html" %}
+{% include "accounts/load_profile_pic_url_script.html" %}
+
 {% include "feed/share_popup.html" %}  
 
-  <script src="https://kit.fontawesome.com/55c906cc19.js" crossorigin="anonymous"></script> 
-
+<script src="https://kit.fontawesome.com/55c906cc19.js" crossorigin="anonymous"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-<!-- {% include "feed/load_profile_pic_url_script.html" %} -->
-
-
 </body>
 </html>

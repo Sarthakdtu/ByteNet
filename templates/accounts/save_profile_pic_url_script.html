@@ -1,0 +1,13 @@
+<script>
+
+$(document).ready(function(){                  
+    
+    var curr_user_profile_pic_url = '{{curr_user_profile_pic_url}}'
+    var curr_user_first_name = "{{ curr_user_first_name }}"
+    if((curr_user_first_name!=null&&curr_user_first_name!="")&&(curr_user_profile_pic_url!=null&&curr_user_profile_pic_url!="")){
+        localStorage.setItem('curr_user_first_name', curr_user_first_name );
+        localStorage.setItem('curr_user_profile_pic_url', curr_user_profile_pic_url);
+        }
+    });
+
+</script>

@@ -3,16 +3,36 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
+from django.db.models import F, Q
 from django.urls import reverse
 from accounts.forms import UserForm, UserProfileInfoForm
-from accounts.models import User, UserProfileInfo
+from accounts.models import User, UserProfileInfo, Friend
 from helpers.profile_picture_generator import generate_profile_pic
 from helpers.imgur_client import upload_image
 from post.models import Post
+from django.contrib.auth.models import AnonymousUser
 # Create your views here.
 
 def index(request):
-    return render(request, 'accounts/index.html')
+    upi = None
+    user = request.user
+    # print(type(user))
+    if str(user) != 'AnonymousUser':
+        # print("?")
+        upi = UserProfileInfo.objects.filter(user=user).annotate(curr_user_first_name=F('user__first_name'), 
+        curr_user_profile_pic_url=F('profile_pic_url')
+        ).values("curr_user_profile_pic_url", "curr_user_first_name")
+        upi = dict(upi[0])
+        upi["curr_user_friends"] = None
+        friends = Friend.objects.filter(source__user=user
+                                    ).annotate(curr_user_friend_username=F('destination__user__username'
+                                    ),curr_user_friend_profile_pic_url=F('destination__profile_pic_url') 
+                                    ).values("curr_user_friend_profile_pic_url", "curr_user_friend_username")
+        # print(friends)
+        if friends.exists():
+            upi["curr_user_friends"] = list(friends)
+    # print(upi)
+    return render(request, 'accounts/index.html', upi)
 
 @login_required
 def special(request):

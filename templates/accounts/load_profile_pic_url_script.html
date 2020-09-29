@@ -1,0 +1,11 @@
+<script>
+
+    $(document).ready(function(){                     
+            
+            var curr_user_first_name = localStorage.getItem('curr_user_first_name')
+            var curr_user_profile_pic_url = localStorage.getItem('curr_user_profile_pic_url');
+            $('.curr_user_profile_pic_url').attr('src', curr_user_profile_pic_url);
+            $('.curr_user_first_name').text(curr_user_first_name)
+        });
+        
+</script>

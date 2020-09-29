@@ -17,6 +17,7 @@ from post.models import Post, TagNotification, HashTagsPostTable, Like, TaggedPo
 @login_required
 def feed(request):
     user = request.user
+    pfp = UserProfileInfo.objects.get(user=user).profile_pic_url
     posts = Post.objects.all().order_by('-time_of_posting'
                         ).select_related("author_profile"
                         ).annotate(username=F('author_profile__user__username'
@@ -38,7 +39,7 @@ def feed(request):
     page = request.GET.get('page')
     posts_list = paginator.get_page(page)
     return render(request, 'feed/pagination_feed.html', {"posts":posts_list,
-     "curr_user_profile_pic":""})
+     "curr_user_profile_pic":pfp})
 
 @login_required
 def view_profile(request, profile_username=None):
@@ -102,8 +103,8 @@ def find_friends(request):
 @login_required
 def friends_list(request):
     user = request.user
-    friends = Friend.objects.filter(source__user=user).annotate(
-        username=F('destination__user__username')).values("username")
+    friends = Friend.objects.filter(source__user=user).annotate(profile_pic_url=F("destination__profile_pic_url"),
+        username=F('destination__user__username')).values("username", "profile_pic_url")
     friends_list = list(friends)
     friends = {"friends":friends_list}
     friends_exist = True
@@ -111,7 +112,7 @@ def friends_list(request):
         friends_exist = False
     # print(friends_exist)
     friends["friends_exist"] = friends_exist
-    # print(friends)
+    friends["range"] = range(0, len(friends_list), 3)
     return render(request, "feed/friends_list.html",friends )
     
 ################################## FRIEND REQUESTS LIST ###########################################

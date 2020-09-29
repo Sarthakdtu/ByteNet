@@ -1,0 +1,21 @@
+<script>
+
+    $(document).ready(function(){                     
+    
+            var curr_user_friends = localStorage.getItem('curr_user_friends')
+            curr_user_friends = curr_user_friends.replaceAll("'", '"');
+            curr_user_friends = JSON.parse(curr_user_friends)
+            fin = ""
+            for(var i=0;i<curr_user_friends.length;i++){
+                var str1 = "<a href=\"/home/profile/" + curr_user_friends[i]["curr_user_friend_username"]+ '\"style="color: white;">'
+                var str2 ='<img src='+ String(curr_user_friends[i]['curr_user_friend_profile_pic_url'])+' class="avatar">'
+                var str3 = curr_user_friends[i]['curr_user_friend_username']
+                fin = fin+str1+str2+str3 +'<br>'
+            }
+            friends_list_html = fin
+            $('.curr_user_frind_list').append(friends_list_html)
+
+
+        });
+        
+</script>

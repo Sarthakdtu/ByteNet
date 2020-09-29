@@ -1,0 +1,49 @@
+<div style="position: fixed; font-size: large; font-weight: bold;">
+<div class="container"  >
+    <a href="{% url 'feed:profile_info' %}" style="color: white;">
+        <img src="{{curr_user_profile_pic_url}}" class="avatar curr_user_profile_pic_url">
+        <span class="curr_user_first_name">{{curr_user_first_name}}</span> 
+    </a>
+    <br>
+    <br>
+    <a href="{% url 'feed:news_feed' %}" style="color: blueviolet; " >
+        <i class="fas fa-home" ></i>
+        Home
+    </a>
+    <br>
+    <br>
+    <a href="{% url 'feed:friends_list' %}"  style="color: blue; "> <i class="fas fa-user-friends"></i>Friends</a>
+    <br>
+    <br>
+    <a href="{% url 'post:image_gallery' %}" style="color: skyblue; ">
+        <i class="fas fa-camera-retro"></i>
+        Gallery
+    </a>
+    <br>
+    <br>
+    <a href="{% url 'post:spotify_gallery' %}" style="color: greenyellow;">
+        <i class="fas fa-music"></i>
+        Music
+    </a>
+    <br>
+    <br>
+    <a href="{% url 'post:youtube_gallery' %}" style="color: yellow;">
+        <i class="fas fa-video"></i>
+        Videos
+    </a>
+    <br>
+    <br>
+    <a href="{% url 'post:posts_list' %}" style="color: orange;">
+        <i class="fas fa-clipboard-list"></i>
+        My Bytes</a>
+    <br>
+    <br>
+    <a href="{% url 'feed:profile_info' %}" style="color: red;">
+    <i class="fas fa-cog"></i>
+    Settings
+    </a>
+    <br>
+    <br>
+
+</div>
+</div>
