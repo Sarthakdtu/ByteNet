@@ -84,13 +84,11 @@ def find_friends(request):
                                                              ).values_list("pk", flat=True)
     
     people_to_be_connected1 = list(people_to_be_connected1)
-    # print(people_to_be_connected1)
     people_to_be_connected2 = FriendRequest.objects.filter(destination=user, 
                                                           request_status=FriendRequestStatus.PENDING
                                                           ).annotate(pk=F("source__user__pk")
                                                              ).values_list("pk", flat=True)
     people_to_be_connected2 = list(people_to_be_connected2)
-    # print(people_to_be_connected2)
     friends = Friend.objects.filter(source__user=user).annotate(pk=F("destination__user__pk")).values_list('pk', flat=True)
     
     people = UserProfileInfo.objects.exclude(user__pk__in=people_to_be_connected1
@@ -101,7 +99,6 @@ def find_friends(request):
                                             ).values("username", "profile_pic_url")
                                         
     people = list(people)
-    # print(people)
     people = {"people" : people}
     return render(request, 'feed/users_list.html', people)
 
@@ -160,14 +157,15 @@ def send_friend_request(request):
         destination = User.objects.get(username=destination)
         # print(f"{source} has send a friend request to {destination}")
         try:
-            friend = FriendRequest.objects.get(source=destination, destination=source)
+            friend = FriendRequest.objects.get(source=source, destination=destination)
+            print("exists")
         except FriendRequest.DoesNotExist:
             friend = FriendRequest()
-        friend.source = source
-        friend.destination = destination
-        friend.request_status = FriendRequestStatus.PENDING
-        friend.save()
-        print("Request Sent")
+            friend.source = source
+            friend.destination = destination
+            friend.request_status = FriendRequestStatus.PENDING
+            friend.save()
+            print("Request Sent")
         return render(request, "feed/request_sent_success.html", {"destination":destination})
 
 @login_required
