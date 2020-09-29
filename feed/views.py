@@ -161,14 +161,14 @@ def send_friend_request(request):
         # print(f"{source} has send a friend request to {destination}")
         try:
             friend = FriendRequest.objects.get(source=source, destination=destination)
-            print("exists")
+            # print("exists")
         except FriendRequest.DoesNotExist:
             friend = FriendRequest()
             friend.source = source
             friend.destination = destination
             friend.request_status = FriendRequestStatus.PENDING
             friend.save()
-            print("Request Sent")
+            # print("Request Sent")
         return render(request, "feed/request_sent_success.html", {"destination":destination})
 
 @login_required
