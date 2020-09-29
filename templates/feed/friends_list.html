@@ -1,21 +1,30 @@
-{% extends "feed/feed.html" %}
-{% block content %}
+{% extends "accounts/base.html" %}
+{% block body_block %}
 {% load index_tag %}
 <div class="container">
     <br>
     {% if friends_exist %}
     {% for i in range %}
     {% with friends|index:i as friends_list%} 
-    <div class="row">
+    <div class="row container">
         {% for friend in friends_list %}
         {% if friend.username %}
-        <h3 class="col-sm">
-        <a href="{% url 'feed:profile_info' profile_username=friend.username %}" class="text-light" style="text-decoration:none">
-                <img src="{{friend.profile_pic_url}}" style="width: 80%; height: 80%;">
-                <span class="text-center">@{{ friend.username }}</span> </a>
-        </h3>
+        <div class="col-sm container" style="text-align: center;border: solid white 1px;">
+            <div class="cotainer">
+                <img class="container" src="{{friend.profile_pic_url}}" style=" margin-top: 9px; width: 80%; height: 80%;">
+                <br>
+                <span class="container" style="margin-top: 9px;" >{{ friend.first_name }} {{friend.last_name}}</span> 
+                <br>
+                <a href="{% url 'feed:profile_info' profile_username=friend.username %}" 
+                class="btn btn-outline-warning" style="text-decoration:none">
+                View Profile
+                </a>
+                <br>
+                </div>
+        </div>
+        <span> </span>
         {% endif %}
-        <br>
+        <br><br>
         {% endfor %}
     </div>
     

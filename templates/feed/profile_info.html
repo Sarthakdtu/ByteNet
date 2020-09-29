@@ -2,25 +2,32 @@
 {% block body_block %}
 
 <div class="container">
-    {% if current_user %}
-    <h2>That's You</h2>
-    {% else %}
-    <h2>Profile of {{ username }}</h2>
-    {% endif %}
-    <div class="profile_info">
-            <h3>Name: {{ name }}</h3>
-            <h3>Username: {{ username }}</h3>
-            <h3>Email: {{ email }}</h3>
-            <h3>Age: {{ age }}</h3>
-            <h3>Location: {{ location }}</h3>
-    </div>
-    <div>
-        <img class="profile_pic_display" src={{ profile_pic_url }}  > 
+    <div class="">
+        <div class="row col-sm-12">
+            <img class="profile_pic_display" src={{ profile_pic_url }} style="  display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;" > 
+        </div>
+        <br>
+        <div class="profile_info row container col-sm-12" style="text-align: center;">
+                <h4 class="container">{{ name }}</h4>
+                
+   
+                <h4 class="container">@{{ username }}</h4>
+   
+                <h4 class="container">Email: {{ email }}</h4>
+   
+                <h4 class="container">{{ age }} years old</h4>
+   
+                <h4 class="container">From {{ location }}</h4>
+        </div>
+       
     </div>
     <br>
     <br>
    
-    <a href="{% url 'post:posts_list' author=username %}" class="btn btn-success">View Posts</a>
+    <a href="{% url 'post:posts_list' author=username %}" class="container btn btn-success">View Posts</a>
     <br>
     <br>
     {% if current_user %}
