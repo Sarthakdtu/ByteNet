@@ -17,6 +17,7 @@ from post.models import Post, TagNotification, HashTagsPostTable, Like, TaggedPo
 @login_required
 def feed(request):
     user = request.user
+    pfp = UserProfileInfo.objects.get(user=user).profile_pic_url
     posts = Post.objects.all().order_by('-time_of_posting'
                         ).select_related("author_profile"
                         ).annotate(username=F('author_profile__user__username'
@@ -38,7 +39,7 @@ def feed(request):
     page = request.GET.get('page')
     posts_list = paginator.get_page(page)
     return render(request, 'feed/pagination_feed.html', {"posts":posts_list,
-     "curr_user_profile_pic":""})
+     "curr_user_profile_pic":pfp})
 
 @login_required
 def view_profile(request, profile_username=None):

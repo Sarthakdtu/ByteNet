@@ -1,0 +1,11 @@
+<script>
+
+    $(document).ready(function(){                  
+        
+        var curr_user_friends = "{{ curr_user_friends | safe }}"
+        if(curr_user_friends){
+            localStorage.setItem('curr_user_friends',curr_user_friends);
+            }
+        });
+    
+    </script>

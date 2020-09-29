@@ -5,26 +5,15 @@
 <!-- <h5 >This is what everyone's "byting" . . . .</h5> -->
 <div class="container" style="color: black;">
             <div class="container text-light">
-                    {% for i in num_posts %}
-                        <div class="row" style="font-size: xx-large; text-align: center;">   
-                            {% with posts|index:i as post_list%} 
-                            
-                            {% for post in post_list %}
-                            <div class="col-sm">
-                                <div >
-                                    <iframe width="300" height="360" src={{ post.youtube_video_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                    <a href="{% url 'post:view_post' post_id=post.pk %}" style="text-decoration: none;" 
-                                    class="btn btn-primary ">
-                                    <i class="fas fa-eye"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            {% endwith %}
-                        </div>
-                        <br>
-                       
-                    {% endfor %}
+                {% for post in posts %}
+                <div class="container text-center" >
+                    <iframe width="700" height="460" src={{ post.youtube_video_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <a href="{% url 'post:view_post' post_id=post.pk %}" style="text-decoration: none;" 
+                    class="btn btn-block btn-outline-primary ">
+                    Go to post
+                    </a><br>
+                </div>
+                {% endfor %}
                 </div>
 </div>
 {% endblock %}
