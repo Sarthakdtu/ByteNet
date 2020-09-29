@@ -81,22 +81,27 @@ def find_friends(request):
     people_to_be_connected1 = FriendRequest.objects.filter(source=user,
                                          request_status__in=[FriendRequestStatus.DECLINED, FriendRequestStatus.PENDING]
                                                              ).annotate(pk=F("destination__user__pk")
-                                                             ).values("pk")
+                                                             ).values_list("pk", flat=True)
+    
+    people_to_be_connected1 = list(people_to_be_connected1)
     # print(people_to_be_connected1)
     people_to_be_connected2 = FriendRequest.objects.filter(destination=user, 
                                                           request_status=FriendRequestStatus.PENDING
                                                           ).annotate(pk=F("source__user__pk")
-                                                             ).values("pk")
+                                                             ).values_list("pk", flat=True)
+    people_to_be_connected2 = list(people_to_be_connected2)
     # print(people_to_be_connected2)
-    friends = Friend.objects.filter(source__user=user).annotate(pk=F("destination__user__pk")).values_list('pk')
-
+    friends = Friend.objects.filter(source__user=user).annotate(pk=F("destination__user__pk")).values_list('pk', flat=True)
+    
     people = UserProfileInfo.objects.exclude(user__pk__in=people_to_be_connected1
                                             ).exclude(user__pk__in=people_to_be_connected2
                                             ).exclude(user__pk__in=friends
                                             ).exclude(user=user
                                             ).annotate(username=F('user__username')
                                             ).values("username", "profile_pic_url")
+                                        
     people = list(people)
+    # print(people)
     people = {"people" : people}
     return render(request, 'feed/users_list.html', people)
 
@@ -140,7 +145,7 @@ def sent_friend_requests(request):
                                           FriendRequestStatus.DECLINED]
                                           ).annotate(friend__username=F("destination__username")
                                           ).values("friend__username")
-    print(sent_requests)
+    # print(sent_requests)
     if not sent_requests:
          show = False
     sent_requests = {"sent_requests": list(sent_requests), "pending":False, "sent":True, "show":show}
@@ -153,7 +158,7 @@ def send_friend_request(request):
         source = request.user
         destination = request.POST.get("username")
         destination = User.objects.get(username=destination)
-        print(f"{source} has send a friend request to {destination}")
+        # print(f"{source} has send a friend request to {destination}")
         try:
             friend = FriendRequest.objects.get(source=destination, destination=source)
         except FriendRequest.DoesNotExist:
