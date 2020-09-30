@@ -3,6 +3,7 @@ from post.models import Post, HashTags, HashTagsPostTable
 from scripts.get_reddit_content import *
 from django.utils import timezone
 import random
+from scripts.probability_generator import get_prob
 
 def create_bot_posts():
     nature_tag = HashTags.objects.get(keyword="nature")
@@ -31,11 +32,13 @@ def create_bot_posts():
     arch_images = get_arch_images()
     house_images = get_house_images()
 
-    contents = quotes + til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
+    contents = quotes + house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
     print(len(contents))
     random.shuffle(contents)
     if contents:
         for content in contents:
+            if not get_prob():
+                continue
             try:
                 user = random.choice(users)
                 url = content["url"]
@@ -44,12 +47,14 @@ def create_bot_posts():
                     if ext != "jpg":
                         continue
                 approved = content["url"] is not None
+                post = Post.objects.filter(text=content["text"])
+                if post.exists():
+                    print("This post exists")
+                    continue
                 post = Post.objects.get_or_create(author_profile=user, author=user.user, 
                                         text=content["text"], time_of_posting=timezone.now(), 
                                         img_approved=approved, imgur_url=content["url"])
-                if not post[1]:
-                    print("This post exists")
-                    continue
+
                 if content["type"] == "q":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=quote_tag)
                 if content["type"] == "p":
