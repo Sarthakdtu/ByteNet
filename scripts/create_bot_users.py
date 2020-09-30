@@ -3,7 +3,7 @@ from accounts.models import User, UserProfileInfo as upi, Friend
 from scripts.generate_user import get_random_user
 from scripts.probability_generator import get_prob as prob
 
-def create_post_users():
+def create_bot_users():
     for i in range(0, 10):
         if not prob():
             continue
