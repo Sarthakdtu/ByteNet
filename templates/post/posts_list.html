@@ -3,21 +3,22 @@
 {% if mention %}
     <h2>You were mentioned in these posts</h2>
     <br>
-        <div class="container">
+        <div class="container ">
             {% if posts_exist %}
                 {% for post in posts %}
-                    <div class="container">
+                    <div class="container"  style="background-color: black;">
                         <div class="card">
                             <h4 class="card-header h4 bg-dark text-light">
                                 <a href="{% url 'feed:profile_info' profile_username=post.post__author__username %}" class="text-light"
                                     style="text-decoration:none">
-                                    <img src={{ profile_pic_url }} class="avatar" > {{ post.post__author__username }}
+                                    <img src={{ profile_pic_url }} class="avatar" > 
+                                    {{ post.post__author__username }}
                                 </a>
                             </h4>
 
-                            <h6 class="panel-success">{{ post.post__time_of_posting }} </h6>
-                            <div class="card-body bg-light">
-                                <h3 class="card-text">{{ post.post__text }}</h3>
+                            <h6 class="panel-success"  style="background-color: black;">{{ post.post__time_of_posting }} </h6>
+                            <div class="card-body"  style="background-color: black;">
+                                <h3 class="card-text" >{{ post.post__text }}</h3>
                             </div>
 
                         </div>

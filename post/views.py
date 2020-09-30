@@ -106,13 +106,12 @@ def create_post(request):
 
 def view_post(request, post_id):
     post_object = None
-    user =request.user
+    user = request.user
     try:
         post_object = Post.objects.get(pk=post_id)
     except Post.DoesNotExist:
         return render(request, "post/post_not_found.html", {})
     if post_object:
-        # print(post_object)
         post = Post.objects.filter(pk=post_id).annotate(
             username=F('author_profile__user__username'), profile_pic_url=F('author_profile__profile_pic_url'), 
             ).values("profile_pic_url", "username", "pk", "text", 
@@ -129,7 +128,7 @@ def view_post(request, post_id):
         if not post["liked"]:
             post["disliked"] = Dislike.objects.filter(post=post_object, user__user__username=user.username).exists()
         post["hashtags"] = HashTagsPostTable.objects.filter(post=post_object).values("hashtag__keyword")
-        current_user = False
+        current_user = user.username == post["username"]
         return render(request, "post/view_post.html", {"post":post, "current_user":current_user})
     else:
         return render(request, "post/post_not_found.html", {})
