@@ -8,6 +8,7 @@ class UserProfileInfo(models.Model):
     age = models.IntegerField(blank=True, default=13)
     num_friends = models.IntegerField(default=0)
     profile_pic_url = models.URLField(default="https://avatars.dicebear.com/api/bottts/ssaa.svg")
+    is_bot = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
