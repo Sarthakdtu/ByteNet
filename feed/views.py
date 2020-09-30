@@ -80,13 +80,13 @@ def find_friends(request):
     username = user.username
     people_to_be_connected1 = FriendRequest.objects.filter(source=user,
                                          request_status__in=[FriendRequestStatus.DECLINED, FriendRequestStatus.PENDING]
-                                                             ).annotate(pk=F("destination__user__pk")
+                                                             ).annotate(pk=F("destination__pk")
                                                              ).values_list("pk", flat=True)
     
     people_to_be_connected1 = list(people_to_be_connected1)
     people_to_be_connected2 = FriendRequest.objects.filter(destination=user, 
                                                           request_status=FriendRequestStatus.PENDING
-                                                          ).annotate(pk=F("source__user__pk")
+                                                          ).annotate(pk=F("source__pk")
                                                              ).values_list("pk", flat=True)
     people_to_be_connected2 = list(people_to_be_connected2)
     friends = Friend.objects.filter(source__user=user).annotate(pk=F("destination__user__pk")).values_list('pk', flat=True)
@@ -95,11 +95,11 @@ def find_friends(request):
                                             ).exclude(user__pk__in=people_to_be_connected2
                                             ).exclude(user__pk__in=friends
                                             ).exclude(user=user
-                                            ).annotate(username=F('user__username')
-                                            ).values("username", "profile_pic_url")
-                                        
+                                            ).annotate(username=F('user__username'),pk=F("user__pk"), 
+                                            first_name=F('user__first_name'), last_name=F('user__last_name')
+                                            ).values("username", "profile_pic_url", "first_name", "last_name", "pk")   
     people = list(people)
-    people = {"people" : people}
+    people = {"people" : people, "range":range(0, len(people), 3)}
     return render(request, 'feed/users_list.html', people)
 
 @login_required
@@ -132,6 +132,7 @@ def pending_friend_requests(request):
                                     ).annotate(username=F('source__username')).values("username")
     if not pending_requests:
         show = False
+    # print(pending_requests)
     pending_requests = {"pending_requests": list(pending_requests), "pending":True, "sent":False, "show":show}
     return render(request, "feed/friend_requests_list.html", pending_requests)
 
@@ -158,7 +159,7 @@ def send_friend_request(request):
         source = request.user
         destination = request.POST.get("username")
         destination = User.objects.get(username=destination)
-        # print(f"{source} has send a friend request to {destination}")
+        print(f"{source} has send a friend request to {destination}")
         try:
             friend = FriendRequest.objects.get(source=source, destination=destination)
             # print("exists")

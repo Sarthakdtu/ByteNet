@@ -11,3 +11,4 @@ secrets.py
 imgur_client.py
 static/admin/
 staticfiles/
+scripts/reddit_secret.py
