@@ -1,8 +1,8 @@
+import random
 from accounts.models import UserProfileInfo, User
 from post.models import Post, HashTags, HashTagsPostTable
 from scripts.get_reddit_content import *
 from django.utils import timezone
-import random
 from scripts.probability_generator import get_prob
 
 def create_bot_posts():
@@ -51,7 +51,7 @@ def create_bot_posts():
                 if post.exists():
                     print("This post exists")
                     continue
-                post = Post.objects.get_or_create(author_profile=user, author=user.user, 
+                post = Post.objects.create(author_profile=user, author=user.user, 
                                         text=content["text"], time_of_posting=timezone.now(), 
                                         img_approved=approved, imgur_url=content["url"])
 
