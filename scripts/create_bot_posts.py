@@ -4,6 +4,7 @@ from post.models import Post, HashTags, HashTagsPostTable, TaggedPost, TagNotifi
 from scripts.get_reddit_content import *
 from django.utils import timezone
 from scripts.probability_generator import get_prob
+from helpers.link_preview_generator import get_link_preview
 
 def create_bot_posts():
     users = list(UserProfileInfo.objects.filter(is_bot=True))
@@ -17,6 +18,7 @@ def create_bot_posts():
     quote_tag = HashTags.objects.get(keyword="quote")
     plant_tag = HashTags.objects.get(keyword="plants")
     bot_tag = HashTags.objects.get(keyword="bot_post")
+    news_tag = HashTags.objects.get(keyword="news")
     til_tag = HashTags.objects.get(keyword="todayilearned")
 
     quotes = get_quotes()
@@ -29,8 +31,9 @@ def create_bot_posts():
     mosnter_images = get_monster_images()
     arch_images = get_arch_images()
     house_images = get_house_images()
+    news = get_news()
 
-    contents = quotes + house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
+    contents = quotes +news + house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
     print(len(contents))
     random.shuffle(contents)
     if contents:
@@ -42,7 +45,7 @@ def create_bot_posts():
                 url = content["url"]
                 if url:
                     ext = url[-3:]
-                    if ext != "jpg":
+                    if content["type"]!="news" and ext != "jpg":
                         continue
                 approved = content["url"] is not None
                 post = Post.objects.filter(text=content["text"])
@@ -51,7 +54,14 @@ def create_bot_posts():
                     continue
                 post = Post.objects.create(author_profile=user, author=user.user, 
                                         text=content["text"], time_of_posting=timezone.now(), 
-                                        img_approved=approved, imgur_url=content["url"])
+                                        )
+                if content["type"] != "news":
+                    post.imgur_url = content["url"]
+                    post.img_approved=approved
+                else:
+                    post.article_link = content["url"]
+                    post.article_preview = get_link_preview(content["url"])
+                post.save()
                 friends = Friend.objects.filter(source=user)
                 if friends.exists():
                     friends = list(friends)
@@ -60,7 +70,7 @@ def create_bot_posts():
                     for friend in friends:
                         _ = TaggedPost.objects.create(post=post, user=friend.destination)
                         if not friend.destination.is_bot:
-                            _ = TagNotification.objects.create(post=post, tagged_user=friend.destination.user)
+                            _ = TagNotification.objects.create(post=post, time_of_tagging=timezone.now() ,tagged_user=friend.destination.user)
                             print("Tagged a real user")
                         print(f"Tagging {friend.destination.user.username}")
                 if content["type"] == "q":
@@ -83,6 +93,8 @@ def create_bot_posts():
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=arch_tag)
                 if content["type"] == "m":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=monster_tag)
+                if content["type"] == "news":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=news_tag)
                 _ = HashTagsPostTable.objects.create(post=post, hashtag=bot_tag)
                 print("posted ", post.pk)
             except Exception as e:

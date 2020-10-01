@@ -29,6 +29,10 @@
                     </div>
                        <div class="card-body" style="background-color: black;">
                            <p class="card-text">{{ post.text }}</p>
+
+                           {% if post.article_preview %}
+                                {{ post.article_preview | safe }}
+                            {% endif %}
                            {% for hashtag in post.hashtags %}
                            <a href="{% url 'post:filter_posts_hashtag' hashtag=hashtag.hashtag__keyword %}" 
                           style="text-decoration: none;">#{{hashtag.hashtag__keyword}}</a>
@@ -69,8 +73,9 @@
                                     <img src=https://i.imgur.com/7Yleqns.jpg class="card-img-top" alt="...">
                                 {% endif %}
                             </div>
+                            
                         {% endif %}
-                       
+                        
                         <div class="d-flex flex-row text-dark bg-info">
                                 {% for person in post.tagged_users %}    
                                 <div class="p-1">

@@ -111,3 +111,12 @@ def get_monster_images():
     for post in posts:
         images.append({"url":post.url, "text":post.title, "type":"m"})
     return images
+
+def get_news():
+    subreddit = reddit.subreddit('news')
+    top_subreddit = subreddit.hot(limit = 10)
+    posts = [i for i in top_subreddit]
+    links = list()
+    for post in posts:
+        links.append({"url":post.url, "text":post.title, "type":"news"})
+    return links
