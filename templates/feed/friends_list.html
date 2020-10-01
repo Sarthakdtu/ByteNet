@@ -29,10 +29,6 @@
     
     {% endwith %}
     {% endfor %}
-    {% else %}
-    <h4>You have no friends right now :(</h4>
-    <br>
-    <h5>Don't worry! Let's find you some friends</h5>
     <br>
     <a class="btn btn-primary" href="{% url 'feed:find_friends' %}">Find Friends</a>
     {% endif %}

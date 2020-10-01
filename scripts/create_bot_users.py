@@ -14,5 +14,3 @@ def create_bot_users():
             profile = upi.objects.create(user=new_user, age=user["age"], location=user["location"], 
                                             profile_pic_url=user["profile_pic_url"], is_bot=True)
             print("User created with username ", user["username"])
-
-create_bot_users()

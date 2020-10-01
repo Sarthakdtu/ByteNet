@@ -72,10 +72,10 @@
                         {% endif %}
                        
                         <div class="d-flex flex-row text-dark bg-info">
-                                {% for tag_username in post.tags__username %}    
-                                <div class="p-2 h5">
-                                        <a href="{% url 'feed:profile_info' profile_username=tag_username %}" class="text-dark" style="text-decoration:none">
-                                            @{{ tag_username }}
+                                {% for person in post.tagged_users %}    
+                                <div class="p-1">
+                                        <a href="{% url 'feed:profile_info' profile_username=person.tag_username %}" class="text-dark" style="text-decoration:none">
+                                            @{{ person.tag_username }}
                                         </a>
                                 </div>
                                 {% endfor %}  

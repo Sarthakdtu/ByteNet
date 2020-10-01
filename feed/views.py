@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
+from django.contrib.admin.views.decorators import staff_member_required
 from accounts.models import User, UserProfileInfo, Friend
 from constants.constants import FriendRequestStatus
 from django.core.paginator import Paginator
@@ -103,8 +104,12 @@ def find_friends(request):
     return render(request, 'feed/users_list.html', people)
 
 @login_required
-def friends_list(request):
-    user = request.user
+def friends_list(request, username=None):
+    user = None
+    if username:
+        user = User.objects.get(username=username)
+    else:
+        user = request.user
     friends = Friend.objects.filter(source__user=user).annotate(
         first_name=F('destination__user__first_name'),
         last_name=F('destination__user__last_name'),
@@ -115,9 +120,8 @@ def friends_list(request):
     friends_exist = True
     if not friends:
         friends_exist = False
-    # print(friends_exist)
     friends["friends_exist"] = friends_exist
-    friends["range"] = range(0, len(friends_list), 3)
+    friends["range"] = range(0, min(len(friends_list), 100), 3)
     return render(request, "feed/friends_list.html",friends )
     
 ################################## FRIEND REQUESTS LIST ###########################################
@@ -229,6 +233,18 @@ def search(request):
     users["user_exist"] = user_exist
     users["keyword"] = keyword
     return render(request, "feed/search_list.html", users )
+
+@staff_member_required
+def get_not_bots(request):
+    people = UserProfileInfo.objects.exclude(is_bot=True
+                                            ).annotate(username=F('user__username'), 
+                                            first_name=F('user__first_name'),
+                                            last_name=F('user__last_name')
+                                            ).values("username",
+                                             "profile_pic_url", "first_name", "last_name")   
+    people = list(people)
+    people = {"people" : people, "range":range(0, len(people), 3)}
+    return render(request, 'feed/users_list.html', people)
 
 ##################################### HANDLING ERRORS #################################################
 #TODO
