@@ -18,7 +18,7 @@ def create_bot_posts():
     quote_tag = HashTags.objects.get(keyword="quote")
     plant_tag = HashTags.objects.get(keyword="plants")
     bot_tag = HashTags.objects.get(keyword="bot_post")
-    news_tag = HashTags.objects.get(keyword="news")
+    # news_tag = HashTags.objects.get(keyword="news")
     til_tag = HashTags.objects.get(keyword="todayilearned")
 
     quotes = get_quotes()
@@ -31,9 +31,9 @@ def create_bot_posts():
     mosnter_images = get_monster_images()
     arch_images = get_arch_images()
     house_images = get_house_images()
-    news = get_news()
+    # news = get_news()
 
-    contents = quotes +news + house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
+    contents = quotes + house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
     print(len(contents))
     random.shuffle(contents)
     if contents:
