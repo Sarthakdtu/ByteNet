@@ -1,6 +1,8 @@
 import requests
 from constants.secrets import LINK_PREVIEW_KEY
 def get_link_preview(link):
+    if not link:
+        return None
     url = "http://api.linkpreview.net/?key=" + LINK_PREVIEW_KEY  + "&q=" + link
     res = requests.get(url).json()
     html= f"""

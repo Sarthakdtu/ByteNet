@@ -78,9 +78,11 @@ def create_post(request):
         try:
             article_url = request.POST['article_url']
             print(article_url)
-            article_preview = get_link_preview(article_url)
-            post.article_link = article_url
-            post.article_preview = article_preview
+            if article_url:
+                article_preview = get_link_preview(article_url)
+                if article_preview:
+                    post.article_link = article_url
+                    post.article_preview = article_preview
         except Exception as e:
             print(e)
         post.save()
