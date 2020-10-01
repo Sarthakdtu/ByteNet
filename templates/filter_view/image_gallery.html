@@ -11,7 +11,7 @@
                                 <div >
                                     <a href="{% url 'post:view_post' post_id=post.pk %}" style="text-decoration: none;">
                                     {% if post.is_video %}
-                                        <video  controls loop autoplay>
+                                        <video  controls loop >
                                         <source src={{ post.imgur_url }} type="video/mp4" >
                                         </video>
                                     {% else %}

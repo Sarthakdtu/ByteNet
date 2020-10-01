@@ -22,7 +22,7 @@ def feed(request):
                         ).select_related("author_profile"
                         ).annotate(username=F('author_profile__user__username'
                                             ), profile_pic_url=F('author_profile__profile_pic_url'), 
-                        ).values("profile_pic_url", "username", "pk", "text", "time_of_posting",
+                        ).values("profile_pic_url", "username", "pk", "text", "time_of_posting", "is_video",
                                 "is_edited", "tweet_url", "spotify_url", "num_likes", "num_dislikes", 
                                 "youtube_video_url", "img_approved", "content_approved", "imgur_url",)
     posts_list = list()

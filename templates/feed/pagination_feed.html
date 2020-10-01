@@ -56,7 +56,7 @@
                         <div>
                             {% if post.img_approved %}
                                 {% if post.is_video %}
-                                    <video style=" align-content: center; ;" controls loop autoplay>
+                                    <video style=" align-content: center;" controls loop>
                                         <source src={{ post.imgur_url }} type="video/mp4" >
                                     </video>
                                 {% else %}
