@@ -19,6 +19,8 @@ class Post(models.Model):
     spotify_url = models.URLField(default=None, null=True, blank=True)
     num_likes = models.IntegerField(default=0)
     num_dislikes = models.IntegerField(default=0)
+    article_link = models.URLField(default=None, null=True, blank=True)
+    article_preview = models.TextField(default=None, null=True, blank=True)
 
     def total_likes(self):
         return self.likes.count()

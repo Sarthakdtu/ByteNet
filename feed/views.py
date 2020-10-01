@@ -25,7 +25,7 @@ def feed(request):
                                             ), profile_pic_url=F('author_profile__profile_pic_url'), 
                         ).values("profile_pic_url", "username", "pk", "text", "time_of_posting", "is_video",
                                 "is_edited", "tweet_url", "spotify_url", "num_likes", "num_dislikes", 
-                                "youtube_video_url", "img_approved", "content_approved", "imgur_url",)
+                                "youtube_video_url", "img_approved", "content_approved", "imgur_url","article_preview")
     posts_list = list()
     for post in posts:
         post["liked"] = Like.objects.filter(post__pk=post["pk"], user__user__username=user.username).exists()
