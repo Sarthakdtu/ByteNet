@@ -6,7 +6,7 @@ def create_friends():
     import random
     users = list(UserProfileInfo.objects.filter(is_bot=True))
     for user in users:
-        if get_prob():
+        if get_prob() and get_prob() and get_prob():
             continue
         friend_req = FriendRequest.objects.filter(destination=user.user)
         if friend_req.exists():
