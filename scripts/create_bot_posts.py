@@ -1,11 +1,12 @@
 import random
-from accounts.models import UserProfileInfo, User
-from post.models import Post, HashTags, HashTagsPostTable
+from accounts.models import UserProfileInfo, User, Friend
+from post.models import Post, HashTags, HashTagsPostTable, TaggedPost, TagNotification
 from scripts.get_reddit_content import *
 from django.utils import timezone
 from scripts.probability_generator import get_prob
 
 def create_bot_posts():
+    users = list(UserProfileInfo.objects.filter(is_bot=True))
     nature_tag = HashTags.objects.get(keyword="nature")
     monster_tag = HashTags.objects.get(keyword="monster")
     sky_tag = HashTags.objects.get(keyword="sky")
@@ -18,9 +19,6 @@ def create_bot_posts():
     bot_tag = HashTags.objects.get(keyword="bot_post")
     til_tag = HashTags.objects.get(keyword="todayilearned")
 
-    users = list(UserProfileInfo.objects.filter(is_bot=True))
-
-    # users = random.sample(users, 10)
     quotes = get_quotes()
     til_facts = get_til()
     nature_images = get_earth_images()
@@ -54,7 +52,17 @@ def create_bot_posts():
                 post = Post.objects.create(author_profile=user, author=user.user, 
                                         text=content["text"], time_of_posting=timezone.now(), 
                                         img_approved=approved, imgur_url=content["url"])
-
+                friends = Friend.objects.filter(source=user)
+                if friends.exists():
+                    friends = list(friends)
+                    l = len(friends)
+                    friends = random.sample(friends, min(l, 4))
+                    for friend in friends:
+                        _ = TaggedPost.objects.create(post=post, user=friend.destination)
+                        if not friend.destination.is_bot:
+                            _ = TagNotification.objects.create(post=post, tagged_user=friend.destination.user)
+                            print("Tagged a real user")
+                        print(f"Tagging {friend.destination.user.username}")
                 if content["type"] == "q":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=quote_tag)
                 if content["type"] == "p":

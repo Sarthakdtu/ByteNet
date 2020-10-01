@@ -72,7 +72,7 @@
             <div class="d-flex flex-row text-dark bg-info">
                 {% for tag in post.tags %}
 
-                <div class="p-2 h5">
+                <div class="p-1">
                     <a href="{% url 'feed:profile_info' profile_username=tag.username %}" class="text-dark"
                         style="text-decoration:none">
                         @{{ tag.username }}

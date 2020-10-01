@@ -120,9 +120,9 @@ def view_post(request, post_id):
         tagged_users = list()
         post = dict(post[0])
         tagged_users = list(TaggedPost.objects.filter(post=post_object
-        ).annotate(username=F('user__user__username')
-        ).values("username"))
-        post["tags_username"] = tagged_users
+        ).annotate(tag_username=F('user__user__username')
+        ).values("tag_username"))
+        post["tagged_users"] = tagged_users
         post["liked"] = Like.objects.filter(post=post_object, user__user__username=user.username).exists()
         # print(post["liked"])
         if not post["liked"]:
