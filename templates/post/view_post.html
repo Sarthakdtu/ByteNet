@@ -59,7 +59,7 @@
                             <div >
                                 {% if post.img_approved %}
                                     {% if post.is_video %}
-                                        <video autoplay controls loop>
+                                        <video controls loop>
                                             <source src={{post.imgur_url}} type="video/mp4">
                                         </video>
                                     {% else %}
