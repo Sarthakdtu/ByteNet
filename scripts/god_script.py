@@ -13,5 +13,6 @@ def get_this_bread():
         like_dislike()
         trending()
     except Exception as e:
-        res = e
+        print("Error", e)
+        res = str(e)
     return res

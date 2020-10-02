@@ -61,7 +61,7 @@ def create_bot_posts():
                     ext = url[-3:]
                     if (content["type"]!="gnews" and content["type"]!="news" and content["type"] != "tech") and ext != "jpg":
                         continue
-                approved = content["url"] is not None
+
                 post = Post.objects.filter(text=content["text"])
                 if post.exists():
                     print("This post exists")
@@ -69,12 +69,17 @@ def create_bot_posts():
                 post = Post.objects.create(author_profile=user, author=user.user, 
                                         text=content["text"], time_of_posting=timezone.now(), 
                                         )
-                if content["type"] != "news" and content["type"] != "tech" and content["type"]!="gnews":
-                    post.imgur_url = content["url"]
-                    post.img_approved=approved
-                else:
+                if content["type"] == "news" or content["type"] == "tech" or content["type"] == "gnews":
                     post.article_link = content["url"]
-                    post.article_preview = get_link_preview(content["url"])
+                    # print(content["url"])
+                    preview = get_link_preview(content["url"])
+                    # print(preview)
+                    if preview:
+                        post.article_preview = get_link_preview(content["url"])
+                else:
+                    if content["url"][-3:] == "jpg":
+                        post.imgur_url = content["url"]
+                        post.img_approved = True
                 post.save()
                 friends = Friend.objects.filter(source=user)
                 if friends.exists():

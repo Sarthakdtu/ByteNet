@@ -36,7 +36,7 @@ def feed(request):
         post["tags"] = TaggedPost.objects.filter(post__pk=post["pk"]
                                     ).annotate(username=F('user__user__username')
                                     ).values("username")
-    paginator = Paginator(posts, 100)
+    paginator = Paginator(posts, 50)
     page = request.GET.get('page')
     posts_list = paginator.get_page(page)
     return render(request, 'feed/pagination_feed.html', {"posts":posts_list,
