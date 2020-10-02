@@ -55,3 +55,7 @@ class HashTags(models.Model):
 class HashTagsPostTable(models.Model):
     hashtag = models.ForeignKey(HashTags, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
+class Trending(models.Model):
+    hashtag = models.ForeignKey(HashTags, on_delete=models.CASCADE)

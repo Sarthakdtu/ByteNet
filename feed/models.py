@@ -16,11 +16,3 @@ class FriendRequest(models.Model):
     request_status = models.CharField(max_length=30, choices=((FriendRequestStatus.DECLINED, 'declined'),
         (FriendRequestStatus.PENDING, 'pending'),
         (FriendRequestStatus.BLOCKED, 'blocked')), db_index=True)
-
-    
-
-
-
-
-
-

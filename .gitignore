@@ -12,3 +12,4 @@ imgur_client.py
 static/admin/
 staticfiles/
 scripts/reddit_secret.py
+db.sqlite3-journal

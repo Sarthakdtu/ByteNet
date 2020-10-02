@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Q
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
-
+from scripts.god_script import get_this_bread
 from django.contrib.admin.views.decorators import staff_member_required
 from accounts.models import User, UserProfileInfo, Friend
 from constants.constants import FriendRequestStatus
@@ -36,7 +36,7 @@ def feed(request):
         post["tags"] = TaggedPost.objects.filter(post__pk=post["pk"]
                                     ).annotate(username=F('user__user__username')
                                     ).values("username")
-    paginator = Paginator(posts, 30)
+    paginator = Paginator(posts, 100)
     page = request.GET.get('page')
     posts_list = paginator.get_page(page)
     return render(request, 'feed/pagination_feed.html', {"posts":posts_list,
@@ -245,6 +245,12 @@ def get_not_bots(request):
     people = list(people)
     people = {"people" : people, "range":range(0, len(people), 3)}
     return render(request, 'feed/users_list.html', people)
+
+
+@staff_member_required
+def god_script(request):
+    res = get_this_bread()
+    return JsonResponse({"message":res})
 
 ##################################### HANDLING ERRORS #################################################
 #TODO
