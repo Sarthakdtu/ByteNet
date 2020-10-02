@@ -11,7 +11,7 @@ def get_link_preview(link):
         width: 50%;
         border: 1px solid skyblue;
         padding: 10px; 
-        font-size:small;'>{res['title']} <br>
+        font-size:small;'> <a href={res['url']} target='__blank' style='color:blueviolet;' >{res['title']} </a><br>
          <span style='font-size:xx-small; text-color:white;'>
          {res['description']} </span>
          <br> 

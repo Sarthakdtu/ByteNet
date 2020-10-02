@@ -18,8 +18,14 @@ def create_bot_posts():
     quote_tag = HashTags.objects.get(keyword="quote")
     plant_tag = HashTags.objects.get(keyword="plants")
     bot_tag = HashTags.objects.get(keyword="bot_post")
-    # news_tag = HashTags.objects.get(keyword="news")
+    news_tag = HashTags.objects.get(keyword="news")
     til_tag = HashTags.objects.get(keyword="todayilearned")
+    think_tag = HashTags.objects.get(keyword="think")
+    memes_tag = HashTags.objects.get(keyword="memes")
+    harry_tag = HashTags.objects.get(keyword="harrypotter")
+    tech_tag = HashTags.objects.get(keyword="technews")
+    data_tag = HashTags.objects.get(keyword="data")
+    game_tag = HashTags.objects.get(keyword="games")
 
     quotes = get_quotes()
     til_facts = get_til()
@@ -31,9 +37,17 @@ def create_bot_posts():
     mosnter_images = get_monster_images()
     arch_images = get_arch_images()
     house_images = get_house_images()
-    # news = get_news()
+    news = get_news()
+    beh_monst = get_beh_monster_images()
+    thoughts = get_thoughts()
+    harry = get_harry()
+    memes = get_memes()
+    tech = get_tech()
+    data = get_data()
+    games = get_games()
 
-    contents = quotes + house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
+    contents = thoughts + tech+ harry+quotes+beh_monst+memes + news +data+games
+    contents += house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
     print(len(contents))
     random.shuffle(contents)
     if contents:
@@ -45,7 +59,7 @@ def create_bot_posts():
                 url = content["url"]
                 if url:
                     ext = url[-3:]
-                    if content["type"]!="news" and ext != "jpg":
+                    if (content["type"]!="gnews" and content["type"]!="news" and content["type"] != "tech") and ext != "jpg":
                         continue
                 approved = content["url"] is not None
                 post = Post.objects.filter(text=content["text"])
@@ -55,7 +69,7 @@ def create_bot_posts():
                 post = Post.objects.create(author_profile=user, author=user.user, 
                                         text=content["text"], time_of_posting=timezone.now(), 
                                         )
-                if content["type"] != "news":
+                if content["type"] != "news" and content["type"] != "tech" and content["type"]!="gnews":
                     post.imgur_url = content["url"]
                     post.img_approved=approved
                 else:
@@ -75,6 +89,8 @@ def create_bot_posts():
                         print(f"Tagging {friend.destination.user.username}")
                 if content["type"] == "q":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=quote_tag)
+                if content["type"] == "th":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=think_tag)
                 if content["type"] == "p":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=plant_tag)
                 if content["type"] == "til":
@@ -95,6 +111,20 @@ def create_bot_posts():
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=monster_tag)
                 if content["type"] == "news":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=news_tag)
+                if content["type"] == "gnews":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=game_tag)
+                if content["type"] == "hp":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=harry_tag)
+                    post.img_approved = False
+                    post.save()
+                if content["type"] == "data":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=data_tag)
+                if content["type"] == "memes":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=memes_tag)
+                    post.img_approved = False
+                    post.save()
+                if content["type"] == "tech":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=tech_tag)
                 _ = HashTagsPostTable.objects.create(post=post, hashtag=bot_tag)
                 print("posted ", post.pk)
             except Exception as e:
