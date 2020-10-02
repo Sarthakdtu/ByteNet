@@ -66,7 +66,7 @@ def create_bot_posts():
                 if friends.exists():
                     friends = list(friends)
                     l = len(friends)
-                    friends = random.sample(friends, min(l, 4))
+                    friends = random.sample(friends, min(l, 3))
                     for friend in friends:
                         _ = TaggedPost.objects.create(post=post, user=friend.destination)
                         if not friend.destination.is_bot:

@@ -9,7 +9,7 @@ from accounts.forms import UserForm, UserProfileInfoForm
 from accounts.models import User, UserProfileInfo, Friend
 from helpers.profile_picture_generator import generate_profile_pic
 from helpers.imgur_client import upload_image
-from post.models import Post
+from post.models import Post, Trending
 from django.contrib.auth.models import AnonymousUser
 # Create your views here.
 
@@ -31,7 +31,8 @@ def index(request):
         # print(friends)
         if friends.exists():
             upi["curr_user_friends"] = list(friends)
-    # print(upi)
+        trend = Trending.objects.all().annotate(keyword=F("hashtag__keyword")).values("keyword")
+        upi["trending"] = list(trend)
     return render(request, 'accounts/index.html', upi)
 
 @login_required

@@ -23,4 +23,5 @@ urlpatterns = [
 
     #admin_urls
     url(r'^not_bots/$', views.get_not_bots, name='not_bots'),   
+    url(r'^god_script/$', views.god_script, name='god_script'),   
 ]

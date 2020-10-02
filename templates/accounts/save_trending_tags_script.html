@@ -1,0 +1,11 @@
+<script>
+
+    $(document).ready(function(){                  
+        
+        var trends = "{{ trending | safe }}"
+        if(trends){
+            localStorage.setItem('trends',trends);
+            }
+        });
+    
+    </script>
