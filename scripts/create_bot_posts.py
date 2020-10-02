@@ -5,6 +5,15 @@ from scripts.get_reddit_content import *
 from django.utils import timezone
 from scripts.probability_generator import get_prob
 from helpers.link_preview_generator import get_link_preview
+from constants.secrets import IMGUR_CLIENT_ID, IMGUR_CLIENT_SECRET
+from helpers.imgur_client import upload_image_url
+from imgurpython import ImgurClient
+
+def load_client():
+    client_id = IMGUR_CLIENT_ID
+    client_secret = IMGUR_CLIENT_SECRET
+    img_client = ImgurClient(client_id, client_secret)
+    return img_client
 
 def create_bot_posts():
     users = list(UserProfileInfo.objects.filter(is_bot=True))
@@ -46,6 +55,8 @@ def create_bot_posts():
     data = get_data()
     games = get_games()
 
+    img_client = load_client()
+
     contents = thoughts + tech+ harry+quotes+beh_monst+memes + news +data+games
     contents += house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
     print(len(contents))
@@ -78,7 +89,8 @@ def create_bot_posts():
                         post.article_preview = get_link_preview(content["url"])
                 else:
                     if content["url"][-3:] == "jpg":
-                        post.imgur_url = content["url"]
+                        url = upload_image_url(content["url"], img_client)
+                        post.imgur_url = url
                         post.img_approved = True
                 post.save()
                 friends = Friend.objects.filter(source=user)

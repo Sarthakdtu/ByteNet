@@ -12,16 +12,16 @@
     <div class="container text-light">
         <div class="row" style="font-size: xx-large; text-align: center;">
           <div class="col-sm">
-            <a class="nav-link" href="{% url 'feed:news_feed' %}" style="color:yellow;" ><i class="fas fa-home"></i></a>
+            <a class="nav-link" href="/home/find_friends/" style="color:yellow;" ><i class="fas fa-user-friends"></i></a>
           </div>
           <div class="col-sm" >
             <a class="container nav-link" href="{% url 'post:image_gallery' %}" ><i class="fas fa-camera-retro"></i></i></a>
           </div>
-          <div class="col-sm ">
-            <a class="nav-link" href="{% url 'post:youtube_gallery' %}" style="color: red;"><i class="fab fa-youtube"></i></a>
-          </div>
           <div class="col-sm">
-            <a class="nav-link" href="{% url 'post:spotify_gallery' %}" style="color:greenyellow;"><i class="fab fa-spotify"></i></a>
+            <a class="nav-link" href="/post/posts_list_hashtag/news/" style="color:greenyellow;"><i class="fas fa-newspaper"></i></a>
+          </div>
+          <div class="col-sm ">
+            <a class="nav-link" href="{% url 'post:youtube_gallery' %}" style="color: red;"><i class="fas fa-video"></i></a>
           </div>
         </div>
       </div>

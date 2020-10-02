@@ -7,11 +7,11 @@ from scripts.trending_script import trending
 def get_this_bread():
     res = "Done"
     try:
-        create_bot_users()
+        # create_bot_users()
         create_bot_posts()
-        create_friends()
-        like_dislike()
-        trending()
+        # create_friends()
+        # like_dislike()
+        # trending()
     except Exception as e:
         print("Error", e)
         res = str(e)
