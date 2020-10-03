@@ -1,4 +1,17 @@
-import requests
-url = "https://bytenet.pythonanywhere.com/home/god_script"
-res = requests.get(url)
-print(res.json())
+from scripts.create_bot_users import create_bot_users
+from scripts.create_bot_posts import create_bot_posts
+from scripts.friend_bot import create_friends
+from scripts.like_dislike_function_bots import like_dislike
+from scripts.trending_script import trending
+
+res = ""
+res += create_bot_users()
+print(res)
+res += create_bot_posts()
+print(res)
+res += create_friends()
+print(res)
+res += like_dislike()
+print(res)
+res += trending()
+print(res)
