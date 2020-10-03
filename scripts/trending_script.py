@@ -29,3 +29,5 @@ def trending():
         t = t[0]
         tag = HashTags.objects.get(keyword=t)
         _ = Trending.objects.create(hashtag=tag)
+    
+    return "Trending "

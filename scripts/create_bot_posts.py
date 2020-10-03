@@ -75,7 +75,6 @@ def create_bot_posts():
 
                 post = Post.objects.filter(text=content["text"])
                 if post.exists():
-                    print("This post exists")
                     continue
                 post = Post.objects.create(author_profile=user, author=user.user, 
                                         text=content["text"], time_of_posting=timezone.now(), 
