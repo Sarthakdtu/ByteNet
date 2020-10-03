@@ -39,5 +39,4 @@ def upload_image_url(url, img_client):
         url = res["link"]
     except Exception as e:
         raise e 
-    print("File uploaded and deleted")
     return url
