@@ -5,12 +5,12 @@ from scripts.like_dislike_function_bots import like_dislike
 from scripts.trending_script import trending
 
 res = ""
-res += create_bot_users()
-print(res)
+# res += create_bot_users()
+# print(res)
 res += create_bot_posts()
 print(res)
-res += create_friends()
-print(res)
+# res += create_friends()
+# print(res)
 res += like_dislike()
 print(res)
 res += trending()
