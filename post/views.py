@@ -217,7 +217,7 @@ def posts_list(request, author=None):
 def filter_posts_hashtag(request, hashtag=None):
     if hashtag is None:
         pass
-    hashtags_posts = HashTagsPostTable.objects.filter(hashtag__keyword=hashtag)
+    hashtags_posts = HashTagsPostTable.objects.filter(hashtag__keyword=hashtag).order_by("-pk")
     # print(posts[0].post)
     posts = list()
     for post in hashtags_posts:
@@ -257,7 +257,6 @@ def view_mentions(request):
     if posts:
         posts = posts.values("post__text","post__pk", "post__author__username",
                                                   "post__time_of_posting")
-        print(posts)
         return render(request, "post/posts_list.html", {"posts":posts, "mention":True, "posts_exist":True})
     else:
         return render(request, "post/posts_list.html", {"posts":posts, "mention":True, "posts_exist":False})

@@ -4,9 +4,10 @@ def create_friends():
     from scripts.probability_generator import get_prob
     from feed.models import FriendRequest, FriendRequestStatus
     import random
+    friend_numbers = 0
     users = list(UserProfileInfo.objects.filter(is_bot=True))
     for user in users:
-        if get_prob() and get_prob() and get_prob():
+        if get_prob() and get_prob() and get_prob() and not get_prob():
             continue
         friend_req = FriendRequest.objects.filter(destination=user.user)
         if friend_req.exists():
@@ -25,5 +26,6 @@ def create_friends():
             continue
         _ = Friend.objects.get_or_create(source=user, destination=friend)
         _ = Friend.objects.get_or_create(source=friend, destination=user)
-        print(f"{user.user.username} is now a friend of {friend.user.username}.")
+        friend_numbers += 1
+    return " Total friends made = " + str(friend_numbers)
         

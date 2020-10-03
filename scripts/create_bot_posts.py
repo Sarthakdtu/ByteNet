@@ -56,7 +56,7 @@ def create_bot_posts():
     games = get_games()
 
     img_client = load_client()
-
+    posts_number = 0
     contents = thoughts + tech+ harry+quotes+beh_monst+memes + news +data+games
     contents += house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
     print(len(contents))
@@ -88,7 +88,7 @@ def create_bot_posts():
                     if preview:
                         post.article_preview = get_link_preview(content["url"])
                 else:
-                    if content["url"][-3:] == "jpg":
+                    if content["url"] and content["url"][-3:] == "jpg":
                         url = upload_image_url(content["url"], img_client)
                         post.imgur_url = url
                         post.img_approved = True
@@ -103,7 +103,6 @@ def create_bot_posts():
                         if not friend.destination.is_bot:
                             _ = TagNotification.objects.create(post=post, time_of_tagging=timezone.now() ,tagged_user=friend.destination.user)
                             print("Tagged a real user")
-                        print(f"Tagging {friend.destination.user.username}")
                 if content["type"] == "q":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=quote_tag)
                 if content["type"] == "th":
@@ -128,6 +127,8 @@ def create_bot_posts():
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=monster_tag)
                 if content["type"] == "news":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=news_tag)
+                if content["type"] == "data":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=data_tag)
                 if content["type"] == "gnews":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=game_tag)
                 if content["type"] == "hp":
@@ -143,6 +144,7 @@ def create_bot_posts():
                 if content["type"] == "tech":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=tech_tag)
                 _ = HashTagsPostTable.objects.create(post=post, hashtag=bot_tag)
-                print("posted ", post.pk)
+                posts_number += 1
             except Exception as e:
                 print(e)
+    return " Posts created " + str(posts_number)

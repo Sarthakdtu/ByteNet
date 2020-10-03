@@ -4,12 +4,10 @@
     
             var trends = localStorage.getItem('trends')
             trends = trends.replaceAll("'", '"');
-            console.log(trends)
             trends = JSON.parse(trends)
             var html = ''
             for(var i=0;i<trends.length;i++){
                 keyword = trends[i]["keyword"]
-                console.log(keyword)
                 html += "<a href=/post/posts_list_hashtag/" + keyword
                 html += ' style="text-decoration: none;">#'+keyword+'</a><br>'
             }

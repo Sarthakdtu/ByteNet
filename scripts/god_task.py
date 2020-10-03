@@ -4,8 +4,10 @@ from scripts.friend_bot import create_friends
 from scripts.like_dislike_function_bots import like_dislike
 from scripts.trending_script import trending
 
-create_bot_users()
-create_bot_posts()
-create_friends()
-like_dislike()
-trending()
+res = ''
+res += create_bot_users()
+res += create_bot_posts()
+res += create_friends()
+res += like_dislike()
+res += trending()
+print(res)
