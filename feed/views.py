@@ -18,7 +18,6 @@ from post.models import Post, TagNotification, HashTagsPostTable, Like, TaggedPo
 @login_required
 def feed(request):
     user = request.user
-    pfp = UserProfileInfo.objects.get(user=user).profile_pic_url
     posts = Post.objects.all().order_by('-time_of_posting'
                         ).select_related("author_profile"
                         ).annotate(username=F('author_profile__user__username'
@@ -39,37 +38,35 @@ def feed(request):
     paginator = Paginator(posts, 50)
     page = request.GET.get('page')
     posts_list = paginator.get_page(page)
-    return render(request, 'feed/pagination_feed.html', {"posts":posts_list,
-     "curr_user_profile_pic":pfp})
+    return render(request, 'feed/pagination_feed.html', {"posts":posts_list})
 
 @login_required
 def view_profile(request, profile_username=None):
-    user_profile = {'current_user':False}
-    if profile_username is None:
-        profile_username = User.objects.get(username=request.user)
-        user_profile = {'current_user':True}
+    if not profile_username:
+        profile_username = request.user.username
     print(f"{request.user} is about to view {profile_username}'s profile'")
-    profile = UserProfileInfo.objects.get(user__username=profile_username)
-    user_profile['username'] = profile_username
-    try:
-        user_profile['age'] = profile.age
-        user_profile['profile_pic_url'] = profile.profile_pic_url
-    except:
-        pass
-    try:
-        user_profile['location'] = profile.location
-    except:
-        pass
-    try:
-        user_profile['email'] = profile.user.email
-    except:
-        pass
-    try:
-        user_profile['user'] = profile.user
-    except:
-        pass
-    user_profile['name'] = profile.user.first_name + " " + profile.user.last_name
+    user_profile = UserProfileInfo.objects.filter(user__username=profile_username
+                                                ).annotate(username=F("user__username"), 
+                                                email=F("user__email"),
+                                                first_name=F("user__first_name"),
+                                                last_name=F("user__last_name")).values("age", "profile_pic_url", 
+                                                                            "location", "username", "email", 
+                                                                            "first_name", "last_name")[0]
+
+    user_profile = dict(user_profile)
+    user_profile['current_user'] = False
+    if request.user.username == user_profile['username']:
+        user_profile['current_user'] = True
+    user_profile['name'] = user_profile["first_name"] + " " + user_profile["last_name"]
+    
     user_profile['friend'] = True
+    if not user_profile['current_user']:
+        friend = Friend.objects.filter(destination__user__username=user_profile['username'], 
+                                                    source__user=request.user)
+        user_profile['friend'] = friend.exists()
+        if not user_profile['friend']:
+            friend = FriendRequest.objects.filter(source=request.user, destination__username=user_profile['username'])
+            user_profile['friend'] = friend.exists()
     return render(request, 'feed/profile_info.html', user_profile)
 
 
