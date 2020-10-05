@@ -52,7 +52,7 @@
                        {% if post.youtube_video_url  %}
                             <div class="container">
                                     {% if post.content_approved %}
-                                        <iframe width="996" height="560" src={{ post.youtube_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <iframe width="996" height="560" src={{ post.youtube_video_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     {% else %}
                                     <img src=https://i.imgur.com/24zjXms.jpeg class="card-img-top" alt="...">
                                     {% endif %}
