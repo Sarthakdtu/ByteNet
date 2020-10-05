@@ -217,7 +217,7 @@ def posts_list(request, author=None):
 def filter_posts_hashtag(request, hashtag=None):
     if hashtag is None:
         pass
-    hashtags_posts = HashTagsPostTable.objects.filter(hashtag__keyword=hashtag).order_by("-pk")
+    hashtags_posts = HashTagsPostTable.objects.filter(hashtag__keyword=hashtag).order_by('-time_of_posting')
     # print(posts[0].post)
     posts = list()
     for post in hashtags_posts:
