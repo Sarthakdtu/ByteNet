@@ -110,6 +110,8 @@ def create_bot_posts():
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=plant_tag)
                 if content["type"] == "til":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=til_tag)
+                if content["type"] == "tech":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=tech_tag)
                 if content["type"] == "n":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=nature_tag)
                 if content["type"] == "a":
