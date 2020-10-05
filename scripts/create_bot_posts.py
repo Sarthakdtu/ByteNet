@@ -136,8 +136,6 @@ def create_bot_posts():
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=harry_tag)
                     post.img_approved = False
                     post.save()
-                if content["type"] == "data":
-                    _ = HashTagsPostTable.objects.create(post=post, hashtag=data_tag)
                 if content["type"] == "memes":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=memes_tag)
                     post.img_approved = False

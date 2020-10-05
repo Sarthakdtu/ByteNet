@@ -20,7 +20,7 @@ def get_earth_images():
 
 def get_plant_images():
     subreddit = reddit.subreddit('BotanicalPorn')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 3)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -50,7 +50,7 @@ def get_sky_images():
 
 def get_space_images():
     subreddit = reddit.subreddit('SpacePorn')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 3)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -149,7 +149,7 @@ def get_beh_monster_images():
 
 def get_harry():
     subreddit = reddit.subreddit('harrypotter')
-    top_subreddit = subreddit.hot(limit = 10)
+    top_subreddit = subreddit.hot(limit = 5)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -168,7 +168,7 @@ def get_memes():
 
 def get_tech():
     subreddit = reddit.subreddit('technology')
-    top_subreddit = subreddit.hot(limit = 10)
+    top_subreddit = subreddit.hot(limit = 20)
     posts = [i for i in top_subreddit]
     links = list()
     for post in posts:
