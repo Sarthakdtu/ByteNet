@@ -28,7 +28,7 @@
                                     {% endif %}
                     </div>
                        <div class="card-body" style="background-color: black;">
-                           <p class="card-text">{{ post.text }}</p>
+                           <p class="card-text" style="background-color: black;">{{ post.text }}</p>
 
                            {% if post.article_preview %}
                                 {{ post.article_preview | safe }}
@@ -40,7 +40,7 @@
                        </div>
                       
                        {% if post.tweet_url %}
-                       <div class="container">
+                       <div class="container" style="background-color: black;">
                            <div style="margin-left: 20%;" >
                                     {{ post.tweet_url | safe }}
                            </div>
@@ -50,7 +50,7 @@
                    <iframe src={{post.spotify_url}} style="align-content: center; margin-left: 30%;" width="300" height="80" frameborder="0" ></iframe>
                    {% endif %}
                        {% if post.youtube_video_url  %}
-                            <div class="container">
+                            <div class="container" style="background-color: black;">
                                     {% if post.content_approved %}
                                         <iframe width="676" height="400" src={{ post.youtube_video_url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     {% else %}
