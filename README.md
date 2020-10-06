@@ -44,8 +44,8 @@ Feel free to open issues with appropriate tags.
 And that's it.
 ## secrets.py and credentials
         
-        To run some functions you will need some credentials.
-        Create a `python` file called `secrets.py` in `constants` directory.
+- To run some functions you will need some credentials.
+- Create a `python` file called `secrets.py` in `constants` directory.
 
 ###     imgur credentials
 
