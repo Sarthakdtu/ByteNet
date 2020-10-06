@@ -86,7 +86,7 @@ def get_til():
 
 def get_house_images():
     subreddit = reddit.subreddit('HousePorn')
-    top_subreddit = subreddit.hot(limit = 2)
+    top_subreddit = subreddit.hot(limit = 5)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -160,7 +160,7 @@ def get_harry():
 
 def get_memes():
     subreddit = reddit.subreddit('memes')
-    top_subreddit = subreddit.hot(limit = 6)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
