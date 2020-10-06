@@ -5,7 +5,7 @@ def get_link_preview(link):
         return None
     url = "http://api.linkpreview.net/?key=" + LINK_PREVIEW_KEY  + "&q=" + link
     res = requests.get(url).json()
-    if res['description'] == "Invalid response status code (0)":
+    if res['description'] == "Invalid response status code (0)" || res['description'] == "Too many requests per second on a single domain":
         return None
     image_html = ''
     if res['image'] and res['image'] != '':
