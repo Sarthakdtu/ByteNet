@@ -43,19 +43,21 @@ Feel free to open issues with appropriate tags.
     - Run `python3 manage.py runserver`
 And that's it.
 ## secrets.py and credentials
+        
         To run some functions you will need some credentials.
         Create a `python` file called `secrets.py` in `constants` directory.
+
 ###     imgur credentials
+
+- Head over to https://apidocs.imgur.com/ and get the necessary credentials and add them to `constants/secrets.py`.
+- You will need these 2 credentials: `IMGUR_CLIENT_ID` and `IMGUR_CLIENT_SECRET`.
+
+###     link_preview credentials
             
-            - Head over to https://apidocs.imgur.com/ and get the necessary credentials and add them to `constants/secrets.py`.
+- Head over to https://www.linkpreview.net/ and get the necessary credentials and add them to `constants/secrets.py`.
+- You will need just one credentials: `LINK_PREVIEW_KEY`.
+
+###     reddit credentials
             
-            - You will need these 2 credentials: `IMGUR_CLIENT_ID` and `IMGUR_CLIENT_SECRET`.
-###     link_preview
-            
-            - Head over to https://www.linkpreview.net/ and get the necessary credentials and add them to `constants/secrets.py`.
-            
-            - You will need just one credentials: `LINK_PREVIEW_KEY`.
-###     reddit 
-            
-            - For running `god_script.py` you will have to get reddit credentials.
-            - Head over to https://www.reddit.com/dev/api/ and get these credentials `REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USERNAME, REDDIT_PASSWORD, REDDIT_APP_NAME` and store it in `constants/secrets.py`. 
+- For running `god_script.py` you will have to get reddit credentials.
+- Head over to https://www.reddit.com/dev/api/ and get these credentials `REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USERNAME, REDDIT_PASSWORD, REDDIT_APP_NAME` and store it in `constants/secrets.py`. 
