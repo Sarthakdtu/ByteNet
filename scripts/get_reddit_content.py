@@ -20,7 +20,7 @@ def get_earth_images():
 
 def get_plant_images():
     subreddit = reddit.subreddit('BotanicalPorn')
-    top_subreddit = subreddit.hot(limit = 3)
+    top_subreddit = subreddit.hot(limit = 2)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -57,12 +57,13 @@ def get_space_images():
         images.append({"url":post.url, "text":post.title, "type":"sp"})
     return images
 
+
 def get_quotes():
     quotes = None
     try:
         quotes = list()
         subreddit = reddit.subreddit('quotes')
-        top_subreddit = subreddit.hot(limit = 10)
+        top_subreddit = subreddit.hot(limit = 20)
         for post in top_subreddit:
             quotes.append({"text":post.title, "url":None, "type":"q"})
     except Exception as e:
@@ -75,7 +76,7 @@ def get_til():
     try:
         til_facts = list()
         subreddit = reddit.subreddit('todayilearned')
-        top_subreddit = subreddit.hot(limit = 10)
+        top_subreddit = subreddit.hot(limit = 15)
         for post in top_subreddit:
             til_facts.append({"text":post.title, "url":None, "type":"til"})
     except Exception as e:
@@ -85,7 +86,7 @@ def get_til():
 
 def get_house_images():
     subreddit = reddit.subreddit('HousePorn')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 2)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -95,7 +96,7 @@ def get_house_images():
 
 def get_arch_images():
     subreddit = reddit.subreddit('ArchitecturePorn')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 3)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -105,7 +106,7 @@ def get_arch_images():
 
 def get_monster_images():
     subreddit = reddit.subreddit('ImaginaryMonsters')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 3)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -114,13 +115,13 @@ def get_monster_images():
 
 def get_news():
     subreddit = reddit.subreddit('news')
-    top_subreddit = subreddit.hot(limit = 15)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     links = list()
     for post in posts:
         links.append({"url":post.url, "text":post.title, "type":"news"})
     subreddit = reddit.subreddit('worldnews')
-    top_subreddit = subreddit.hot(limit = 15)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     for post in posts:
         links.append({"url":post.url, "text":post.title, "type":"news"})
@@ -140,7 +141,7 @@ def get_thoughts():
 
 def get_beh_monster_images():
     subreddit = reddit.subreddit('ImaginaryBehemoths')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 3)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -159,7 +160,7 @@ def get_harry():
 
 def get_memes():
     subreddit = reddit.subreddit('memes')
-    top_subreddit = subreddit.hot(limit = 10)
+    top_subreddit = subreddit.hot(limit = 6)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -168,7 +169,7 @@ def get_memes():
 
 def get_tech():
     subreddit = reddit.subreddit('technology')
-    top_subreddit = subreddit.hot(limit = 20)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     links = list()
     for post in posts:
@@ -178,7 +179,7 @@ def get_tech():
 
 def get_data():
     subreddit = reddit.subreddit('dataisbeautiful')
-    top_subreddit = subreddit.hot(limit = 10)
+    top_subreddit = subreddit.hot(limit = 5)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:

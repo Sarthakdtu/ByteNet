@@ -1,4 +1,4 @@
-import random
+import random, time
 from accounts.models import UserProfileInfo, User, Friend
 from post.models import Post, HashTags, HashTagsPostTable, TaggedPost, TagNotification
 from scripts.get_reddit_content import *
@@ -63,8 +63,6 @@ def create_bot_posts():
     random.shuffle(contents)
     if contents:
         for content in contents:
-            if not get_prob():
-                continue
             try:
                 user = random.choice(users)
                 url = content["url"]
@@ -144,6 +142,8 @@ def create_bot_posts():
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=tech_tag)
                 _ = HashTagsPostTable.objects.create(post=post, hashtag=bot_tag)
                 posts_number += 1
+                if posts_number%10==0:
+                    time.sleep(2)
             except Exception as e:
                 print(e)
     return " Posts created " + str(posts_number)
