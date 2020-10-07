@@ -67,7 +67,7 @@ def get_quotes():
         for post in top_subreddit:
             quotes.append({"text":post.title, "url":None, "type":"q"})
     except Exception as e:
-        pass
+        print(e)
     return quotes
 
 
@@ -80,7 +80,7 @@ def get_til():
         for post in top_subreddit:
             til_facts.append({"text":post.title, "url":None, "type":"til"})
     except Exception as e:
-        pass
+        print(e)
     return til_facts
 
 
@@ -136,7 +136,7 @@ def get_thoughts():
         for post in top_subreddit:
             thoughts.append({"text":post.title, "url":None, "type":"th"})
     except Exception as e:
-        pass
+        print(e)
     return thoughts
 
 def get_beh_monster_images():
@@ -195,3 +195,33 @@ def get_games():
     for post in posts:
         links.append({"url":post.url, "text":post.title, "type":"gnews"})
     return links
+
+def get_jokes():
+    jokes = None
+    try:
+        jokes = list()
+        subreddit = reddit.subreddit('jokes')
+        top_subreddit = subreddit.hot(limit = 20)
+        for post in top_subreddit:
+            jokes.append({"text":post.title +" " +post.selftext, "url":None, "type":"joke"})
+    except Exception as e:
+        print(e)
+    try:
+        subreddit = reddit.subreddit('dadjokes')
+        top_subreddit = subreddit.hot(limit = 20)
+        for post in top_subreddit:
+            jokes.append({"text":post.title+" " +post.selftext, "url":None, "type":"joke"})
+    except Exception as e:
+        print(e)
+    return jokes
+
+
+def get_harry_texts():
+    subreddit = reddit.subreddit('harrypotter')
+    top_subreddit = subreddit.hot(limit = 15)
+    posts = [i for i in top_subreddit]
+    hp = list()
+    for post in posts:
+        if post.selftext:
+            hp.append({"text":post.title + " " + post.selftext, "url":None, "type":"hp"})
+    return hp

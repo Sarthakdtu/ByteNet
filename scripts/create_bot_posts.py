@@ -35,13 +35,17 @@ def create_bot_posts():
     tech_tag = HashTags.objects.get(keyword="technews")
     data_tag = HashTags.objects.get(keyword="data")
     game_tag = HashTags.objects.get(keyword="games")
-
+    jokes_tag = HashTags.objects.get(keyword="jokes")
+    
+    jokes = get_jokes()
+    hp_text = get_harry_texts()
     quotes = get_quotes()
     til_facts = get_til()
     nature_images = get_earth_images()
     animal_images = get_animal_images()
     sky_images = get_sky_images()
     space_images = get_space_images()
+    time.sleep(1)
     plant_images = get_plant_images()
     mosnter_images = get_monster_images()
     arch_images = get_arch_images()
@@ -51,13 +55,14 @@ def create_bot_posts():
     thoughts = get_thoughts()
     harry = get_harry()
     memes = get_memes()
+    time.sleep(1)
     tech = get_tech()
     data = get_data()
     games = get_games()
 
     img_client = load_client()
     posts_number = 0
-    contents = thoughts + tech+ harry+quotes+beh_monst+memes + news +data+games
+    contents = thoughts + tech+ harry+quotes+beh_monst+memes + news +data+games + jokes +hp_text
     contents += house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
     print(len(contents))
     random.shuffle(contents)
@@ -102,6 +107,8 @@ def create_bot_posts():
                             print("Tagged a real user")
                 if content["type"] == "q":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=quote_tag)
+                if content["type"] == "joke":
+                    _ = HashTagsPostTable.objects.create(post=post, hashtag=jokes_tag)
                 if content["type"] == "th":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=think_tag)
                 if content["type"] == "p":
@@ -143,7 +150,7 @@ def create_bot_posts():
                 _ = HashTagsPostTable.objects.create(post=post, hashtag=bot_tag)
                 posts_number += 1
                 if posts_number%10==0:
-                    time.sleep(2)
+                    time.sleep(1)
             except Exception as e:
                 print(e)
     return " Posts created " + str(posts_number)
