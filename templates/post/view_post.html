@@ -14,7 +14,7 @@
                         <h4 class="card-header h4 text-light bg-dark ">
                             <a href="{% url 'feed:profile_info' profile_username=post.username %}" 
                             class="text-light" style="text-decoration:none">
-                                <img src={{ post.profile_pic_url }} class="avatar" > {{ post.username }}
+                                <img src={{ post.profile_pic_url }} class="avatar" > {{ post.first_name }}  {{ post.last_name }} 
                         </a>
                         <div class="popup" style="float: right;"  onclick="myFunction()"> <img src="https://img.icons8.com/nolan/64/share.png">
                             <span class="popuptext" id="myPopup">Copy the link from url bar.</span>

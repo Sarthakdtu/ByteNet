@@ -9,7 +9,8 @@
                      class="text-light"
                     style="text-decoration:none">
                     
-                    <img src={{ post.profile_pic_url }} class="avatar" > {{ post.username }}
+                    <img src={{ post.profile_pic_url }} class="avatar" > {{ post.first_name }}  {{ post.last_name }} 
+                      
                     </a>
                     <a href="{% url 'post:view_post' post_id=post.pk %}" style="float: right;">
                         <img src="https://img.icons8.com/nolan/64/share.png" style="width: 80%;height: 80%;" >

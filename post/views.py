@@ -124,8 +124,10 @@ def view_post(request, post_id):
         return render(request, "post/post_not_found.html", {})
     if post_object:
         post = Post.objects.filter(pk=post_id).annotate(
-            username=F('author_profile__user__username'), profile_pic_url=F('author_profile__profile_pic_url'), 
-            ).values("profile_pic_url", "username", "pk", "text", 
+            first_name=F("author__first_name"),
+            last_name=F("author__last_name"),
+            username=F('author__username'), profile_pic_url=F('author_profile__profile_pic_url'), 
+            ).values("profile_pic_url", "username", "pk", "text", "first_name", "last_name",
             "time_of_posting", "is_edited", "tweet_url", "spotify_url", "num_likes", "num_dislikes",
             "youtube_video_url", "img_approved", "content_approved", "imgur_url", "is_video", "article_preview")
         tagged_users = list()
