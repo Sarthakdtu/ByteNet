@@ -60,6 +60,7 @@ def create_bot_posts():
     data = get_data()
     games = get_games()
 
+    repeat = 0
     img_client = load_client()
     posts_number = 0
     contents = thoughts + tech+ harry+quotes+beh_monst+memes + news +data+games + jokes +hp_text
@@ -79,6 +80,7 @@ def create_bot_posts():
 
                 post = Post.objects.filter(text=content["text"])
                 if post.exists():
+                    repeat += 1
                     continue
                 if content["type"] == "news" or content["type"] == "tech" or content["type"] == "gnews":
                     post = Post.objects.create(author_profile=user, author=user.user, 
@@ -162,4 +164,4 @@ def create_bot_posts():
                     time.sleep(1)
             except Exception as e:
                 print(e)
-    return " Posts created " + str(posts_number)
+    return " Posts created = " + str(posts_number) + " and Repeat = " + str(repeat) + " "

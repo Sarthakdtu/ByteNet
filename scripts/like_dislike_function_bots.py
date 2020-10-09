@@ -20,7 +20,7 @@ def like_dislike():
             if get_prob():
                 if not get_prob():
                     _ = Dislike.objects.get_or_create(user=user, post=post)
-                    post.num_dislikes +=1
+                    post.num_dislikes += 1
                     post.save()
                     dislikes_number += 1
-    return " Likes and Dislikes " + str(likes_number) +str(dislikes_number)
+    return " Likes and Dislikes " + str(likes_number) + " " +str(dislikes_number)
