@@ -151,7 +151,6 @@ def edit_post(request, pk):
     print("Edit post")
     try:
         post = Post.objects.get(pk=pk, author=request.user)
-        # print("Found post")
     except Post.DoesNotExist:
         return render(request, 'accounts/index.html', {})
     if request.method == "POST":
@@ -169,10 +168,7 @@ def edit_post(request, pk):
     else:
         form = dict()
         form["text"] = post.text
-        form["time"] = post.time_of_posting
-        form["tags"] = post.tags.all()
         form["pk"] = pk
-        # print(form["tags"])
         return render(request, 'post/edit_post.html', {'form': form})
 
 @login_required
