@@ -10,7 +10,7 @@ reddit = praw.Reddit(client_id=REDDIT_CLIENT_ID,
 
 def get_earth_images():
     subreddit = reddit.subreddit('EarthPorn')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 15)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -20,7 +20,7 @@ def get_earth_images():
 
 def get_plant_images():
     subreddit = reddit.subreddit('BotanicalPorn')
-    top_subreddit = subreddit.hot(limit = 2)
+    top_subreddit = subreddit.hot(limit = 8)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -40,7 +40,7 @@ def get_animal_images():
 
 def get_sky_images():
     subreddit = reddit.subreddit('SkyPorn')
-    top_subreddit = subreddit.hot(limit = 3)
+    top_subreddit = subreddit.hot(limit = 5)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -50,7 +50,7 @@ def get_sky_images():
 
 def get_space_images():
     subreddit = reddit.subreddit('SpacePorn')
-    top_subreddit = subreddit.hot(limit = 3)
+    top_subreddit = subreddit.hot(limit = 5)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -86,7 +86,7 @@ def get_til():
 
 def get_house_images():
     subreddit = reddit.subreddit('HousePorn')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -96,7 +96,7 @@ def get_house_images():
 
 def get_arch_images():
     subreddit = reddit.subreddit('ArchitecturePorn')
-    top_subreddit = subreddit.hot(limit = 3)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -106,7 +106,7 @@ def get_arch_images():
 
 def get_monster_images():
     subreddit = reddit.subreddit('ImaginaryMonsters')
-    top_subreddit = subreddit.hot(limit = 3)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -141,7 +141,7 @@ def get_thoughts():
 
 def get_beh_monster_images():
     subreddit = reddit.subreddit('ImaginaryBehemoths')
-    top_subreddit = subreddit.hot(limit = 3)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -150,7 +150,7 @@ def get_beh_monster_images():
 
 def get_harry():
     subreddit = reddit.subreddit('harrypotter')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 10)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -160,7 +160,7 @@ def get_harry():
 
 def get_memes():
     subreddit = reddit.subreddit('memes')
-    top_subreddit = subreddit.hot(limit = 10)
+    top_subreddit = subreddit.hot(limit = 20)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:
@@ -179,7 +179,7 @@ def get_tech():
 
 def get_data():
     subreddit = reddit.subreddit('dataisbeautiful')
-    top_subreddit = subreddit.hot(limit = 5)
+    top_subreddit = subreddit.hot(limit = 15)
     posts = [i for i in top_subreddit]
     images = list()
     for post in posts:

@@ -66,6 +66,7 @@ def create_bot_posts():
     contents += house_images+ til_facts + nature_images +sky_images +plant_images +animal_images +space_images+mosnter_images+arch_images
     print(len(contents))
     random.shuffle(contents)
+    num_upload = 0
     if contents:
         for content in contents:
             try:
@@ -79,21 +80,29 @@ def create_bot_posts():
                 post = Post.objects.filter(text=content["text"])
                 if post.exists():
                     continue
-                post = Post.objects.create(author_profile=user, author=user.user, 
+                if content["type"] == "news" or content["type"] == "tech" or content["type"] == "gnews":
+                    post = Post.objects.create(author_profile=user, author=user.user, 
                                         text=content["text"], time_of_posting=timezone.now(), 
                                         )
-                if content["type"] == "news" or content["type"] == "tech" or content["type"] == "gnews":
                     post.article_link = content["url"]
-                    # print(content["url"])
                     preview = get_link_preview(content["url"])
-                    # print(preview)
                     if preview:
                         post.article_preview = get_link_preview(content["url"])
                 else:
                     if content["url"] and content["url"][-3:] == "jpg":
+                        if num_upload == 49:
+                            continue
+                        post = Post.objects.create(author_profile=user, author=user.user, 
+                                        text=content["text"], time_of_posting=timezone.now(), 
+                                        )
                         url = upload_image_url(content["url"], img_client)
                         post.imgur_url = url
                         post.img_approved = True
+                        num_upload += 1
+                    else:
+                        post = Post.objects.create(author_profile=user, author=user.user, 
+                                        text=content["text"], time_of_posting=timezone.now(), 
+                                        )
                 post.save()
                 friends = Friend.objects.filter(source=user)
                 if friends.exists():
