@@ -431,3 +431,6 @@ def delete_images(request):
     post = Post.objects.get(pk=post_id)
     post.delete()
     return redirect("post:unapproved")
+
+def contact_me(request):
+    return render(request, 'extras/contact.html', {})

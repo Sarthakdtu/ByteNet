@@ -34,4 +34,7 @@ urlpatterns = [
     path('review_contents/', views.approve_contents, name='review_contents'),
     path('delete_contents/', views.delete_contents, name='delete_contents'),
 
+
+    path('contact/', views.contact_me, name='contact'),
+
 ]

@@ -97,6 +97,10 @@ crossorigin="anonymous"></script>
                          <img src="{{curr_user_profile_pic_url}}" id="nav_profile_pic" class="avatar curr_user_profile_pic_url"> 
                         </a>
                       </li>
+                      <li class="nav-item active ">
+                        <a class="nav-link" href="{% url 'index' %}">About <i class="fas fa-question"></i></a>
+                    </li>
+                     
             {% else %}
                   <li class="nav-item active">
                       <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
