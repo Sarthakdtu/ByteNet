@@ -26,7 +26,7 @@ def create_bot_posts():
     arch_tag = HashTags.objects.get(keyword="architecture")
     quote_tag = HashTags.objects.get(keyword="quote")
     plant_tag = HashTags.objects.get(keyword="plants")
-    bot_tag = HashTags.objects.get(keyword="bot_post")
+    # bot_tag = HashTags.objects.get(keyword="bot_post")
     news_tag = HashTags.objects.get(keyword="news")
     til_tag = HashTags.objects.get(keyword="todayilearned")
     think_tag = HashTags.objects.get(keyword="think")
@@ -158,7 +158,7 @@ def create_bot_posts():
                     post.save()
                 if content["type"] == "tech":
                     _ = HashTagsPostTable.objects.create(post=post, hashtag=tech_tag)
-                _ = HashTagsPostTable.objects.create(post=post, hashtag=bot_tag)
+                # _ = HashTagsPostTable.objects.create(post=post, hashtag=bot_tag)
                 posts_number += 1
                 if posts_number%10==0:
                     time.sleep(1)
