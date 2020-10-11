@@ -54,7 +54,12 @@
                 {% endif %}
                 
                 {% if post.imgur_url %}
-                        <div>
+                        <div style="
+                        margin-left: 15%;;
+                            width:  70%;
+                            height: 50%;
+                            object-fit: cover;
+                        ">
                             {% if post.img_approved %}
                                 {% if post.is_video %}
                                     <video style=" align-content: center;" controls loop>

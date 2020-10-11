@@ -1,0 +1,6 @@
+.img_set_size {
+    float: left;
+    width:  100px;
+    height: 100px;
+    object-fit: cover;
+}

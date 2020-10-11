@@ -18,7 +18,7 @@ from post.models import Post, TagNotification, HashTagsPostTable, Like, TaggedPo
 @login_required
 def feed(request):
     user = request.user
-    posts = Post.objects.all().order_by('-time_of_posting'
+    posts = Post.objects.filter(visible=True).order_by('-time_of_posting'
                         ).select_related("author_profile"
                         ).annotate(username=F('author__username'
                                             ),

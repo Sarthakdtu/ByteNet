@@ -182,7 +182,6 @@ def delete_post(request, pk):
         return render(request, 'accounts/index.html', {})
     if request.method == "POST":
         print("confirmation accepted deleteing.")
-        # htag = HashTagsPostTable.filter(post=post)
         post.delete()
     else:
         print("confirm delete")
@@ -337,6 +336,17 @@ def dislike_post(request):
 
 
 ########################################CONTENT##############################################################
+
+@staff_member_required
+def hide_post(request, pk):
+    # post_id = request.POST.get("post")
+    print("Hiding Post", pk)
+    post = Post.objects.get(pk=pk)
+    print("Got the post")
+    post.visible = False
+    post.save()
+    return redirect("post:unapproved_contents")
+
 @staff_member_required
 def get_unapprove_contents(request):
     unapprove = list()

@@ -21,6 +21,7 @@ class Post(models.Model):
     num_dislikes = models.IntegerField(default=0)
     article_link = models.URLField(default=None, null=True, blank=True)
     article_preview = models.TextField(default=None, null=True, blank=True)
+    visible = models.BooleanField(default=True, null=True, blank=True)
 
     def total_likes(self):
         return self.likes.count()

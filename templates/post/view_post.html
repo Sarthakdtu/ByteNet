@@ -9,7 +9,7 @@
     <br>
     
     <div class="container">
-            <div class="card rounded border border-dark ">
+            <div class="card rounded border border-dark " style="background-color: black;">
                 
                         <h4 class="card-header h4 text-light bg-dark ">
                             <a href="{% url 'feed:profile_info' profile_username=post.username %}" 
@@ -21,7 +21,7 @@
                           </div>
                         </h4>
 
-                    <h6 class="text-dark">{{ post.time_of_posting }} </h6>
+                    <h6 class="text-dark" style="background-color: blue;">{{ post.time_of_posting }} </h6>
                     <div class="text-right">
                                     {% if post.is_edited %}
                                         <b>edited</b>
@@ -60,7 +60,12 @@
                        {% endif %}
 
                        {% if post.imgur_url %}
-                            <div >
+                            <div style="background-color: black;
+                            margin-left: 15%;;
+                                width:  70%;
+                                height: 50%;
+                                object-fit: cover;
+                            " >
                                 {% if post.img_approved %}
                                     {% if post.is_video %}
                                         <video controls loop>
@@ -111,7 +116,13 @@
                     </div>
                 </div>
             </div>
-
+            {% endif %}
+            {% if request.user.is_staff%}
+            <span class="p-4"></span>
+            <div class="p-1">
+                <a href="{% url 'post:hide_post' pk=post.pk %}"
+                   class="btn btn-warning">Hide</a>
+            </div>
             {% endif %}
     </div>
     <br>
