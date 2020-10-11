@@ -228,7 +228,7 @@ def filter_posts_hashtag(request, hashtag=None):
 
 @login_required
 def filter_posts_image(request):
-    posts = Post.objects.exclude(imgur_url=None).order_by('-time_of_posting'
+    posts = Post.objects.exclude(imgur_url=None, visible=False).order_by('-time_of_posting'
                                 ).values("imgur_url", "pk","is_video")
     # print(posts[0])
     return render(request, "filter_view/image_gallery.html", {"posts":posts, "num_posts":range(0, len(posts), 3)})
