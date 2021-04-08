@@ -1,7 +1,7 @@
 asgiref==3.2.10
 certifi==2020.6.20
 chardet==3.0.4
-Django==3.1.6
+Django==3.1.8
 idna==2.10
 imgurpython==1.1.7
 praw==7.1.0
