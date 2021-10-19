@@ -1,4 +1,7 @@
 # ByteNet
+
+A social Networking Site
+
 ByteNet is a social networking site built with django and bootstrap. 
 
 Project is live at : https://bytenet.pythonanywhere.com/
