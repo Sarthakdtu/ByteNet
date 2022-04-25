@@ -7,7 +7,7 @@ from scripts.trending_script import trending
 def get_this_bread():
     res = ""
     try:
-        res += create_bot_users()
+        #res += create_bot_users()
         res += create_bot_posts()
         res += create_friends()
         res += like_dislike()
